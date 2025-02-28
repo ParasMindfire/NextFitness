@@ -34,11 +34,13 @@ export async function middleware(req: NextRequest) {
     // Forward user ID to the request headers
     const requestHeaders:any = new Headers(req.headers);
     requestHeaders.set("id", payload.id);
-
+    requestHeaders.set("email",payload.email);
 
     const id:any = requestHeaders.get("id");
+    const email:any = requestHeaders.get("id");
 
     console.log("kya set hua id ",id);
+    console.log("kya set hua mail ",email);
 
     return NextResponse.next({
       request: {
@@ -53,5 +55,5 @@ export async function middleware(req: NextRequest) {
 }
 
 export const config = {
-  matcher: ["/api/users/user/:path*"], // Protect all API routes
+  matcher: ["/api/users/user/:path*","/api/workouts/work/:path*","/api/goals/fitness/:path*"],// Protect all API routes
 };

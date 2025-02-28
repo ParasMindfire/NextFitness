@@ -27,7 +27,7 @@ export async function POST(req: NextRequest) {
             { expiresIn: "15m" }
         );
 
-        return NextResponse.json({ message: "Login successful", accessToken }, { status: 200 });
+        return NextResponse.json({ message: "Login successful", accessToken ,user:user[0]}, { status: 200 });
     } catch (error: any) {
         return NextResponse.json({ error: error.message }, { status: 500 });
     }
