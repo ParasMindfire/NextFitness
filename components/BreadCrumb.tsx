@@ -25,7 +25,9 @@ const Breadcrumbs: React.FC = () => {
 
   return (
     <nav className="flex items-center space-x-1 text-sm text-gray-600 mb-2 ml-5">
-      <Link href="/" className="hover:text-purple-600 font-medium">Home</Link>
+      <Link href="/" className="hover:text-purple-600 font-medium">
+        Home
+      </Link>
       {pathnames.map((value, index) => {
         const routeTo = `/${pathnames.slice(0, index + 1).join("/")}`;
         const isLast = index === pathnames.length - 1;

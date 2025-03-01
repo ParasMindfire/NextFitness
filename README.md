@@ -35,16 +35,9 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
-
-
-
-
-
-Always ask what should be in server side and what should be in client side 
+Always ask what should be in server side and what should be in client side
 
 keep whatever is necessary only in app like api fonts and pages keep component outside app
-
-
 
 SSG
 static rendering
@@ -54,7 +47,7 @@ partial rerendering PPR
 
 learn about how error is handles in error.tsx
 
-how routes work in next 
+how routes work in next
 
 dynamic metadata
 
@@ -71,13 +64,8 @@ use next/form 1hr 20mins and 1hr 45 min
 
 you can add @layer utilities in global.css
 
-you can use shadcn to use component more resuabley apply all css of tailwing in global.css layouts 1hr 40 
+you can use shadcn to use component more resuabley apply all css of tailwing in global.css layouts 1hr 40
 
 if you want to allow images from all the sources update nextconfig.ts 2hr 8mins
 
-
 use sanity for managing contents 2hr 13min
-
-
-
-

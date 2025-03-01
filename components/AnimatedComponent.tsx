@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -23,7 +23,7 @@ const quotes = [
   "Work hard in silence, let success make the noise.",
   "Strive for progress, not perfection.",
   "The pain you feel today will be the strength you feel tomorrow.",
-  "It’s a slow process, but quitting won’t speed it up."
+  "It’s a slow process, but quitting won’t speed it up.",
 ];
 
 const AnimatedQuotes: React.FC = () => {
@@ -32,7 +32,7 @@ const AnimatedQuotes: React.FC = () => {
   useEffect(() => {
     const intervalId = setInterval(() => {
       setCurrentQuoteIndex((prevIndex) =>
-        prevIndex === quotes.length - 1 ? 0 : prevIndex + 1
+        prevIndex === quotes.length - 1 ? 0 : prevIndex + 1,
       );
     }, 3000); // Switch every 3 seconds
 

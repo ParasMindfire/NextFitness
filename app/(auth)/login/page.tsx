@@ -25,9 +25,10 @@ const Login = () => {
 
     const result = await loginUser(data); // Call server action
 
-    console.log("login api response ",result);
+    console.log("login api response ", result);
 
-    if (result.message="Login successful") {
+    if ((result.message = "Login successful")) {
+      localStorage.setItem("accessToken",result.accessToken);
       setUser(result.user);
       router.push("/");
     } else {
@@ -40,7 +41,9 @@ const Login = () => {
   return (
     <div className="flex justify-center items-center h-[500px] mt-32 bg-gray-100">
       <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
-        <h2 className="text-2xl font-bold text-purple-700 text-center mb-4">Login</h2>
+        <h2 className="text-2xl font-bold text-purple-700 text-center mb-4">
+          Login
+        </h2>
         <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
           <input
             type="email"
@@ -54,18 +57,25 @@ const Login = () => {
             })}
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
           />
-          {errors.email && <p className="text-red-500 text-sm">{errors.email.message}</p>}
+          {errors.email && (
+            <p className="text-red-500 text-sm">{errors.email.message}</p>
+          )}
 
           <input
             type="password"
             placeholder="Password"
             {...register("password", {
               required: "Password is required",
-              minLength: { value: 6, message: "Password must be at least 6 characters" },
+              minLength: {
+                value: 6,
+                message: "Password must be at least 6 characters",
+              },
             })}
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
           />
-          {errors.password && <p className="text-red-500 text-sm">{errors.password.message}</p>}
+          {errors.password && (
+            <p className="text-red-500 text-sm">{errors.password.message}</p>
+          )}
 
           {error && <p className="text-red-500 text-sm text-center">{error}</p>}
 
@@ -73,7 +83,9 @@ const Login = () => {
             type="submit"
             disabled={loading}
             className={`w-full cursor-pointer ${
-              loading ? "bg-gray-500 cursor-not-allowed" : "bg-purple-600 hover:bg-gray-800"
+              loading
+                ? "bg-gray-500 cursor-not-allowed"
+                : "bg-purple-600 hover:bg-gray-800"
             } text-white font-bold py-2 rounded-lg transition duration-200`}
           >
             {loading ? "Logging in..." : "LOGIN"}

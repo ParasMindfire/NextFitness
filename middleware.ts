@@ -1,5 +1,5 @@
-import { NextRequest, NextResponse } from 'next/server';
-import * as jose from 'jose';
+import { NextRequest, NextResponse } from "next/server";
+import * as jose from "jose";
 
 const jwtSecret = process.env.JWT_SECRET;
 
@@ -12,7 +12,10 @@ const secretKey = new TextEncoder().encode(jwtSecret);
 export async function middleware(req: NextRequest) {
   console.log("🚀 Middleware executed!");
 
-  let token = req.headers.get("authorization") || req.headers.get("Authorization");
+  let token =
+    req.headers.get("authorization") || req.headers.get("Authorization");
+
+    console.log("recieve token ",token);
 
   if (!token || !token.startsWith("Bearer ")) {
     console.log("⚠️ Token missing or incorrectly formatted");
@@ -32,28 +35,34 @@ export async function middleware(req: NextRequest) {
     }
 
     // Forward user ID to the request headers
-    const requestHeaders:any = new Headers(req.headers);
+    const requestHeaders: any = new Headers(req.headers);
     requestHeaders.set("id", payload.id);
-    requestHeaders.set("email",payload.email);
+    requestHeaders.set("email", payload.email);
 
-    const id:any = requestHeaders.get("id");
-    const email:any = requestHeaders.get("id");
+    const id: any = requestHeaders.get("id");
+    const email: any = requestHeaders.get("id");
 
-    console.log("kya set hua id ",id);
-    console.log("kya set hua mail ",email);
+    console.log("kya set hua id ", id);
+    console.log("kya set hua mail ", email);
 
     return NextResponse.next({
       request: {
         headers: requestHeaders,
       },
     });
-
   } catch (err) {
     console.error("❌ Token verification failed:", err);
-    return NextResponse.json({ error: "Invalid or expired token" }, { status: 403 });
+    return NextResponse.json(
+      { error: "Invalid or expired token" },
+      { status: 403 },
+    );
   }
 }
 
 export const config = {
-  matcher: ["/api/users/user/:path*","/api/workouts/work/:path*","/api/goals/fitness/:path*"],// Protect all API routes
+  matcher: [
+    "/api/users/user/:path*",
+    "/api/workouts/work/:path*",
+    "/api/goals/fitness/:path*",
+  ], // Protect all API routes
 };

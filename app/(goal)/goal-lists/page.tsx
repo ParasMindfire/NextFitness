@@ -1,9 +1,5 @@
 function page() {
-  return (
-    <div>
-      goal list
-    </div>
-  )
+  return <div>goal list</div>;
 }
 
-export default page
+export default page;
