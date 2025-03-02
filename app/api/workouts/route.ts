@@ -13,8 +13,9 @@ export async function GET() {
     }
     return NextResponse.json(workouts, { status: 200 });
   } catch (error) {
+    console.error("Error fetching workouts:", error);
     return NextResponse.json(
-      { error: "Something went wrong" },
+      { error: error },
       { status: 500 },
     );
   }

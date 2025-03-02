@@ -49,7 +49,7 @@ const Navbar: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (user) {
+    if (user && token) {
       const fetchStreak = async () => {
         const currStreak: number | { streak: number } = await fetchStreakMonth(token);
         console.log("Fetched Streak:", currStreak);
@@ -121,7 +121,9 @@ const Navbar: React.FC = () => {
   };
 
   const toggleCalendar = () => {
-    setIsCalendarOpen(!isCalendarOpen);
+    console.log("heloooo")
+    setIsCalendarOpen((prev) => !prev);
+    console.log(isCalendarOpen);
     setIsWorkoutsOpen(false);
     setIsGoalsOpen(false);
     setIsProfileOpen(false);
@@ -310,3 +312,4 @@ const Navbar: React.FC = () => {
 };
 
 export default Navbar;
+

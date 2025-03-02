@@ -1,0 +1,47 @@
+version: '3.8'
+
+services:
+  app:
+    container_name: fitness-tracker
+    build:
+      context: ./
+      dockerfile: Dockerfile
+      target: ${NODE_ENV:-development}
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=${NODE_ENV:-development}
+      - DATABASE_URL=mysql://root:Pa1ra2@3@mysql-db:3306/fitness_tracker
+      - DB_HOST=mysql-db
+      - DB_USER=root
+      - DB_PASSWORD=Pa1ra2@3
+      - DB_NAME=fitness_tracker
+      - DB_PORT=3306
+    volumes:
+      - .:/app
+      - /app/node_modules
+    depends_on:
+      mysql-db:
+        condition: service_healthy
+    restart: unless-stopped
+
+  mysql-db:
+    image: mysql:8.0
+    container_name: mysql-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: Pa1ra2@3
+      MYSQL_DATABASE: fitness_tracker
+    ports:
+      - "3307:3306"  # Changed to avoid port conflict
+    volumes:
+      - mysql-data:/var/lib/mysql
+    command: --default-authentication-plugin=mysql_native_password
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pPa1ra2@3"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+volumes:
+  mysql-data:

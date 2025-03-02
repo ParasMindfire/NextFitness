@@ -9,6 +9,7 @@ export const sequelize = new Sequelize(
     host: process.env.MYSQL_HOST || "127.0.0.1", // Database host
     dialect: "mysql", // Defining the SQL dialect as MySQL
     dialectModule: require("mysql2"),
+    logging: console.log,
   },
 );
 

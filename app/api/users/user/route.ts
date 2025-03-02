@@ -5,7 +5,6 @@ import bcrypt from "bcryptjs";
 // ✅ GET User by ID
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } },
 ) {
   try {
     // const id = req.nextUrl.pathname.split("/").pop();
