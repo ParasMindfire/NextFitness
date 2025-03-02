@@ -121,13 +121,22 @@ const Navbar: React.FC = () => {
   };
 
   const toggleCalendar = () => {
-    console.log("heloooo")
-    setIsCalendarOpen((prev) => !prev);
-    console.log(isCalendarOpen);
+    console.log("Toggle Calendar Clicked");
+    setIsCalendarOpen((prev) => {
+      const newState = !prev;
+      console.log("New State:", newState);
+      return newState;
+    });
     setIsWorkoutsOpen(false);
     setIsGoalsOpen(false);
     setIsProfileOpen(false);
   };
+
+  useEffect(() => {
+    console.log("isCalendarOpen:", isCalendarOpen);
+  }, [isCalendarOpen]);
+  
+  
 
   const handleAddWorkoutClick = () => {
     setFormData(null);
@@ -223,48 +232,49 @@ const Navbar: React.FC = () => {
                   <FaCalendarAlt className="mr-2" /> Workout Calendar
                 </button>
                 {isCalendarOpen && (
-                  <div
-                    className="fixed inset-0 bg-gray-900 bg-opacity-75 backdrop-filter backdrop-blur-sm flex items-center justify-center md:hidden z-50"
-                  >
-                    <div className="bg-white rounded-lg shadow-lg p-4 w-full max-w-md">
-                      <h2 className="text-xl font-bold text-center mb-4">Workouts This Month</h2>
-                      <div className="grid grid-cols-7 gap-2">
-                        {getCurrentMonthDays().map((day) => {
-                          const dateStr = day.toLocaleDateString("en-CA");
-                          const isWorkoutDay = workoutDates.some(
-                            (workout) => workout.workout_date === dateStr
-                          );
-                          const isFutureDate = day > new Date();
-                          const workoutCount = workoutDates.filter(
-                            (workout) => workout.workout_date === dateStr
-                          ).length;
+                <div className="fixed inset-0 bg-gray-900 bg-opacity-75 flex items-center justify-center z-50">
+                  <div className="bg-white rounded-lg shadow-lg p-4 w-full max-w-md">
+                    <h2 className="text-xl font-bold text-center mb-4">Workouts This Month</h2>
+                    <div className="grid grid-cols-7 gap-2">
+                      {getCurrentMonthDays().map((day) => {
+                        const dateStr = day.toLocaleDateString("en-CA");
+                        const isWorkoutDay = workoutDates.some(
+                          (workout) => workout.workout_date === dateStr
+                        );
+                        const isFutureDate = day > new Date();
+                        const workoutCount = workoutDates.filter(
+                          (workout) => workout.workout_date === dateStr
+                        ).length;
 
-                          return (
-                            <div
-                              key={dateStr}
-                              className={`w-10 h-10 flex items-center justify-center rounded-full
-                                ${isFutureDate
-                                  ? "bg-gray-400 text-white"
-                                  : workoutCount > 1
-                                  ? "bg-green-900 text-white"
-                                  : isWorkoutDay
-                                  ? "bg-green-600 text-white"
-                                  : "bg-red-400 text-white"}`}
-                            >
-                              {day.getDate()}
-                            </div>
-                          );
-                        })}
-                      </div>
-                      <button
-                        onClick={() => setIsCalendarOpen(false)}
-                        className="mt-4 text-purple-600 hover:underline"
-                      >
-                        Close
-                      </button>
+                        return (
+                          <div
+                            key={dateStr}
+                            className={`w-10 h-10 flex items-center justify-center rounded-full ${
+                              isFutureDate
+                                ? "bg-gray-400 text-white"
+                                : workoutCount > 1
+                                ? "bg-green-900 text-white"
+                                : isWorkoutDay
+                                ? "bg-green-600 text-white"
+                                : "bg-red-400 text-white"
+                            }`}
+                          >
+                            {day.getDate()}
+                          </div>
+                        );
+                      })}
                     </div>
+                    <button
+                      onClick={() => setIsCalendarOpen(false)}
+                      className="mt-4 text-purple-600 hover:underline"
+                    >
+                      Close
+                    </button>
                   </div>
-                )}
+                </div>
+              )}
+
+
               </div>
 
               <div className="text-white px-4 py-2 rounded-lg flex items-center">

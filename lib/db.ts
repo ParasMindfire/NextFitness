@@ -28,3 +28,15 @@ sequelize
   .catch((error) => {
     console.log("Error syncing databse:", error);
   });
+
+
+
+
+
+
+
+
+
+
+
+  
