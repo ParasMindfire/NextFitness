@@ -5,19 +5,8 @@ import { useGoalStore } from "../../store/useGoalStore";
 // import { showToast } from "../../helpers/ToastHelper";
 import { useRouter } from "next/navigation";
 import {
-  GOAL_TYPE,
-  WEIGHT_LOSS,
-  TARGET_VALUE,
-  CURRENT_PROGRESS,
-  START_DATE,
-  END_DATA,
-  STATUS,
-  PENDING,
-  COMPLETE,
-  INCOMPLETE,
   UPDATE_GOAL,
   ADD_GOAL,
-  BACK_TO_DASHBOARD,
 } from "../../../constants/constants";
 
 import Link from "next/link";
