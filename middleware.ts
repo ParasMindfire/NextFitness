@@ -64,5 +64,7 @@ export const config = {
     "/api/users/user/:path*",
     "/api/workouts/work/:path*",
     "/api/goals/fitness/:path*",
+    "/api/streaks/:path*",
+    "/api/days/:path*"
   ], // Protect all API routes
 };

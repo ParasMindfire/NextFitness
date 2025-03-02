@@ -1,12 +1,12 @@
-"use client"
+"use client";
 
 import { useRouter } from "next/navigation";
 import { useWorkoutStore } from "../app/store/useWorkoutStore";
 import { WorkoutCardProps } from "../app/types";
-import {  
-  DURATION_LABEL,  
-  CALORIES_LABEL,  
-  DATE_LABEL,  
+import {
+  DURATION_LABEL,
+  CALORIES_LABEL,
+  DATE_LABEL,
   EDIT,
   DELETE
 } from "../constants/constants";
@@ -17,12 +17,12 @@ export const WorkoutCard = ({ workout, onDelete }: WorkoutCardProps) => {
 
   const handleEdit = (id: any) => {
     setFormData(workout);
-    router.push("/workoutFormPage");
+    router.push("/workout-form");
     setId(id);
   };
 
   return (
-    <div className="bg-gradient-to-b from-purple-500 to-purple-700 rounded-2xl shadow-xl p-8 w-80 text-white transition-transform transform hover:scale-105 hover:shadow-2xl">
+    <div className="bg-gradient-to-b from-purple-500 to-purple-700 rounded-2xl shadow-xl p-8 w-full text-white transition-transform transform hover:scale-105 hover:shadow-2xl">
       <h2 className="text-2xl font-bold uppercase text-center mb-4">{workout.exercise_type}</h2>
 
       <div className="space-y-3 text-gray-200 text-sm">

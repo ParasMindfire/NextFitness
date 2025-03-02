@@ -11,12 +11,12 @@ interface WorkoutState {
   setWorkouts: (workouts: Workout[]) => void;
   setFormData: (data: Workout | null) => void;
   setId: (id: number) => void;
-  fetchWorkouts: () => Promise<void>;
+  fetchWorkouts: (token:any) => Promise<void>;
   trigger:boolean;
   setTrigger:(flag:boolean)=>void;
 }
 
-const token:any=localStorage.getItem("accessToken");
+// const token:any=localStorage.getItem("accessToken");
 
 export const useWorkoutStore = create<WorkoutState>((set) => ({
   workouts: [],
@@ -28,7 +28,7 @@ export const useWorkoutStore = create<WorkoutState>((set) => ({
   setFormData: (data: Workout | null) => set({ formData: data }),
   setId: (id: number) => set({ id }),
 
-  fetchWorkouts: async () => {
+  fetchWorkouts: async (token:any) => {
     try {
       set({ loading: true, error: null });
       const data = await getUserWorkouts(token);

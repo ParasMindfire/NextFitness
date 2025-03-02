@@ -6,6 +6,7 @@ import { loginUser } from "../../../services/UserAPI"; // Import server action
 import { useUserStore } from "../../store/useUserStore";
 import { useState } from "react";
 import { LoginFormData } from "@/app/types";
+import { showToast } from "@/utils/Toast";
 
 const Login = () => {
   const setUser = useUserStore((state: any) => state.setUser);
@@ -31,8 +32,10 @@ const Login = () => {
       localStorage.setItem("accessToken",result.accessToken);
       setUser(result.user);
       router.push("/");
+      showToast("Login Successfully", "success");
     } else {
       setError(result.message);
+      showToast("Login Failed", "error");
     }
 
     setLoading(false);

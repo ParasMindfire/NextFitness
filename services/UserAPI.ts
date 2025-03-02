@@ -58,10 +58,8 @@ export const getAllUsers = async (): Promise<User[]> => {
   }
 };
 
-export const getSingleUser = async (): Promise<User> => {
+export const getSingleUser = async (token:any): Promise<User> => {
   try {
-    const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
-
     const response = await fetch(`${process.env.API_BASE_URL}/api/users/user`, {
       method: "GET",
       headers: {
@@ -81,4 +79,21 @@ export const getSingleUser = async (): Promise<User> => {
     throw error;
   }
 };
+
+
+// export const uploadUserPhoto = async (token: string, file: File, email: string) => {
+//   const formData = new FormData();
+//   formData.append("photo", file);
+//   formData.append("email", email);
+
+//   const response = await fetch(`${process.env.API_BASE_URL}/users/photo`, {
+//     method: "POST",
+//     headers: { Authorization: `Bearer ${token}` },
+//     body: formData,
+//   });
+
+//   if (!response.ok) throw new Error("Photo upload failed");
+//   return response.json();
+// };
+
 

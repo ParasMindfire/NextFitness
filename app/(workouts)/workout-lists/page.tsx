@@ -1,15 +1,28 @@
-"use client"
+"use client";
 
 import React, { useEffect, useState } from "react";
 import { WorkoutCard } from "../../../components/WorkoutCard";
 import { useWorkoutStore } from "../../store/useWorkoutStore";
-import { deleteWorkout,getUserWorkouts } from "../../../services/WorkoutAPI";
-// import { showToast } from "../../helpers/ToastHelper";
+import { deleteWorkout, getUserWorkouts } from "../../../services/WorkoutAPI";
 import { useRouter } from "next/navigation";
-import { YOUR_WORKOUTS, LOADING_WORKOUTS, ASC, ASCENDING, DESCENDING, ARE_U_SURE2, NEXT, PREVIOUS, BACK_TO_DASHBOARD, CONFIRM_DELETE, CANCEL, DELETE, NO_WORKOUTS } from "../../../constants/constants";
+import {
+  YOUR_WORKOUTS,
+  LOADING_WORKOUTS,
+  ASC,
+  ASCENDING,
+  DESCENDING,
+  ARE_U_SURE2,
+  NEXT,
+  PREVIOUS,
+  BACK_TO_DASHBOARD,
+  CONFIRM_DELETE,
+  CANCEL,
+  DELETE,
+  NO_WORKOUTS
+} from "../../../constants/constants";
 
 const WorkoutViews: React.FC = () => {
-  const { workouts, loading, error,fetchWorkouts,trigger,setTrigger } = useWorkoutStore();
+  const { workouts, loading, error, fetchWorkouts, trigger, setTrigger } = useWorkoutStore();
   const [currentPage, setCurrentPage] = useState(1);
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
   const workoutsPerPage = 4;
@@ -17,11 +30,11 @@ const WorkoutViews: React.FC = () => {
   const [workoutId, setWorkoutId] = useState(null);
   const router = useRouter();
 
-  useEffect(()=>{
-    fetchWorkouts();
-  },[trigger])
+  const token: any = localStorage.getItem("accessToken");
 
-  
+  useEffect(() => {
+    fetchWorkouts(token);
+  }, [trigger]);
 
   const sortedWorkouts = [...workouts].sort((a, b) => {
     const dateA = new Date(a.workout_date).getTime();
@@ -48,7 +61,6 @@ const WorkoutViews: React.FC = () => {
     const token: any = localStorage.getItem("accessToken");
     if (workoutId) {
       await deleteWorkout(token, workoutId);
-      // showToast("Workout Deleted Successfully", "success");
       getUserWorkouts(token);
       setIsModalOpen(false);
       setTrigger(!trigger);
@@ -58,9 +70,9 @@ const WorkoutViews: React.FC = () => {
   const handleBack = () => router.push("/");
 
   return (
-    <div className="flex flex-col justify-center h-[500px] bg-gray-100 p-12 mt-36">
-      <div className="bg-white p-12 rounded-2xl shadow-2xl w-full max-w-full text-center">
-        <h2 className="text-4xl font-extrabold text-gray-800 mb-10">{YOUR_WORKOUTS}</h2>
+    <div className="flex flex-col justify-center h-auto bg-gray-100 p-6 mt-8">
+      <div className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-6xl mx-auto text-center">
+        <h2 className="text-4xl font-extrabold text-gray-800 mb-6">{YOUR_WORKOUTS}</h2>
 
         {loading && <p className="text-gray-500">{LOADING_WORKOUTS}</p>}
         {error && <p className="text-red-500">{error}</p>}
@@ -76,14 +88,14 @@ const WorkoutViews: React.FC = () => {
               </button>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-6 w-full">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full">
               {currentWorkouts.map((workout) => (
                 <WorkoutCard key={workout.workout_id} workout={workout} onDelete={handleDeleteClick} />
               ))}
             </div>
 
             {totalPages > 1 && (
-              <div className="flex flex-col justify-center items-center mt-12 space-y-4">
+              <div className="flex flex-col justify-center items-center mt-8 space-y-4">
                 <div className="flex justify-center items-center space-x-8">
                   <button
                     onClick={prevPage}
@@ -103,7 +115,7 @@ const WorkoutViews: React.FC = () => {
                     onClick={nextPage}
                     disabled={currentPage === totalPages}
                     className={`px-6 py-3 rounded-lg text-white font-medium transition ${
-                      currentPage === totalPages ? " bg-gray-400 cursor-not-allowed" : "bg-purple-600 hover:bg-gray-800 cursor-pointer"
+                      currentPage === totalPages ? "bg-gray-400 cursor-not-allowed" : "bg-purple-600 hover:bg-gray-800 cursor-pointer"
                     }`}
                   >
                     {NEXT}
@@ -112,7 +124,7 @@ const WorkoutViews: React.FC = () => {
 
                 <button
                   onClick={handleBack}
-                  className="cursor-pointer w-80 bg-gray-400 hover:bg-gray-500 text-white font-bold py-3 rounded-lg transition duration-200"
+                  className="cursor-pointer w-full max-w-xs bg-gray-400 hover:bg-gray-500 text-white font-bold py-3 rounded-lg transition duration-200"
                 >
                   {BACK_TO_DASHBOARD}
                 </button>
@@ -123,10 +135,10 @@ const WorkoutViews: React.FC = () => {
                       <h2 className="text-xl font-bold text-gray-800">{CONFIRM_DELETE}</h2>
                       <p className="text-gray-600 mt-2">{ARE_U_SURE2}</p>
                       <div className="flex justify-end mt-6 space-x-4">
-                        <button onClick={() => setIsModalOpen(false)} className="cursor:pointer bg-gray-300 px-5 py-2 rounded-lg">
+                        <button onClick={() => setIsModalOpen(false)} className="cursor-pointer bg-gray-300 px-5 py-2 rounded-lg">
                           {CANCEL}
                         </button>
-                        <button onClick={confirmDelete} className="cursor:pointer bg-purple-600 text-white px-5 py-2 rounded-lg hover:bg-gray-800">
+                        <button onClick={confirmDelete} className="cursor-pointer bg-purple-600 text-white px-5 py-2 rounded-lg hover:bg-gray-800">
                           {DELETE}
                         </button>
                       </div>

@@ -1,59 +1,84 @@
-"use client"
+"use client";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
-import  {useUserStore}  from "../app/store/useUserStore";
-// import { fetchSteak, fetchWorkoutDates } from "../services/WorkoutAPI";
+import React, { useEffect, useState, useRef } from "react";
+import { useUserStore } from "../app/store/useUserStore";
+import { fetchStreakMonth, fetchWorkoutDates } from "../services/WorkoutAPI";
 import { useWorkoutStore } from "@/app/store/useWorkoutStore";
 import { Workout } from "../app/types";
+import { useGoalStore } from "@/app/store/useGoalStore";
+import { FaBars, FaTimes, FaDumbbell, FaBullseye, FaCalendarAlt, FaFireAlt, FaUser } from "react-icons/fa";
+
+import {
+  NAVBAR_TITLE,
+  WORKOUTS,
+  FITNESS_GOALS_TITLE,
+  VIEW_WORKOUTS,
+  ADD_WORKOUT_TITLE,
+  VIEW_FITNESS_GOALS,
+  ADD_FITNESS_GOAL_TITLE,
+  LOGOUT_BUTTON,
+  LOGIN_BUTTON,
+  SIGNUP_BUTTON,
+} from "../constants/constants";
 
 const Navbar: React.FC = () => {
+  const [token, setToken] = useState<string>("");
+  const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
+  const [isWorkoutsOpen, setIsWorkoutsOpen] = useState<boolean>(false);
+  const [isGoalsOpen, setIsGoalsOpen] = useState<boolean>(false);
+  const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
+  const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
+
   const { user, setUser } = useUserStore();
   const { workouts } = useWorkoutStore();
   const router = useRouter();
 
   const [streak, setStreak] = useState<number>(0);
-  const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
   const [workoutDates, setWorkoutDates] = useState<Workout[]>([]);
 
-  // useEffect(() => {
-  //   if (user) {
-  //     const fetchStreak = async () => {
-  //       const currStreak: number | { streak: number } = await fetchSteak();
-  //       console.log("Fetched Streak:", currStreak);
-  //       setStreak(typeof currStreak === "object" ? currStreak.streak : currStreak);
-  //     };
+  const { setFormData } = useWorkoutStore();
+  const { setFormGoalData } = useGoalStore();
 
-  //     const fetchDates = async () => {
-  //       const today = new Date();
-  //       const year = today.getFullYear();
-  //       const month = today.getMonth() + 1;
+  const dropdownRef = useRef<HTMLDivElement>(null);
 
-  //       const allDates: Workout[] = await fetchWorkoutDates(year, month);
-  //       const filteredDates = allDates.filter(workout => {
-  //         const workoutMonth = new Date(workout.workout_date).getMonth() + 1;
-  //         return workoutMonth === month;
-  //       });
+  useEffect(() => {
+    const storedToken = localStorage.getItem("accessToken") || "";
+    setToken(storedToken);
+  }, []);
 
-  //       setWorkoutDates(filteredDates);
-  //     };
+  useEffect(() => {
+    if (user) {
+      const fetchStreak = async () => {
+        const currStreak: number | { streak: number } = await fetchStreakMonth(token);
+        console.log("Fetched Streak:", currStreak);
+        setStreak(typeof currStreak === "object" ? currStreak.streak : currStreak);
+      };
 
-  //     fetchStreak();
-  //     fetchDates();
-  //   }
-  // }, [user, workouts]);
+      const fetchDates = async () => {
+        const today = new Date();
+        const year = today.getFullYear();
+        const month = today.getMonth() + 1;
+
+        const allDates: Workout[] = await fetchWorkoutDates(token, year, month);
+        const filteredDates = allDates.filter((workout) => {
+          const workoutMonth = new Date(workout.workout_date).getMonth() + 1;
+          return workoutMonth === month;
+        });
+
+        setWorkoutDates(filteredDates);
+      };
+
+      fetchStreak();
+      fetchDates();
+    }
+  }, [user, workouts,token]);
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
-    setUser({ 
-      name: "",
-      email: "",
-      password: "",
-      phone: "",
-      address: "",
-      profile_pic: ""});
+    setUser(null);
     router.push("/login");
   };
 
@@ -66,116 +91,215 @@ const Navbar: React.FC = () => {
     return Array.from({ length: daysInMonth }, (_, i) => new Date(year, month, i + 1));
   };
 
+  const toggleMenu = () => {
+    setIsMenuOpen(!isMenuOpen);
+    setIsWorkoutsOpen(false);
+    setIsGoalsOpen(false);
+    setIsProfileOpen(false);
+    setIsCalendarOpen(false);
+  };
+
+  const toggleWorkouts = () => {
+    setIsWorkoutsOpen(!isWorkoutsOpen);
+    setIsGoalsOpen(false);
+    setIsProfileOpen(false);
+    setIsCalendarOpen(false);
+  };
+
+  const toggleGoals = () => {
+    setIsGoalsOpen(!isGoalsOpen);
+    setIsWorkoutsOpen(false);
+    setIsProfileOpen(false);
+    setIsCalendarOpen(false);
+  };
+
+  const toggleProfile = () => {
+    setIsProfileOpen(!isProfileOpen);
+    setIsWorkoutsOpen(false);
+    setIsGoalsOpen(false);
+    setIsCalendarOpen(false);
+  };
+
+  const toggleCalendar = () => {
+    setIsCalendarOpen(!isCalendarOpen);
+    setIsWorkoutsOpen(false);
+    setIsGoalsOpen(false);
+    setIsProfileOpen(false);
+  };
+
+  const handleAddWorkoutClick = () => {
+    setFormData(null);
+    setIsWorkoutsOpen(false); // Close the dropdown
+  };
+
+  const handleAddGoalClick = () => {
+    setFormGoalData(null);
+    setIsGoalsOpen(false); // Close the dropdown
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setIsWorkoutsOpen(false);
+        setIsGoalsOpen(false);
+        setIsProfileOpen(false);
+        setIsCalendarOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <nav className="bg-purple-600 p-4 mb-4">
+    <nav className="bg-purple-600 p-4 mb-4 relative z-50" ref={dropdownRef}>
       <div className="flex justify-between items-center">
         <div className="text-white text-2xl font-bold">
-          <Link href="/">NAVBAR</Link>
+          <Link href="/">{NAVBAR_TITLE}</Link>
         </div>
 
-        <div className="flex items-center space-x-4">
+        <div className="md:hidden">
+          <button onClick={toggleMenu} className="text-white focus:outline-none">
+            {isMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+          </button>
+        </div>
+
+        <div
+          className={`flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4 absolute md:static bg-purple-600 md:bg-transparent w-full md:w-auto left-0 md:pl-0 pl-4 transition-all duration-300 ease-in-out ${
+            isMenuOpen ? "top-16" : "top-[-490px]"
+          } z-50`}
+        >
           {user ? (
             <>
-              <div className="relative group">
-                <button className="text-white hover:bg-purple-500 px-4 py-2 rounded-lg">
-                <i className="fa-solid fa-dumbbell mr-2"></i>WORKOUTS
+              <div className="relative">
+                <button
+                  onClick={toggleWorkouts}
+                  className="text-white hover:bg-purple-500 px-4 py-2 rounded-lg flex items-center"
+                >
+                  <FaDumbbell className="mr-2" />
+                  {WORKOUTS}
                 </button>
-                <div className="absolute left-0 hidden bg-white text-black shadow-lg rounded-lg w-48 group-hover:block z-50">
-                  <Link href="/workout-lists" className="block px-4 py-2 hover:bg-gray-200">
-                    VIEW WORKOUT
-                  </Link>
-                  <Link href="/workout-form" className="block px-4 py-2 hover:bg-gray-200">
-                    ADD WORKOUT
-                  </Link>
-                </div>
+                {isWorkoutsOpen && (
+                  <div className="absolute left-0 bg-white text-black shadow-lg rounded-lg w-48 z-50">
+                    <Link href="/workout-lists" className="block px-4 py-2 hover:bg-gray-200" onClick={() => setIsWorkoutsOpen(false)}>
+                      {VIEW_WORKOUTS}
+                    </Link>
+                    <Link onClick={handleAddWorkoutClick} href="/workout-form" className="block px-4 py-2 hover:bg-gray-200">
+                      {ADD_WORKOUT_TITLE}
+                    </Link>
+                  </div>
+                )}
               </div>
 
-              <div className="relative group">
-                <button className="text-white hover:bg-purple-500 px-4 py-2 rounded-lg">
-                <i className="fa-solid fa-bullseye mr-2"></i>FITNESS GOALS
+              <div className="relative">
+                <button
+                  onClick={toggleGoals}
+                  className="text-white hover:bg-purple-500 px-4 py-2 rounded-lg flex items-center"
+                >
+                  <FaBullseye className="mr-2" />
+                  {FITNESS_GOALS_TITLE}
                 </button>
-                <div className="absolute left-0 hidden bg-white text-black shadow-lg rounded-lg w-48 group-hover:block z-50">
-                  <Link href="/fitnessViews" className="block px-4 py-2 hover:bg-gray-200">
-                    VIEW FITNESS GOLAS
-                  </Link>
-                  <Link href="/fitnessFormPage" className="block px-4 py-2 hover:bg-gray-200">
-                    ADD FITNESS GOALS
-                  </Link>
-                </div>
+                {isGoalsOpen && (
+                  <div className="absolute left-0 bg-white text-black shadow-lg rounded-lg w-48 z-50">
+                    <Link href="/goal-lists" className="block px-4 py-2 hover:bg-gray-200" onClick={() => setIsGoalsOpen(false)}>
+                      {VIEW_FITNESS_GOALS}
+                    </Link>
+                    <Link href="/goal-form" className="block px-4 py-2 hover:bg-gray-200" onClick={handleAddGoalClick}>
+                      {ADD_FITNESS_GOAL_TITLE}
+                    </Link>
+                  </div>
+                )}
               </div>
 
-              <div className="relative group">
-  <button className="text-white hover:bg-purple-500 px-4 py-2 rounded-lg flex items-center">
-    <i className="fa-solid fa-calendar-days mr-2"></i> Workout Calendar
-  </button>
+              <div className="relative">
+                <button
+                  onClick={toggleCalendar}
+                  className="text-white hover:bg-purple-500 px-4 py-2 rounded-lg flex items-center"
+                >
+                  <FaCalendarAlt className="mr-2" /> Workout Calendar
+                </button>
+                {isCalendarOpen && (
+                  <div
+                    className="fixed inset-0 bg-gray-900 bg-opacity-75 backdrop-filter backdrop-blur-sm flex items-center justify-center md:hidden z-50"
+                  >
+                    <div className="bg-white rounded-lg shadow-lg p-4 w-full max-w-md">
+                      <h2 className="text-xl font-bold text-center mb-4">Workouts This Month</h2>
+                      <div className="grid grid-cols-7 gap-2">
+                        {getCurrentMonthDays().map((day) => {
+                          const dateStr = day.toLocaleDateString("en-CA");
+                          const isWorkoutDay = workoutDates.some(
+                            (workout) => workout.workout_date === dateStr
+                          );
+                          const isFutureDate = day > new Date();
+                          const workoutCount = workoutDates.filter(
+                            (workout) => workout.workout_date === dateStr
+                          ).length;
 
-  <div
-    className="absolute top-full mt-5 bg-white rounded-lg shadow-lg p-4 w-96 z-10 hidden group-hover:block"
-    style={{ right: "-100px" }}
-  >
-    <h2 className="text-xl font-bold text-center mb-4">Workouts This Month</h2>
-    <div className="grid grid-cols-7 gap-2">
-      {getCurrentMonthDays().map((day) => {
-        const dateStr = day.toLocaleDateString("en-CA");
-        const isWorkoutDay = workoutDates.some(
-          (workout) => workout.workout_date === dateStr
-        );
-        const isFutureDate = day > new Date();
-        const workoutCount = workoutDates.filter(
-          (workout) => workout.workout_date === dateStr
-        ).length;
-
-        return (
-          <div
-            key={dateStr}
-            className={`w-10 h-10 flex items-center justify-center rounded-full
-              ${isFutureDate
-                ? "bg-gray-400 text-white"
-                : workoutCount > 1
-                  ? "bg-green-900 text-white"
-                  : isWorkoutDay
-                    ? "bg-green-600 text-white"
-                    : "bg-red-400 text-white"}`}
-          >
-            {day.getDate()}
-          </div>
-        );
-      })}
-    </div>
-  </div>
-</div>
-
+                          return (
+                            <div
+                              key={dateStr}
+                              className={`w-10 h-10 flex items-center justify-center rounded-full
+                                ${isFutureDate
+                                  ? "bg-gray-400 text-white"
+                                  : workoutCount > 1
+                                  ? "bg-green-900 text-white"
+                                  : isWorkoutDay
+                                  ? "bg-green-600 text-white"
+                                  : "bg-red-400 text-white"}`}
+                            >
+                              {day.getDate()}
+                            </div>
+                          );
+                        })}
+                      </div>
+                      <button
+                        onClick={() => setIsCalendarOpen(false)}
+                        className="mt-4 text-purple-600 hover:underline"
+                      >
+                        Close
+                      </button>
+                    </div>
+                  </div>
+                )}
+              </div>
 
               <div className="text-white px-4 py-2 rounded-lg flex items-center">
-              <i className="fa-solid fa-fire-flame-curved mr-2"></i>
-              Streak: {streak} days
+                <FaFireAlt className="mr-2" />
+                Streak: {streak} days
               </div>
 
-              <div className="relative group">
-                <button className="text-white hover:bg-purple-500 px-4 py-2 rounded-lg flex items-center">
-                  <i className="fa-solid fa-user mr-2"></i>
+              <div className="relative">
+                <button
+                  onClick={toggleProfile}
+                  className="text-white hover:bg-purple-500 px-4 py-2 rounded-lg flex items-center"
+                >
+                  <FaUser className="mr-2" />
                   {user && user.name ? user.name : "Profile"}
                 </button>
-                <div className="absolute right-1 hidden bg-white text-black shadow-lg rounded-lg min-w-32 group-hover:block">
-                  <Link href="/profile" className="block px-4 py-2 hover:bg-gray-200">
-                    View Profile
-                  </Link>
-                  <button
-                    onClick={handleLogout}
-                    className="block w-full text-left px-4 py-2 hover:bg-gray-200"
-                  >
-                    LOGOUT
-                  </button>
-                </div>
+                {isProfileOpen && (
+                  <div className="absolute top-full left-0 mt-2 bg-white text-black shadow-lg rounded-lg min-w-32 z-50">
+                    <Link href="/profile" className="block px-4 py-2 hover:bg-gray-200" onClick={() => setIsProfileOpen(false)}>
+                      View Profile
+                    </Link>
+                    <button
+                      onClick={handleLogout}
+                      className="block w-full text-left px-4 py-2 hover:bg-gray-200"
+                    >
+                      {LOGOUT_BUTTON}
+                    </button>
+                  </div>
+                )}
               </div>
             </>
           ) : (
             <>
               <Link href="/login" className="text-white hover:bg-purple-500 px-4 py-2 rounded-lg">
-                LOGIN
+                {LOGIN_BUTTON}
               </Link>
               <Link href="/signup" className="text-white hover:bg-purple-500 px-4 py-2 rounded-lg">
-                SIGNUP
+                {SIGNUP_BUTTON}
               </Link>
             </>
           )}

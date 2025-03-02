@@ -5,8 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 
 const quotes = [
   "The only bad workout is the one that didn’t happen.",
-  "Push yourself, because no one else is going to do it for you.",
-  "Fitness is not about being better than someone else… it's about being better than you used to be.",
+  "Push yourself, no one else will.",
+  "Fitness is about being better than you used to be.",
   "Success starts with self-discipline.",
   "Sweat is just fat crying.",
   "The body achieves what the mind believes.",
@@ -14,16 +14,16 @@ const quotes = [
   "Your only limit is you.",
   "Train insane or remain the same.",
   "It never gets easier, you just get stronger.",
-  "Strong is not just about muscles; it’s about mindset.",
+  "Strength is about mindset, not just muscles.",
   "Every workout counts, even the tough ones.",
   "Small progress is still progress.",
   "Wake up. Work out. Look hot. Kick ass.",
-  "When you feel like quitting, remember why you started.",
+  "Remember why you started when you feel like quitting.",
   "A one-hour workout is 4% of your day. No excuses.",
   "Work hard in silence, let success make the noise.",
   "Strive for progress, not perfection.",
-  "The pain you feel today will be the strength you feel tomorrow.",
-  "It’s a slow process, but quitting won’t speed it up.",
+  "Today's pain is tomorrow's strength.",
+  "Quitting won’t speed up the process.",
 ];
 
 const AnimatedQuotes: React.FC = () => {
@@ -32,7 +32,7 @@ const AnimatedQuotes: React.FC = () => {
   useEffect(() => {
     const intervalId = setInterval(() => {
       setCurrentQuoteIndex((prevIndex) =>
-        prevIndex === quotes.length - 1 ? 0 : prevIndex + 1,
+        prevIndex === quotes.length - 1 ? 0 : prevIndex + 1
       );
     }, 3000); // Switch every 3 seconds
 
@@ -40,7 +40,7 @@ const AnimatedQuotes: React.FC = () => {
   }, []);
 
   return (
-    <div className="text-center px-6 py-4 bg-white rounded-3xl border-2 border-purple-500 shadow-lg backdrop-blur-md transition-transform transform hover:scale-105 w-[800px]">
+    <div className="text-center px-4 py-4 bg-white rounded-3xl border-2 border-purple-500 shadow-lg backdrop-blur-md transition-transform transform hover:scale-105 w-[90%] max-w-[600px] mx-auto">
       <AnimatePresence mode="wait">
         <motion.p
           key={currentQuoteIndex}

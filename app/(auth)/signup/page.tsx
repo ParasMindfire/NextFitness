@@ -6,6 +6,7 @@ import { signupUser } from "../../../services/UserAPI";
 import { useUserStore } from "../../store/useUserStore";
 import { useState } from "react";
 import { SignupFormData } from "@/app/types";
+import { showToast } from "@/utils/Toast";
 // import { showToast } from '../../helpers/ToastHelper';
 // import { SIGNUP, BACK_TO_LANDING } from '../../constants';
 
@@ -36,8 +37,10 @@ const Signup = () => {
     if (result.message == "User Registered Successfully") {
       setUser(result.user);
       router.push("/");
+      showToast("Signup Successful","success");
     } else {
       setError(result.message);
+      showToast("Signup Failed","error");
     }
 
     setLoading(false);

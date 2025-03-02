@@ -48,35 +48,28 @@ export const deleteWorkout = async (token: string, workout_id: number) => {
   return response.json();
 };
 
-// export const fetchStreak = async (token: string) => {
-//   const response = await fetch(`${process.env.API_BASE_URL}/streaks`, {
-//     headers: { Authorization: `Bearer ${token}` },
-//     cache: "no-store",
-//   });
-//   if (!response.ok) throw new Error("Failed to fetch streak");
-//   return response.json();
-// };
+export const fetchStreakMonth = async (token: string) => {
+  const response = await fetch(`${process.env.API_BASE_URL}/api/streaks`, {
+    headers: { Authorization: `Bearer ${token}` },
+    cache: "no-store",
+  });
+  if (!response.ok) throw new Error("Failed to fetch streak");
+  return response.json();
+};
 
-// export const fetchWorkoutDates = async (token: string, year: any, month: any) => {
-//   const response = await fetch(`${process.env.API_BASE_URL}/days?year=${year}&month=${month}`, {
-//     headers: { Authorization: `Bearer ${token}` },
-//     cache: "no-store",
-//   });
-//   if (!response.ok) throw new Error("Failed to fetch workout dates");
-//   return response.json();
-// };
+export const fetchWorkoutDates = async (token: string, year: any, month: any) => {
+  const url = new URL(`${process.env.API_BASE_URL}/api/days`);
+  url.searchParams.append("year", year);
+  url.searchParams.append("month", month);
 
-// export const uploadUserPhoto = async (token: string, file: File, email: string) => {
-//   const formData = new FormData();
-//   formData.append("photo", file);
-//   formData.append("email", email);
+  const response = await fetch(url.toString(), {
+    method: "GET",
+    headers: { Authorization: `Bearer ${token}` },
+    cache: "no-store",
+  });
 
-//   const response = await fetch(`${process.env.API_BASE_URL}/users/photo`, {
-//     method: "POST",
-//     headers: { Authorization: `Bearer ${token}` },
-//     body: formData,
-//   });
+  if (!response.ok) throw new Error("Failed to fetch workout dates");
+  return response.json();
+};
 
-//   if (!response.ok) throw new Error("Photo upload failed");
-//   return response.json();
-// };
+

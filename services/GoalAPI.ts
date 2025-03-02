@@ -1,80 +1,53 @@
-"use client"
+"use server"
 
-import axiosInstance from "./AuthInterceptior";
-
-// Fetches all fitness goals for the logged-in user
-export const getAllFitnessGoals = async () => {
-  try {
-    const token = localStorage.getItem("accessToken");
-    if (!token) throw new Error("No access token found");
-
-    const response = await axiosInstance.get(`${process.env.API_BASE_URL}/api/goals/fitness`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching fitness goals:", error);
-    throw error;
-  }
+export const getAllFitnessGoals = async (token: string) => {
+  console.log("Fetching all fitness goals with token", token);
+  const response = await fetch(`${process.env.API_BASE_URL}/api/goals/fitness`, {
+    headers: { Authorization: `Bearer ${token}` },
+    cache: "no-store",
+  });
+  const data = await response.json();
+  if (!response.ok) throw new Error("Failed to fetch fitness goals");
+  return data;
 };
 
-// Creates a new fitness goal for the user
-export const createFitnessGoal = async (goal: any) => {
-  try {
-    const token = localStorage.getItem("accessToken");
-    if (!token) throw new Error("No access token found");
-
-    await axiosInstance.post(`${process.env.API_BASE_URL}/api/goals/fitness`, goal, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-  } catch (error) {
-    console.error("Error creating fitness goal:", error);
-    throw error;
-  }
+export const createFitnessGoal = async (token: string, goal: any) => {
+  const response = await fetch(`${process.env.API_BASE_URL}/api/goals/fitness`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+    body: JSON.stringify(goal),
+  });
+  if (!response.ok) throw new Error("Failed to create fitness goal");
+  return response.json();
 };
 
-// Updates an existing fitness goal
-export const updateFitnessGoal = async (id: any,goal:any) => {
-  try {
-    const token = localStorage.getItem("accessToken");
-    if (!token) throw new Error("No access token found");
-
-    await axiosInstance.patch(`${process.env.API_BASE_URL}/api/goals/${id}`, goal, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-  } catch (error) {
-    console.error("Error updating fitness goal:", error);
-    throw error;
-  }
+export const updateFitnessGoal = async (token: string, id: number | null, goal: any) => {
+  const response = await fetch(`${process.env.API_BASE_URL}/api/goals/${id}`, {
+    method: "PATCH",
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+    body: JSON.stringify(goal),
+  });
+  if (!response.ok) throw new Error("Failed to update fitness goal");
+  return response.json();
 };
 
-// Deletes a fitness goal by its ID
-export const deleteFitnessGoal = async (id: number) => {
-  try {
-    const token = localStorage.getItem("accessToken");
-    if (!token) throw new Error("No access token found");
-
-    await axiosInstance.delete(`${process.env.API_BASE_URL}/api/goals/${id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-  } catch (error) {
-    console.error("Error deleting fitness goal:", error);
-    throw error;
-  }
+export const deleteFitnessGoal = async (token: string, id: number) => {
+  const response = await fetch(`${process.env.API_BASE_URL}/api/goals/${id}`, {
+    method: "DELETE",
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+    body: JSON.stringify({ id }),
+  });
+  if (!response.ok) throw new Error("Failed to delete fitness goal");
+  return response.json();
 };
 
-// Fetches a single fitness goal by its ID
-export const getSingleFitnessGoal = async (id: number) => {
-  try {
-    const token = localStorage.getItem("accessToken");
-    if (!token) throw new Error("No access token found");
-
-    const response = await axiosInstance.get(`${process.env.API_BASE_URL}/goals/${id}`, {
-      headers: { Authorization: `Bearer ${token}` },
-    });
-    return response.data;
-  } catch (error) {
-    console.error("Error fetching single fitness goal:", error);
-    throw error;
-  }
+export const getSingleFitnessGoal = async (token: string, id: number) => {
+  console.log("Fetching single fitness goal with token", token);
+  const response = await fetch(`${process.env.API_BASE_URL}/api/goals/${id}`, {
+    headers: { Authorization: `Bearer ${token}` },
+    cache: "no-store",
+  });
+  const data = await response.json();
+  if (!response.ok) throw new Error("Failed to fetch single fitness goal");
+  return data;
 };

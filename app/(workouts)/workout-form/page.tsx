@@ -6,6 +6,7 @@ import { useWorkoutStore } from "../../store/useWorkoutStore"
 import { createWorkout, updateWorkout,getUserWorkouts} from "../../../services/WorkoutAPI";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { showToast } from "@/utils/Toast";
 
 interface WorkoutFormData {
   exercise_type: string;
@@ -47,11 +48,11 @@ const WorkoutFormPage = () => {
   const onSubmit = async (data: WorkoutFormData) => {
     // Validate numeric fields are greater than 0
     if (data.duration <= 0) {
-      // showToast("Duration must be greater than 0", "error");
+      showToast("Duration must be greater than 0", "error");
       return;
     }
     if (data.calories_burned <= 0) {
-      // showToast("Calories burned must be greater than 0", "error");
+      showToast("Calories burned must be greater than 0", "error");
       return;
     }
 
@@ -64,26 +65,29 @@ const WorkoutFormPage = () => {
           ...data,
           workout_id: id,
         });
-        // showToast("Workout Updated Successfully", "success");
+        showToast("Workout Updated Successfully", "success");
       } else {
         await createWorkout(token, data);
-        // showToast("Workout Added Successfully", "success");
+        showToast("Workout Added Successfully", "success");
       }
-        setFormData(null);
-        reset({
-          exercise_type: "",
-          duration: undefined,
-          calories_burned: undefined,
-          workout_date: "",
-        });
-        router.push("/workout-lists");
-        getUserWorkouts(token);
+
+      setFormData(null);
+      reset({
+        exercise_type: "",
+        duration: undefined,
+        calories_burned: undefined,
+        workout_date: "",
+      });
+      router.push("/workout-lists");
+      getUserWorkouts(token);
+      
     } catch (error) {
-      //   showToast("An error occurred. Please try again!", "error");
+        showToast("An error occurred. Please try again!", "error");
     }
   };
 
   const handleBack = () => {
+    setFormData(null);
     router.push("/");
   };
 
