@@ -38,7 +38,7 @@ export const WorkoutDurationStats = () => {
   return (
     <div className="mt-6">
       <h2 className="text-2xl font-bold text-center md:text-3xl">{WORKOUT_PROGRESS}</h2>
-      <p className="text-gray-600 text-center">{TRACK_WORKOUT_DURATION}</p>
+      <p className="text-secondary text-center">{TRACK_WORKOUT_DURATION}</p>
 
       {(() => {
         const today = dayjs().format("YYYY-MM-DD");
@@ -49,8 +49,8 @@ export const WorkoutDurationStats = () => {
         return (
           <>
             <div className="mt-8">
-              <h3 className="text-lg font-semibold text-center text-blue-600 md:text-xl">{WEEKLY_PROGRESS}</h3>
-              <p className="text-sm text-center text-gray-500">
+              <h3 className="text-lg font-semibold text-center text-tertiary md:text-xl">{WEEKLY_PROGRESS}</h3>
+              <p className="text-sm text-center text-secondary">
                 Data from <strong>{lastWeek}</strong> to <strong>{today}</strong>
               </p>
               <ResponsiveContainer width="100%" height={300}>
@@ -66,8 +66,8 @@ export const WorkoutDurationStats = () => {
             </div>
 
             <div className="mt-8">
-              <h3 className="text-lg font-semibold text-center text-green-600 md:text-xl">{MONTHLY_PROGRESS}</h3>
-              <p className="text-sm text-center text-gray-500">
+              <h3 className="text-lg font-semibold text-center text-tertiary md:text-xl">{MONTHLY_PROGRESS}</h3>
+              <p className="text-sm text-center text-secondary">
                 Data from <strong>{lastMonth}</strong> to <strong>{today}</strong>
               </p>
               <ResponsiveContainer width="100%" height={300}>
@@ -83,8 +83,8 @@ export const WorkoutDurationStats = () => {
             </div>
 
             <div className="mt-8">
-              <h3 className="text-lg font-semibold text-center text-yellow-600 md:text-xl">{YEARLY_PROGRESS}</h3>
-              <p className="text-sm text-center text-gray-500">
+              <h3 className="text-lg font-semibold text-center text-primary md:text-xl">{YEARLY_PROGRESS}</h3>
+              <p className="text-sm text-center text-secondary">
                 Data from <strong>{lastYear}</strong> to <strong>{today}</strong>
               </p>
               <ResponsiveContainer width="100%" height={300}>

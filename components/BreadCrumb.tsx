@@ -24,8 +24,8 @@ const Breadcrumbs: React.FC = () => {
   };
 
   return (
-    <nav className="flex items-center space-x-1 text-sm text-gray-600 mb-2 ml-5">
-      <Link href="/" className="hover:text-purple-600 font-medium">
+    <nav className="flex items-center space-x-1 text-sm text-secondary mb-2 ml-5">
+      <Link href="/" className="hover:text-primary font-medium">
         Home
       </Link>
       {pathnames.map((value, index) => {
@@ -34,13 +34,13 @@ const Breadcrumbs: React.FC = () => {
 
         return (
           <span key={routeTo} className="flex items-center">
-            <ChevronRight className="w-3 h-3 mx-1 text-gray-500" />
+            <ChevronRight className="w-3 h-3 mx-1 text-tertiary" />
             {isLast ? (
-              <span className="text-purple-600 font-semibold">
+              <span className="text-primary font-semibold">
                 {breadcrumbNameMap[value] || value}
               </span>
             ) : (
-              <Link href={routeTo} className="hover:text-purple-600">
+              <Link href={routeTo} className="hover:text-hover">
                 {breadcrumbNameMap[value] || value}
               </Link>
             )}

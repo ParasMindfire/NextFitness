@@ -40,7 +40,7 @@ const AnimatedQuotes: React.FC = () => {
   }, []);
 
   return (
-    <div className="text-center px-4 py-4 bg-white rounded-3xl border-2 border-purple-500 shadow-lg backdrop-blur-md transition-transform transform hover:scale-105 w-[90%] max-w-[600px] mx-auto">
+    <div className="text-center px-4 py-4 bg-white rounded-3xl border-2 border-primary shadow-lg backdrop-blur-md transition-transform transform hover:scale-105 w-[90%] max-w-[600px] mx-auto">
       <AnimatePresence mode="wait">
         <motion.p
           key={currentQuoteIndex}
@@ -48,7 +48,7 @@ const AnimatedQuotes: React.FC = () => {
           animate={{ x: 0, opacity: 1 }}
           exit={{ x: -100, opacity: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-xl font-bold text-purple-800"
+          className="text-xl font-bold text-primary"
         >
           {quotes[currentQuoteIndex]}
         </motion.p>

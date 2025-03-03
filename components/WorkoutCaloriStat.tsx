@@ -38,7 +38,7 @@ export const WorkoutCaloriesStats = () => {
   return (
     <div className="mt-6">
       <h2 className="text-2xl font-bold text-center md:text-3xl">{CALORIES_BURNED_PROGRESS}</h2>
-      <p className="text-gray-600 text-center">{CALORIE_STATS_DESCRIPTION}</p>
+      <p className="text-secondary text-center">{CALORIE_STATS_DESCRIPTION}</p>
 
       {(() => {
         const today = dayjs().format("YYYY-MM-DD");
@@ -49,8 +49,8 @@ export const WorkoutCaloriesStats = () => {
         return (
           <>
             <div className="mt-8">
-              <h3 className="text-lg font-semibold text-center text-red-600 md:text-xl">{WEEKLY_CALORIES_BURNED}</h3>
-              <p className="text-sm text-center text-gray-500">
+              <h3 className="text-lg font-semibold text-center text-error md:text-xl">{WEEKLY_CALORIES_BURNED}</h3>
+              <p className="text-sm text-center text-secondary">
                 Data from <strong>{lastWeek}</strong> to <strong>{today}</strong>
               </p>
               <ResponsiveContainer width="100%" height={300}>
@@ -66,8 +66,8 @@ export const WorkoutCaloriesStats = () => {
             </div>
 
             <div className="mt-8">
-              <h3 className="text-lg font-semibold text-center text-purple-600 md:text-xl">{MONTHLY_CALORIES_BURNED}</h3>
-              <p className="text-sm text-center text-gray-500">
+              <h3 className="text-lg font-semibold text-center text-primary md:text-xl">{MONTHLY_CALORIES_BURNED}</h3>
+              <p className="text-sm text-center text-secondary">
                 Data from <strong>{lastMonth}</strong> to <strong>{today}</strong>
               </p>
               <ResponsiveContainer width="100%" height={300}>
@@ -83,8 +83,8 @@ export const WorkoutCaloriesStats = () => {
             </div>
 
             <div className="mt-8">
-              <h3 className="text-lg font-semibold text-center text-orange-600 md:text-xl">{YEARLY_CALORIES_BURNED}</h3>
-              <p className="text-sm text-center text-gray-500">
+              <h3 className="text-lg font-semibold text-center text-tertiary md:text-xl">{YEARLY_CALORIES_BURNED}</h3>
+              <p className="text-sm text-center text-secondary">
                 Data from <strong>{lastYear}</strong> to <strong>{today}</strong>
               </p>
               <ResponsiveContainer width="100%" height={300}>

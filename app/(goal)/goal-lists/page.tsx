@@ -63,12 +63,12 @@ const FitnessViews = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center h-auto bg-gray-100 p-6 mt-8">
+    <div className="flex flex-col justify-center items-center h-auto bg-tertiary p-6 mt-8">
       <div className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-6xl mx-auto text-center">
-        <h2 className="text-4xl font-extrabold text-gray-800 mb-6">{FITNESS_GOALS}</h2>
+        <h2 className="text-4xl font-extrabold text-secondary mb-6">{FITNESS_GOALS}</h2>
 
-        {loading && <p className="text-gray-500">{LOAD_FITNESS}</p>}
-        {error && <p className="text-red-500">{error}</p>}
+        {loading && <p className="text-secondary">{LOAD_FITNESS}</p>}
+        {error && <p className="text-error">{error}</p>}
 
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-items-center">
           {currentGoals.length > 0 ? (
@@ -76,7 +76,7 @@ const FitnessViews = () => {
               <FitnessCard key={goal.goal_id} goal={goal} onDelete={handleDeleteClick} />
             ))
           ) : (
-            <p className="text-gray-500">{NO_FITNESS}</p>
+            <p className="text-secondary">{NO_FITNESS}</p>
           )}
         </div>
 
@@ -88,7 +88,7 @@ const FitnessViews = () => {
               className={`px-4 py-2 rounded-lg text-white font-medium ${
                 currentPage === 1
                   ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-purple-600 hover:bg-gray-800 cursor-pointer"
+                  : "bg-primary hover:bg-hover cursor-pointer"
               }`}
             >
               {PREVIOUS}
@@ -99,7 +99,7 @@ const FitnessViews = () => {
               className={`px-4 py-2 rounded-lg text-white font-medium ${
                 indexOfLastGoal >= fitnessGoals.length
                   ? "bg-gray-400 cursor-not-allowed"
-                  : "bg-purple-600 hover:bg-gray-800 cursor-pointer"
+                  : "bg-primary hover:bg-hover cursor-pointer"
               }`}
             >
               {NEXT}
@@ -108,7 +108,7 @@ const FitnessViews = () => {
 
           <button
             onClick={handleBack}
-            className="cursor-pointer w-full max-w-xs bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 rounded-md transition duration-200 mt-4"
+            className="cursor-pointer w-full max-w-xs bg-primary hover:bg-hover text-secondary font-bold py-2 rounded-md transition duration-200 mt-4"
           >
             {BACK_TO_DASHBOARD}
           </button>
@@ -123,13 +123,13 @@ const FitnessViews = () => {
             <div className="flex justify-end mt-4">
               <button
                 onClick={() => setIsModalOpen(false)}
-                className="cursor-pointer bg-gray-300 px-4 py-2 rounded-lg mr-2"
+                className="cursor-pointer bg-primary px-4 py-2 rounded-lg mr-2"
               >
                 {CANCEL}
               </button>
               <button
                 onClick={confirmDelete}
-                className="cursor-pointer bg-purple-600 hover:bg-gray-800 text-white px-4 py-2 rounded-lg"
+                className="cursor-pointer bg-secondary hover:bg-hover text-white px-4 py-2 rounded-lg"
               >
                 {DELETE}
               </button>

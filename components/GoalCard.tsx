@@ -29,12 +29,12 @@ const FitnessCard = ({ goal, onDelete }: FitnessCardProps) => {
   };
 
   return (
-    <div className="bg-gradient-to-b from-purple-500 to-purple-700 rounded-2xl shadow-xl p-8 w-full text-white transition-transform transform hover:scale-105 hover:shadow-2xl">
+    <div className="bg-primary rounded-2xl shadow-xl p-8 w-full text-white transition-transform transform hover:scale-105 hover:shadow-2xl">
       <h2 className="text-2xl font-bold uppercase text-center mb-4">
         {goal.goal_type.replace("_", " ")}
       </h2>
 
-      <div className="space-y-3 text-gray-200 text-sm">
+      <div className="space-y-3 text-tertiary text-sm">
         <p>
           <span className="font-semibold text-white">{TARGET}</span> {goal.target_value}
         </p>
@@ -63,15 +63,15 @@ const FitnessCard = ({ goal, onDelete }: FitnessCardProps) => {
 
       <div className="mt-4">
         <div className="flex mb-2 items-center justify-between">
-          <span className="text-sm font-semibold inline-block py-1 px-2 uppercase rounded-full text-purple-900 bg-purple-200">
+          <span className="text-sm font-semibold inline-block py-1 px-2 uppercase rounded-full text-secondary bg-tertiary">
             {Math.round(percentage)}{PERCENT_ACHIEVED}
           </span>
         </div>
         <div className="relative pt-1">
           <div className="flex">
-            <div className="w-full bg-gray-200 rounded-full h-2.5">
+            <div className="w-full bg-tertiary rounded-full h-2.5">
               <div
-                className="bg-purple-900 h-2.5 rounded-full"
+                className="bg-secondary h-2.5 rounded-full"
                 style={{ width: `${percentage}%` }}
               ></div>
             </div>
@@ -82,13 +82,13 @@ const FitnessCard = ({ goal, onDelete }: FitnessCardProps) => {
       <div className="flex justify-between mt-4">
         <button
           onClick={() => handleEdit(goal.goal_id)}
-          className="cursor-pointer bg-indigo-500 text-white text-sm font-medium px-5 py-2 rounded-lg transition-all hover:bg-indigo-600"
+          className="cursor-pointer bg-primary text-white text-sm font-medium px-5 py-2 rounded-lg transition-all hover:bg-hover"
         >
           {EDIT}
         </button>
         <button
           onClick={() => onDelete(goal.goal_id)}
-          className="cursor-pointer bg-pink-600 text-white text-sm font-medium px-5 py-2 rounded-lg transition-all hover:bg-pink-700"
+          className="cursor-pointer bg-secondary text-white text-sm font-medium px-5 py-2 rounded-lg transition-all hover:bg-hover"
         >
           {DELETE}
         </button>

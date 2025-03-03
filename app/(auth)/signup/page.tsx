@@ -47,9 +47,9 @@ const Signup = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-screen bg-gray-100">
+    <div className="flex justify-center items-center h-screen bg-tertiary">
       <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
-        <h2 className="text-2xl font-bold text-purple-700 text-center mb-4">
+        <h2 className="text-2xl font-bold text-primary text-center mb-4">
           Create an Account
         </h2>
 
@@ -58,40 +58,40 @@ const Signup = () => {
             type="text"
             placeholder="Full Name"
             {...register("name", { required: "Name is required" })}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
           />
           {errors.name && (
-            <p className="text-red-500 text-sm">{errors.name.message}</p>
+            <p className="text-error text-sm">{errors.name.message}</p>
           )}
 
           <input
             type="email"
             placeholder="Email"
             {...register("email", { required: "Email is required" })}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
           />
           {errors.email && (
-            <p className="text-red-500 text-sm">{errors.email.message}</p>
+            <p className="text-error text-sm">{errors.email.message}</p>
           )}
 
           <input
             type="password"
             placeholder="Password"
             {...register("password", { required: "Password is required" })}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
           />
           {errors.password && (
-            <p className="text-red-500 text-sm">{errors.password.message}</p>
+            <p className="text-error text-sm">{errors.password.message}</p>
           )}
 
           <input
             type="text"
             placeholder="Phone Number"
             {...register("phone", { required: "Phone number is required" })}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
           />
           {errors.phone && (
-            <p className="text-red-500 text-sm">{errors.phone.message}</p>
+            <p className="text-error text-sm">{errors.phone.message}</p>
           )}
 
           <input
@@ -101,14 +101,14 @@ const Signup = () => {
             className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
           />
           {errors.address && (
-            <p className="text-red-500 text-sm">{errors.address.message}</p>
+            <p className="text-error text-sm">{errors.address.message}</p>
           )}
 
-          {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+          {error && <p className="text-error text-sm text-center">{error}</p>}
 
           <button
             type="submit"
-            className="cursor-pointer w-full bg-purple-600 hover:bg-gray-800 text-white font-bold py-2 rounded-lg transition duration-200"
+            className="cursor-pointer w-full bg-primary hover:bg-secondary text-white font-bold py-2 rounded-lg transition duration-200"
           >
             SIGNUP
           </button>
@@ -116,7 +116,7 @@ const Signup = () => {
 
         <button
           onClick={() => router.push("/")}
-          className="cursor-pointer w-full mt-4 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 rounded-lg transition duration-200"
+          className="cursor-pointer w-full mt-4 bg-gray-tertiary hover:bg-hover text-secondary font-bold py-2 rounded-lg transition duration-200"
         >
           BACK TO LANDING
         </button>

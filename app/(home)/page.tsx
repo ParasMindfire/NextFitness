@@ -33,9 +33,9 @@ const Landing: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-gray-100 text-gray-800">
+    <div className="min-h-screen flex flex-col bg-tertiary text-gray-800">
       {/* Upper Section: Animated Quotes */}
-      <div className="h-32 bg-gradient-to-r bg-purple-600 flex items-center justify-center shadow-md">
+      <div className="h-32 bg-gradient-to-r bg-primary flex items-center justify-center shadow-md">
         <AnimatedQuotes />
       </div>
 
@@ -45,7 +45,7 @@ const Landing: React.FC = () => {
           <div className="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-6">
             {/* Left Column: User Goals */}
             <div className="w-full md:w-1/2 bg-white p-6 rounded-xl shadow-lg">
-              <h2 className="text-2xl font-bold text-purple-600 mb-4">
+              <h2 className="text-2xl font-bold text-primary mb-4">
                 Goals Added World Wide
               </h2>
               <UserGoals />
@@ -53,19 +53,19 @@ const Landing: React.FC = () => {
 
             {/* Right Column: AI Chatbot */}
             <div className="w-full md:w-1/2 bg-white p-6 rounded-xl shadow-lg flex flex-col">
-              <h2 className="text-2xl font-bold text-purple-600 mb-4">
+              <h2 className="text-2xl font-bold text-primary mb-4">
                 Chat with AI
               </h2>
 
               {/* Chat Window */}
-              <div className="flex-1 overflow-y-auto border border-gray-300 rounded-lg p-4 space-y-3 h-64 bg-gray-50">
+              <div className="flex-1 overflow-y-auto border border-secondary rounded-lg p-4 space-y-3 h-64 bg-tertiary">
                 {messages.map((msg, index) => (
                   <div
                     key={index}
                     className={`p-2 rounded-lg max-w-[75%] ${
                       msg.sender === "You"
-                        ? "bg-purple-600 text-white self-end"
-                        : "bg-gray-200 text-gray-800 self-start"
+                        ? "bg-primary text-white self-end"
+                        : "bg-tertiary text-secondary self-start"
                     }`}
                   >
                     <strong>{msg.sender}:</strong> {msg.text}
@@ -85,7 +85,7 @@ const Landing: React.FC = () => {
                 />
                 <button
                   onClick={handleSendMessage}
-                  className="bg-purple-600 text-white px-4 py-2 rounded-r-lg hover:bg-purple-700"
+                  className="bg-primary text-white px-4 py-2 rounded-r-lg hover:bg-hover"
                 >
                   Send
                 </button>
@@ -93,19 +93,19 @@ const Landing: React.FC = () => {
             </div>
           </div>
         ) : (
-          <div className="min-h-[500px] flex items-center justify-center bg-gray-100">
+          <div className="min-h-[500px] flex items-center justify-center bg-tertiary">
             <div className="bg-white p-8 rounded-xl shadow-lg text-center">
-              <h2 className="text-3xl font-bold text-gray-800">NAVBAR TITLE</h2>
-              <p className="text-gray-600 mt-2">PERSONAL TRACKER</p>
+              <h2 className="text-3xl font-bold text-secondary">NAVBAR TITLE</h2>
+              <p className="text-secondary mt-2">PERSONAL TRACKER</p>
               <div className="mt-6 space-y-4">
                 <Link href="/signup">
-                  <button className="bg-purple-600 cursor-pointer hover:bg-gray-800 text-white px-6 py-3 rounded-lg transition-colors">
+                  <button className="bg-primary cursor-pointer hover:bg-hover text-white px-6 py-3 rounded-lg transition-colors">
                     SIGNUP
                   </button>
                 </Link>
-                <p className="text-gray-500">ALREADY A USER</p>
+                <p className="text-tertiary">ALREADY A USER</p>
                 <Link href="/login">
-                  <button className="bg-purple-700 cursor-pointer hover:bg-gray-800 text-white px-6 py-3 rounded-lg transition-colors">
+                  <button className="bg-primary cursor-pointer hover:bg-hover text-white px-6 py-3 rounded-lg transition-colors">
                     LOGIN
                   </button>
                 </Link>

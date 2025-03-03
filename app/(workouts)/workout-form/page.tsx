@@ -95,22 +95,22 @@ const WorkoutFormPage = () => {
     <div className="mt-32">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="max-w-md mx-auto p-6 bg-white shadow-lg rounded-lg border border-gray-200 space-y-3"
+        className="max-w-md mx-auto p-6 bg-white shadow-lg rounded-lg border border-tertiary space-y-3"
       >
-        <h2 className="text-xl font-semibold text-purple-700 text-center mb-4">
+        <h2 className="text-xl font-semibold text-primary text-center mb-4">
           {formData ? "EDIT WORKOUT" : "ADD WORKOUT"}
         </h2>
 
         {/* Exercise Type Dropdown */}
         <div>
-          <label className="block text-gray-700 font-medium mb-1">
+          <label className="block text-secondary font-medium mb-1">
             {/* {EXERCISE_TYPE} */}
             EXCERCISE TYPE
           </label>
           <select
             id="exercise_type"
             {...register("exercise_type", { required: "Exercise type is required" })}
-            className="w-full p-3 border rounded-md focus:ring-2 focus:ring-purple-300 focus:outline-none"
+            className="w-full p-3 border rounded-md focus:ring-2 focus:ring-primary focus:outline-none"
           >
             <option value="">Select exercise type</option>
             <option value="chest">Chest</option>
@@ -122,13 +122,13 @@ const WorkoutFormPage = () => {
             <option value="abs">Abs</option>
           </select>
           {errors.exercise_type && (
-            <p className="text-red-500 text-sm">{errors.exercise_type.message}</p>
+            <p className="text-error text-sm">{errors.exercise_type.message}</p>
           )}
         </div>
 
         {/* Duration Input */}
         <div>
-          <label className="block text-gray-700 font-medium mb-1">
+          <label className="block text-secondary font-medium mb-1">
             {/* {DURATION} */}
             DURATION
           </label>
@@ -139,16 +139,16 @@ const WorkoutFormPage = () => {
               min: { value: 1, message: "Duration must be greater than 0" },
             })}
             placeholder="0"
-            className="w-full p-3 border rounded-md focus:ring-2 focus:ring-purple-300 focus:outline-none"
+            className="w-full p-3 border rounded-md focus:ring-2 focus:ring-primary focus:outline-none"
           />
           {errors.duration && (
-            <p className="text-red-500 text-sm">{errors.duration.message}</p>
+            <p className="text-error text-sm">{errors.duration.message}</p>
           )}
         </div>
 
         {/* Calories Burned Input */}
         <div>
-          <label className="block text-gray-700 font-medium mb-1">
+          <label className="block text-secondary font-medium mb-1">
             {/* {CALORIES_BURNED} */}
             CALORIES BURNED
           </label>
@@ -159,16 +159,16 @@ const WorkoutFormPage = () => {
               min: { value: 1, message: "Calories burned must be greater than 0" },
             })}
             placeholder="0"
-            className="w-full p-3 border rounded-md focus:ring-2 focus:ring-purple-300 focus:outline-none"
+            className="w-full p-3 border rounded-md focus:ring-2 focus:ring-primary focus:outline-none"
           />
           {errors.calories_burned && (
-            <p className="text-red-500 text-sm">{errors.calories_burned.message}</p>
+            <p className="text-error text-sm">{errors.calories_burned.message}</p>
           )}
         </div>
 
         {/* Workout Date Input */}
         <div>
-          <label className="block text-gray-700 font-medium mb-1">
+          <label className="block text-secondary font-medium mb-1">
             {/* {WORKOUT_DATE} */}
             WORKOUT DATE
           </label>
@@ -177,16 +177,16 @@ const WorkoutFormPage = () => {
             {...register("workout_date", {
               required: "Workout date is required",
             })}
-            className="w-full p-3 border rounded-md focus:ring-2 focus:ring-purple-300 focus:outline-none"
+            className="w-full p-3 border rounded-md focus:ring-2 focus:ring-primary focus:outline-none"
           />
           {errors.workout_date && (
-            <p className="text-red-500 text-sm">{errors.workout_date.message}</p>
+            <p className="text-error text-sm">{errors.workout_date.message}</p>
           )}
         </div>
 
         <button
           type="submit"
-          className="cursor-pointer mt-5 w-full bg-purple-600 hover:bg-gray-800 text-white text-lg font-medium py-3 rounded-md transition-all"
+          className="cursor-pointer mt-5 w-full bg-primary hover:bg-hover text-white text-lg font-medium py-3 rounded-md transition-all"
         >
           {formData ? "UPDATE WORKOUT" : "ADD WORKOUT"}
         </button>

@@ -42,9 +42,9 @@ const Login = () => {
   };
 
   return (
-    <div className="flex justify-center items-center h-[500px] mt-32 bg-gray-100">
+    <div className="flex justify-center items-center h-[500px] mt-32 bg-tertiary">
       <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
-        <h2 className="text-2xl font-bold text-purple-700 text-center mb-4">
+        <h2 className="text-2xl font-bold text-primary text-center mb-4">
           Login
         </h2>
         <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
@@ -58,10 +58,10 @@ const Login = () => {
                 message: "Enter a valid email",
               },
             })}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
           />
           {errors.email && (
-            <p className="text-red-500 text-sm">{errors.email.message}</p>
+            <p className="text-error text-sm">{errors.email.message}</p>
           )}
 
           <input
@@ -74,21 +74,21 @@ const Login = () => {
                 message: "Password must be at least 6 characters",
               },
             })}
-            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
           />
           {errors.password && (
-            <p className="text-red-500 text-sm">{errors.password.message}</p>
+            <p className="text-error text-sm">{errors.password.message}</p>
           )}
 
-          {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+          {error && <p className="text-error text-sm text-center">{error}</p>}
 
           <button
             type="submit"
             disabled={loading}
             className={`w-full cursor-pointer ${
               loading
-                ? "bg-gray-500 cursor-not-allowed"
-                : "bg-purple-600 hover:bg-gray-800"
+                ? "bg-secondary cursor-not-allowed"
+                : "bg-primary hover:bg-hover"
             } text-white font-bold py-2 rounded-lg transition duration-200`}
           >
             {loading ? "Logging in..." : "LOGIN"}
@@ -97,7 +97,7 @@ const Login = () => {
 
         <button
           onClick={() => router.push("/")}
-          className="cursor-pointer w-full mt-4 bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 rounded-lg transition duration-200"
+          className="cursor-pointer w-full mt-4 bg-tertiary hover:bg-hover text-secondary font-bold py-2 rounded-lg transition duration-200"
         >
           BACK TO LANDING
         </button>

@@ -12,21 +12,12 @@ export default {
         xs: "475px",
       },
       colors: {
-        primary: {
-          "100": "#FFE8F0",
-          DEFAULT: "#EE2B69",
-        },
-        secondary: "#FBE843",
-        black: {
-          "100": "#333333",
-          "200": "#141413",
-          "300": "#7D8087",
-          DEFAULT: "#000000",
-        },
-        white: {
-          "100": "#F7F7F7",
-          DEFAULT: "#FFFFFF",
-        },
+        primary: "#b61da3",
+        secondary: "#8b037a",
+        tertiary: "#d5a9cf",
+        hover: "#6f506b",
+        white:'#ffffff',
+        error:'#ff4e00'
       },
       fontFamily: {
         "work-sans": ["var(--font-work-sans)"],
