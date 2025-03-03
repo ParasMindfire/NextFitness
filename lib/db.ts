@@ -1,12 +1,11 @@
 import { Sequelize } from "sequelize";
 
 export const sequelize = new Sequelize(
-  process.env.MYSQL_DATABASE || "", // Database name
-  process.env.MYSQL_NAME || "", // Database username
-  process.env.MYSQL_PASSWORD,
+  process.env.DB_NAME || "", // Database name
+  process.env.DB_USER || "", // Database username
+  process.env.DB_PASSWORD, // Database password
   {
-    // Database password
-    host: process.env.MYSQL_HOST || "127.0.0.1", // Database host
+    host: process.env.DB_HOST || "127.0.0.1", // Database host
     dialect: "mysql", // Defining the SQL dialect as MySQL
     dialectModule: require("mysql2"),
     logging: console.log,
@@ -15,19 +14,20 @@ export const sequelize = new Sequelize(
 
 try {
   sequelize.authenticate();
-  console.log("Conncection has been established successfully.");
+  console.log("Connection has been established successfully.");
 } catch (error) {
-  console.log("Error connecting databse:", error);
+  console.error("Error connecting to the database:", error);
 }
 
 sequelize
   .sync()
-  .then((data) => {
-    console.log("databse synced successfully.");
+  .then(() => {
+    console.log("Database synced successfully.");
   })
   .catch((error) => {
-    console.log("Error syncing databse:", error);
+    console.error("Error syncing database:", error);
   });
+
 
 
 

@@ -2,14 +2,14 @@
 
 import React, { useState } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { useUserStore } from "../store/useUserStore";
 import AnimatedQuotes from "@/components/AnimatedComponent";
 import UserGoals from "@/components/GlobalUserComponent";
 
 const Landing: React.FC = () => {
   const { user } = useUserStore();
-  const router = useRouter();
+  // const router = useRouter();
   const [messages, setMessages] = useState<{ sender: string; text: string }[]>([
     { sender: "AI", text: "Hi there! How can I assist you today?" },
   ]);

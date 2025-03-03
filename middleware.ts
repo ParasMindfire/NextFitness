@@ -12,10 +12,8 @@ const secretKey = new TextEncoder().encode(jwtSecret);
 export async function middleware(req: NextRequest) {
   console.log("🚀 Middleware executed!");
 
-  let token =
-    req.headers.get("authorization") || req.headers.get("Authorization");
-
-    console.log("recieve token ",token);
+  let token = req.headers.get("authorization") || req.headers.get("Authorization");
+  console.log("Received token:", token);
 
   if (!token || !token.startsWith("Bearer ")) {
     console.log("⚠️ Token missing or incorrectly formatted");
@@ -24,10 +22,8 @@ export async function middleware(req: NextRequest) {
 
   try {
     token = token.replace("Bearer ", "");
-
     const { payload } = await jose.jwtVerify(token, secretKey);
-
-    console.log("✅ Decoded Token: ", payload);
+    console.log("✅ Decoded Token:", payload);
 
     if (!payload.id) {
       console.log("❌ Token missing required payload (id)");
@@ -35,15 +31,9 @@ export async function middleware(req: NextRequest) {
     }
 
     // Forward user ID to the request headers
-    const requestHeaders: any = new Headers(req.headers);
-    requestHeaders.set("id", payload.id);
-    requestHeaders.set("email", payload.email);
-
-    const id: any = requestHeaders.get("id");
-    const email: any = requestHeaders.get("id");
-
-    console.log("kya set hua id ", id);
-    console.log("kya set hua mail ", email);
+    const requestHeaders = new Headers(req.headers);
+    requestHeaders.set("id", String(payload.id));
+    requestHeaders.set("email", String(payload.email));
 
     return NextResponse.next({
       request: {

@@ -1,6 +1,6 @@
 import { describe, it, expect, afterEach, vi } from 'vitest';
 import { Request } from 'node-fetch';
-import * as UserRepository from '@/lib/repository/UserRepo'; // Ensure correct import path
+import * as UserRepository from '../../lib/repository/UserRepo'; // Ensure correct import path
 import { GET as getAllUsers, POST as registerUser } from '../../app/api/users/route'; // Adjust the path as necessary
 import { GET as getUserById, PATCH as updateUserPassword } from '../../app/api/users/user/route'; // Adjust the path as necessary
 import { NextResponse } from 'next/server';
