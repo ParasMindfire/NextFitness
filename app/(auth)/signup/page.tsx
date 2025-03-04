@@ -30,16 +30,20 @@ const Signup = () => {
 
     console.log("signup data ", data);
 
-    const result = await signupUser(data); // Call server action
+    try {
+      const result = await signupUser(data); // Call server action
 
-    console.log("result of signup ", result);
+      console.log("result of signup ", result);
 
-    if (result.message == "User Registered Successfully") {
-      setUser(result.user);
-      router.push("/");
-      showToast("Signup Successful","success");
-    } else {
-      setError(result.message);
+      if (result.message == "User Registered Successfully") {
+        setUser(result.user);
+        router.push("/");
+        showToast("Signup Successful","success");
+      } else {
+        setError(result.message);
+        showToast("Signup Failed","error");
+      }
+    } catch (error) {
       showToast("Signup Failed","error");
     }
 
@@ -48,7 +52,7 @@ const Signup = () => {
 
   return (
     <div className="flex justify-center items-center h-screen bg-tertiary">
-      <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
+      <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md mt-[-150px]">
         <h2 className="text-2xl font-bold text-primary text-center mb-4">
           Create an Account
         </h2>
@@ -116,7 +120,7 @@ const Signup = () => {
 
         <button
           onClick={() => router.push("/")}
-          className="cursor-pointer w-full mt-4 bg-gray-tertiary hover:bg-hover text-secondary font-bold py-2 rounded-lg transition duration-200"
+          className="cursor-pointer w-full mt-4 bg-tertiary hover:bg-hover hover:text-white text-secondary font-bold py-2 rounded-lg transition duration-200"
         >
           BACK TO LANDING
         </button>

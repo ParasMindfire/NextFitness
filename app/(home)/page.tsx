@@ -103,7 +103,7 @@ const Landing: React.FC = () => {
                     SIGNUP
                   </button>
                 </Link>
-                <p className="text-tertiary">ALREADY A USER</p>
+                <p className="text-secondary">ALREADY A USER ?</p>
                 <Link href="/login">
                   <button className="bg-primary cursor-pointer hover:bg-hover text-white px-6 py-3 rounded-lg transition-colors">
                     LOGIN

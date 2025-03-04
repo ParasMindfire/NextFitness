@@ -43,6 +43,8 @@ const Navbar: React.FC = () => {
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  
+
   useEffect(() => {
     const storedToken = localStorage.getItem("accessToken") || "";
     setToken(storedToken);
@@ -73,7 +75,7 @@ const Navbar: React.FC = () => {
       fetchStreak();
       fetchDates();
     }
-  }, [user, workouts,token]);
+  }, [user, workouts, token]);
 
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
@@ -114,6 +116,7 @@ const Navbar: React.FC = () => {
   };
 
   const toggleProfile = () => {
+    // closeMenu();
     setIsProfileOpen(!isProfileOpen);
     setIsWorkoutsOpen(false);
     setIsGoalsOpen(false);
@@ -121,6 +124,7 @@ const Navbar: React.FC = () => {
   };
 
   const toggleCalendar = () => {
+    closeMenu();
     console.log("Toggle Calendar Clicked");
     setIsCalendarOpen((prev) => {
       const newState = !prev;
@@ -135,15 +139,15 @@ const Navbar: React.FC = () => {
   useEffect(() => {
     console.log("isCalendarOpen:", isCalendarOpen);
   }, [isCalendarOpen]);
-  
-  
 
   const handleAddWorkoutClick = () => {
+    closeMenu();
     setFormData(null);
     setIsWorkoutsOpen(false); // Close the dropdown
   };
 
   const handleAddGoalClick = () => {
+    closeMenu();
     setFormGoalData(null);
     setIsGoalsOpen(false); // Close the dropdown
   };
@@ -164,11 +168,19 @@ const Navbar: React.FC = () => {
     };
   }, []);
 
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+    setIsWorkoutsOpen(false);
+    setIsGoalsOpen(false);
+    setIsProfileOpen(false);
+    setIsCalendarOpen(false);
+  };
+
   return (
     <nav className="bg-primary p-4 mb-4 relative z-50" ref={dropdownRef}>
       <div className="flex justify-between items-center">
         <div className="text-white text-2xl font-bold">
-          <Link href="/">{NAVBAR_TITLE}</Link>
+          <Link href="/" onClick={closeMenu}>{NAVBAR_TITLE}</Link>
         </div>
 
         <div className="md:hidden">
@@ -194,7 +206,7 @@ const Navbar: React.FC = () => {
                 </button>
                 {isWorkoutsOpen && (
                   <div className="absolute left-0 bg-white text-black shadow-lg rounded-lg w-48 z-50">
-                    <Link href="/workout-lists" className="block px-4 py-2 hover:bg-tertiary" onClick={() => setIsWorkoutsOpen(false)}>
+                    <Link href="/workout-lists" className="block px-4 py-2 hover:bg-tertiary" onClick={closeMenu}>
                       {VIEW_WORKOUTS}
                     </Link>
                     <Link onClick={handleAddWorkoutClick} href="/workout-form" className="block px-4 py-2 hover:bg-hover">
@@ -214,7 +226,7 @@ const Navbar: React.FC = () => {
                 </button>
                 {isGoalsOpen && (
                   <div className="absolute left-0 bg-white text-black shadow-lg rounded-lg w-48 z-50">
-                    <Link href="/goal-lists" className="block px-4 py-2 hover:bg-tertiary" onClick={() => setIsGoalsOpen(false)}>
+                    <Link href="/goal-lists" className="block px-4 py-2 hover:bg-tertiary" onClick={closeMenu}>
                       {VIEW_FITNESS_GOALS}
                     </Link>
                     <Link href="/goal-form" className="block px-4 py-2 hover:bg-tertiary" onClick={handleAddGoalClick}>
@@ -232,49 +244,77 @@ const Navbar: React.FC = () => {
                   <FaCalendarAlt className="mr-2" /> Workout Calendar
                 </button>
                 {isCalendarOpen && (
-                <div className="fixed inset-0 bg-secondary bg-opacity-75 flex items-center justify-center z-50">
-                  <div className="bg-white rounded-lg shadow-lg p-4 w-full max-w-md">
-                    <h2 className="text-xl font-bold text-center mb-4">Workouts This Month</h2>
-                    <div className="grid grid-cols-7 gap-2">
-                      {getCurrentMonthDays().map((day) => {
-                        const dateStr = day.toLocaleDateString("en-CA");
-                        const isWorkoutDay = workoutDates.some(
-                          (workout) => workout.workout_date === dateStr
-                        );
-                        const isFutureDate = day > new Date();
-                        const workoutCount = workoutDates.filter(
-                          (workout) => workout.workout_date === dateStr
-                        ).length;
+                  <div className="fixed inset-0 bg-hover bg-opacity-95 flex items-center justify-center z-50 p-6">
+                    <div className="relative bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+                      {/* Close Button at Top Right */}
+                      <button
+                        onClick={() => setIsCalendarOpen(false)}
+                        className="absolute top-2 right-2 text-gray-600 hover:text-gray-900 text-lg"
+                      >
+                        ✖
+                      </button>
 
-                        return (
-                          <div
-                            key={dateStr}
-                            className={`w-10 h-10 flex items-center justify-center rounded-full ${
-                              isFutureDate
-                                ? "bg-gray-400 text-white"
-                                : workoutCount > 1
-                                ? "bg-green-900 text-white"
-                                : isWorkoutDay
-                                ? "bg-green-600 text-white"
-                                : "bg-red-400 text-white"
-                            }`}
-                          >
-                            {day.getDate()}
-                          </div>
-                        );
-                      })}
+                      {/* Title */}
+                      <h2 className="text-xl font-bold text-center mb-4">Workouts This Month</h2>
+
+                      {/* Calendar Grid with Bottom Padding */}
+                      <div className="grid grid-cols-7 gap-2 pb-16"> {/* Extra padding to prevent overlap */}
+                        {getCurrentMonthDays().map((day) => {
+                          const dateStr = day.toLocaleDateString("en-CA");
+                          const isWorkoutDay = workoutDates.some(
+                            (workout) => workout.workout_date === dateStr
+                          );
+                          const isFutureDate = day > new Date();
+                          const workoutCount = workoutDates.filter(
+                            (workout) => workout.workout_date === dateStr
+                          ).length;
+
+                          return (
+                            <div
+                              key={dateStr}
+                              className={`w-10 h-10 flex items-center justify-center rounded-full ${
+                                isFutureDate
+                                  ? "bg-nAllowed text-white" // Future date
+                                  : workoutCount > 1
+                                  ? "bg-secondary text-white" // Multiple workouts
+                                  : isWorkoutDay
+                                  ? "bg-primary text-white" // Single workout
+                                  : "bg-error text-white" // No workout
+                              }`}
+                            >
+                              {day.getDate()}
+                            </div>
+                          );
+                        })}
+                      </div>
+
+                      {/* Legend at Bottom Right with Proper Positioning */}
+                      <div className="absolute bottom-4 right-4 bg-gray-100 p-3 rounded-lg shadow-md">
+                        {/* <h3 className="text-sm font-semibold mb-1">Legend</h3> */}
+                        <div className="flex items-center space-x-2 mb-1">
+                          <div className="w-4 h-4 bg-primary rounded-full"></div>
+                          <span className="text-xs">Workout Added</span>
+                        </div>
+                        <div className="flex items-center space-x-2 mb-1">
+                          <div className="w-4 h-4 bg-secondary rounded-full"></div>
+                          <span className="text-xs">Multiple Workouts</span>
+                        </div>
+                        <div className="flex items-center space-x-2">
+                          <div className="w-4 h-4 bg-error rounded-full"></div>
+                          <span className="text-xs">No Workout</span>
+                        </div>
+                      </div>
+
+                      {/* Close Button at Bottom */}
+                      <button
+                        onClick={() => setIsCalendarOpen(false)}
+                        className="mt-6 text-primary hover:underline w-full text-center"
+                      >
+                        Close
+                      </button>
                     </div>
-                    <button
-                      onClick={() => setIsCalendarOpen(false)}
-                      className="mt-4 text-primary hover:underline"
-                    >
-                      Close
-                    </button>
                   </div>
-                </div>
-              )}
-
-
+                )}
               </div>
 
               <div className="text-white px-4 py-2 rounded-lg flex items-center">
@@ -292,7 +332,7 @@ const Navbar: React.FC = () => {
                 </button>
                 {isProfileOpen && (
                   <div className="absolute top-full left-0 mt-2 bg-white text-black shadow-lg rounded-lg min-w-32 z-50">
-                    <Link href="/profile" className="block px-4 py-2 hover:bg-tertiary" onClick={() => setIsProfileOpen(false)}>
+                    <Link href="/profile" className="block px-4 py-2 hover:bg-tertiary" onClick={closeMenu}>
                       View Profile
                     </Link>
                     <button
@@ -307,10 +347,10 @@ const Navbar: React.FC = () => {
             </>
           ) : (
             <>
-              <Link href="/login" className="text-white hover:bg-primary px-4 py-2 rounded-lg">
+              <Link href="/login" className="text-white hover:bg-primary px-4 py-2 rounded-lg" onClick={closeMenu}>
                 {LOGIN_BUTTON}
               </Link>
-              <Link href="/signup" className="text-white hover:bg-primary px-4 py-2 rounded-lg">
+              <Link href="/signup" className="text-white hover:bg-primary px-4 py-2 rounded-lg" onClick={closeMenu}>
                 {SIGNUP_BUTTON}
               </Link>
             </>
@@ -322,4 +362,3 @@ const Navbar: React.FC = () => {
 };
 
 export default Navbar;
-

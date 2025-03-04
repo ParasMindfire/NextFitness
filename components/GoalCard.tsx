@@ -34,7 +34,7 @@ const FitnessCard = ({ goal, onDelete }: FitnessCardProps) => {
         {goal.goal_type.replace("_", " ")}
       </h2>
 
-      <div className="space-y-3 text-tertiary text-sm">
+      <div className="space-y-3 text-white text-sm">
         <p>
           <span className="font-semibold text-white">{TARGET}</span> {goal.target_value}
         </p>
@@ -82,7 +82,7 @@ const FitnessCard = ({ goal, onDelete }: FitnessCardProps) => {
       <div className="flex justify-between mt-4">
         <button
           onClick={() => handleEdit(goal.goal_id)}
-          className="cursor-pointer bg-primary text-white text-sm font-medium px-5 py-2 rounded-lg transition-all hover:bg-hover"
+          className="cursor-pointer bg-secondary text-white text-sm font-medium px-5 py-2 rounded-lg transition-all hover:bg-hover"
         >
           {EDIT}
         </button>

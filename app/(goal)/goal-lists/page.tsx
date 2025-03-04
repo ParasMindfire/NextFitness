@@ -63,8 +63,8 @@ const FitnessViews = () => {
   };
 
   return (
-    <div className="flex flex-col justify-center items-center h-auto bg-tertiary p-6 mt-8">
-      <div className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-6xl mx-auto text-center">
+    <div className="flex flex-col items-center h-auto bg-tertiary p-6 min-h-screen">
+      <div className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-6xl mx-auto text-center mt-24">
         <h2 className="text-4xl font-extrabold text-secondary mb-6">{FITNESS_GOALS}</h2>
 
         {loading && <p className="text-secondary">{LOAD_FITNESS}</p>}
@@ -80,25 +80,30 @@ const FitnessViews = () => {
           )}
         </div>
 
-        <div className="flex flex-col">
-          <div className="flex justify-center mt-6 space-x-4">
+        <div className="flex flex-col justify-center items-center mt-8 space-y-4">
+          <div className="flex justify-center items-center space-x-8">
             <button
               onClick={prevPage}
               disabled={currentPage === 1}
               className={`px-4 py-2 rounded-lg text-white font-medium ${
                 currentPage === 1
-                  ? "bg-gray-400 cursor-not-allowed"
+                  ? "bg-nAllowed cursor-not-allowed"
                   : "bg-primary hover:bg-hover cursor-pointer"
               }`}
             >
               {PREVIOUS}
             </button>
+
+            <span className="text-secondary font-semibold text-lg">
+                Page {currentPage} of {Math.ceil(indexOfLastGoal/3)}
+              </span>
+
             <button
               onClick={nextPage}
               disabled={indexOfLastGoal >= fitnessGoals.length}
               className={`px-4 py-2 rounded-lg text-white font-medium ${
                 indexOfLastGoal >= fitnessGoals.length
-                  ? "bg-gray-400 cursor-not-allowed"
+                  ? "bg-nAllowed cursor-not-allowed"
                   : "bg-primary hover:bg-hover cursor-pointer"
               }`}
             >
@@ -108,7 +113,7 @@ const FitnessViews = () => {
 
           <button
             onClick={handleBack}
-            className="cursor-pointer w-full max-w-xs bg-primary hover:bg-hover text-secondary font-bold py-2 rounded-md transition duration-200 mt-4"
+            className="cursor-pointer w-full max-w-xs bg-tertiary hover:bg-hover hover:text-white text-secondary font-bold py-3 rounded-lg transition duration-200"
           >
             {BACK_TO_DASHBOARD}
           </button>

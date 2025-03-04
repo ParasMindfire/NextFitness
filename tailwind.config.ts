@@ -16,8 +16,23 @@ export default {
         secondary: "#8b037a",
         tertiary: "#d5a9cf",
         hover: "#6f506b",
-        white:'#ffffff',
-        error:'#ff4e00'
+        white: "#ffffff",
+        error: "#ff4e00",
+        nAllowed: "#dbd5d3",
+
+        light: {
+          primary: "#c7d2fe",
+          secondary: "#a5b4fc",
+          tertiary: "#eef2ff",
+          hover: "#6d28d9",
+        },
+
+        dark: {
+          primary: "#1e3a8a",
+          secondary: "#1e40af",
+          tertiary: "#1e2956",
+          hover: "#3b82f6",
+        },
       },
       fontFamily: {
         "work-sans": ["var(--font-work-sans)"],
@@ -34,5 +49,6 @@ export default {
       },
     },
   },
+  darkMode: 'class', // Enable dark mode via class
   plugins: [],
 } satisfies Config;

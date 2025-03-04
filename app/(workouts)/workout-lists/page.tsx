@@ -70,19 +70,19 @@ const WorkoutViews: React.FC = () => {
   const handleBack = () => router.push("/");
 
   return (
-    <div className="flex flex-col justify-center h-auto bg-gray-100 p-6 mt-8">
-      <div className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-6xl mx-auto text-center">
-        <h2 className="text-4xl font-extrabold text-gray-800 mb-6">{YOUR_WORKOUTS}</h2>
+    <div className="flex flex-col h-auto bg-tertiary p-6 min-h-screen">
+      <div className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-6xl mx-auto text-center mt-24">
+        <h2 className="text-4xl font-extrabold text-secondary mb-6">{YOUR_WORKOUTS}</h2>
 
-        {loading && <p className="text-gray-500">{LOADING_WORKOUTS}</p>}
-        {error && <p className="text-red-500">{error}</p>}
+        {loading && <p className="text-primary">{LOADING_WORKOUTS}</p>}
+        {error && <p className="text-error">{error}</p>}
 
         {workouts.length > 0 ? (
           <>
             <div className="flex justify-end mb-8">
               <button
                 onClick={toggleSortOrder}
-                className="cursor-pointer bg-purple-600 text-white font-semibold px-6 py-3 rounded-lg transition-all hover:bg-purple-700"
+                className="cursor-pointer bg-primary text-white font-semibold px-6 py-3 rounded-lg transition-all hover:bg-hover"
               >
                 Sort by Date ({sortOrder === ASC ? ASCENDING : DESCENDING})
               </button>
@@ -101,13 +101,13 @@ const WorkoutViews: React.FC = () => {
                     onClick={prevPage}
                     disabled={currentPage === 1}
                     className={`px-6 py-3 rounded-lg text-white font-medium transition ${
-                      currentPage === 1 ? "bg-gray-400 cursor-not-allowed" : "bg-purple-600 hover:bg-gray-600 cursor-pointer"
+                      currentPage === 1 ? "bg-nAllowed cursor-not-allowed" : "bg-primary hover:bg-hover cursor-pointer"
                     }`}
                   >
                     {PREVIOUS}
                   </button>
 
-                  <span className="text-gray-700 font-semibold text-lg">
+                  <span className="text-secondary font-semibold text-lg">
                     Page {currentPage} of {totalPages}
                   </span>
 
@@ -115,7 +115,7 @@ const WorkoutViews: React.FC = () => {
                     onClick={nextPage}
                     disabled={currentPage === totalPages}
                     className={`px-6 py-3 rounded-lg text-white font-medium transition ${
-                      currentPage === totalPages ? "bg-gray-400 cursor-not-allowed" : "bg-purple-600 hover:bg-gray-800 cursor-pointer"
+                      currentPage === totalPages ? "bg-nAllowed cursor-not-allowed" : "bg-primary hover:bg-hover cursor-pointer"
                     }`}
                   >
                     {NEXT}
@@ -124,7 +124,7 @@ const WorkoutViews: React.FC = () => {
 
                 <button
                   onClick={handleBack}
-                  className="cursor-pointer w-full max-w-xs bg-gray-400 hover:bg-gray-500 text-white font-bold py-3 rounded-lg transition duration-200"
+                  className="cursor-pointer w-full max-w-xs bg-tertiary hover:bg-hover hover:text-white text-secondary font-bold py-3 rounded-lg transition duration-200"
                 >
                   {BACK_TO_DASHBOARD}
                 </button>
@@ -133,12 +133,12 @@ const WorkoutViews: React.FC = () => {
                   <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center z-50">
                     <div className="bg-white p-8 rounded-xl shadow-lg w-96">
                       <h2 className="text-xl font-bold text-gray-800">{CONFIRM_DELETE}</h2>
-                      <p className="text-gray-600 mt-2">{ARE_U_SURE2}</p>
+                      <p className="text-secondary mt-2">{ARE_U_SURE2}</p>
                       <div className="flex justify-end mt-6 space-x-4">
-                        <button onClick={() => setIsModalOpen(false)} className="cursor-pointer bg-gray-300 px-5 py-2 rounded-lg">
+                        <button onClick={() => setIsModalOpen(false)} className="cursor-pointer bg-tertiary px-5 py-2 rounded-lg">
                           {CANCEL}
                         </button>
-                        <button onClick={confirmDelete} className="cursor-pointer bg-purple-600 text-white px-5 py-2 rounded-lg hover:bg-gray-800">
+                        <button onClick={confirmDelete} className="cursor-pointer bg-primary text-white px-5 py-2 rounded-lg hover:bg-hover">
                           {DELETE}
                         </button>
                       </div>

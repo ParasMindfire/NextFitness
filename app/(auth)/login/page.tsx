@@ -23,27 +23,32 @@ const Login = () => {
   const onSubmit = async (data: LoginFormData) => {
     setLoading(true);
     setError("");
+    try {
+      const result = await loginUser(data); // Call server action
 
-    const result = await loginUser(data); // Call server action
+      console.log("login api response ", result);
 
-    console.log("login api response ", result);
-
-    if ((result.message = "Login successful")) {
-      localStorage.setItem("accessToken",result.accessToken);
-      setUser(result.user);
-      router.push("/");
-      showToast("Login Successfully", "success");
-    } else {
-      setError(result.message);
+      if ((result.message = "Login successful")) {
+        localStorage.setItem("accessToken",result.accessToken);
+        setUser(result.user);
+        router.push("/");
+        showToast("Login Successfully", "success");
+      } else {
+        console.log("aya error ?");
+        setError(result.message);
+        showToast("Login Failed", "error");
+      }
+    } catch (error) {
       showToast("Login Failed", "error");
     }
+    
 
     setLoading(false);
   };
 
   return (
-    <div className="flex justify-center items-center h-[500px] mt-32 bg-tertiary">
-      <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md">
+    <div className="flex justify-center items-center min-h-screen bg-tertiary">
+      <div className="bg-white shadow-lg rounded-lg p-8 w-full max-w-md mt-[-150px]">
         <h2 className="text-2xl font-bold text-primary text-center mb-4">
           Login
         </h2>
@@ -97,7 +102,7 @@ const Login = () => {
 
         <button
           onClick={() => router.push("/")}
-          className="cursor-pointer w-full mt-4 bg-tertiary hover:bg-hover text-secondary font-bold py-2 rounded-lg transition duration-200"
+          className="cursor-pointer w-full mt-4 bg-tertiary hover:bg-hover hover:text-white text-secondary font-bold py-2 rounded-lg transition duration-200"
         >
           BACK TO LANDING
         </button>
