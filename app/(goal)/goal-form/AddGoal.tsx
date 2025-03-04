@@ -1,18 +1,13 @@
-"use client"
-
+"use client";
 
 import { useGoalStore } from "../../store/useGoalStore";
-// import { showToast } from "../../helpers/ToastHelper";
 import { useRouter } from "next/navigation";
-import {
-  UPDATE_GOAL,
-  ADD_GOAL,
-} from "../../../constants/constants";
-
+import { UPDATE_GOAL, ADD_GOAL } from "../../../constants/constants";
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { useEffect } from "react";
-import { createFitnessGoal, getAllFitnessGoals, updateFitnessGoal } from "@/services/GoalAPI";
+import useSWR from "swr";  // Import SWR
+import { createFitnessGoal, updateFitnessGoal, getAllFitnessGoals } from "@/services/GoalAPI";
 import { showToast } from "@/utils/Toast";
 
 interface FitnessFormData {
@@ -24,15 +19,16 @@ interface FitnessFormData {
   status: string;
 }
 
-const FitnessFormPage = () => {
-    const {
-      id,
-      setId,
-      formGoalData,
-      setFormGoalData
-    } = useGoalStore();
+// SWR Fetcher Function
+const fetcher = async (url: string, token: string) => {
+  if (!token) return null;
+  const data = await getAllFitnessGoals(token);
+  return data;
+};
 
-    const router = useRouter();
+const FitnessFormPage = () => {
+  const { id, setId, formGoalData, setFormGoalData } = useGoalStore();
+  const router = useRouter();
 
   const {
     register,
@@ -51,6 +47,12 @@ const FitnessFormPage = () => {
     },
   });
 
+  // Get token from localStorage
+  const token = typeof window !== "undefined" ? localStorage.getItem("accessToken") : null;
+
+  // Fetch fitness goals using SWR
+  const { data: goals, mutate } = useSWR(token ? ["/fitness-goals", token] : null, fetcher);
+
   useEffect(() => {
     if (formGoalData) {
       reset({
@@ -66,23 +68,22 @@ const FitnessFormPage = () => {
 
   const onSubmit = async (data: FitnessFormData) => {
     if (data.start_date && data.end_date && new Date(data.end_date) < new Date(data.start_date)) {
-      // showToast("End date cannot be less than start date", "error");
-      console.log("start end cannot");
+      console.log("End date cannot be less than start date");
       return;
     }
 
-    const token = localStorage.getItem("accessToken");
     if (!token) return;
 
     try {
       if (formGoalData) {
-        await updateFitnessGoal(token,id,data);
+        await updateFitnessGoal(token, id, data);
         setId(null);
         showToast("Goal Edited Successfully", "success");
       } else {
-        await createFitnessGoal(token,data);
+        await createFitnessGoal(token, data);
         showToast("Goal Added Successfully", "success");
       }
+
       setFormGoalData(null);
       reset({
         goal_type: "weight_loss",
@@ -92,8 +93,11 @@ const FitnessFormPage = () => {
         end_date: "",
         status: "pending",
       });
+
+      // Revalidate the goals list after updating
+      mutate();
+
       router.push("/goal-lists");
-      getAllFitnessGoals(token);
     } catch (error) {
       showToast("An error occurred. Please try again!", "error");
     }
@@ -106,19 +110,14 @@ const FitnessFormPage = () => {
 
   return (
     <div className="flex justify-center items-center h-[500px] mt-44">
-      <form onSubmit={handleSubmit(onSubmit)} 
-      className="bg-white p-6 rounded-2xl shadow-xl w-[500px] space-y-4">
+      <form onSubmit={handleSubmit(onSubmit)}
+        className="bg-white p-6 rounded-2xl shadow-xl w-[500px] space-y-4">
         <h2 className="text-xl font-semibold mb-4 text-center text-primary">
           {formGoalData ? "Edit Fitness Goal" : "Add Fitness Goal"}
-          {/* Add Fitness Goals */}
         </h2>
 
         <div>
-          <label
-            htmlFor="goal_type"
-            className="block text-secondary font-medium"
-          >
-            {/* {GOAL_TYPE} */}
+          <label htmlFor="goal_type" className="block text-secondary font-medium">
             Goal Type
           </label>
           <select
@@ -132,117 +131,12 @@ const FitnessFormPage = () => {
           {errors.goal_type && <p className="text-error text-sm">{errors.goal_type.message}</p>}
         </div>
 
-        <div>
-          <label
-            htmlFor="target_value"
-            className="block text-secondary font-medium"
-          >
-            TARGET VALUE
-          </label>
-          <input
-            type="number"
-            id="target_value"
-            placeholder="0"
-            {...register("target_value", {
-              required: "Target value is required",
-              validate: (value) => Number(value) > 0 || "Target value must be greater than 0",
-            })}
-            className="w-full p-2 border border-tertiary rounded-lg focus:ring-2 focus:ring-primary"
-          />
-          {errors.target_value && <p className="text-error text-sm">{errors.target_value.message}</p>}
-        </div>
-
-        <div>
-          <label
-            htmlFor="current_progress"
-            className="block text-secondary font-medium"
-          >
-            {/* {CURRENT_PROGRESS} */}
-            CURRENT PROGRESS
-          </label>
-          <input
-            type="number"
-            id="current_progress"
-            placeholder="0"
-            {...register("current_progress", {
-              required: "Current progress is required",
-              valueAsNumber: true,
-              validate: (value) => value > 0 || "Current progress must be greater than 0",
-            })}
-            className="w-full p-2 border border-tertiary rounded-lg focus:ring-2 focus:ring-primary"
-          />
-          {errors.current_progress && <p className="text-error text-sm">{errors.current_progress.message}</p>}
-        </div>
-
-        <div>
-          <label
-            htmlFor="start_date"
-            className="block text-secondary font-medium"
-          >
-            {/* {START_DATE} */}
-            START DATE
-          </label>
-          <input
-            type="date"
-            id="start_date"
-            {...register("start_date", { required: "Start date is required" })}
-            className="w-full p-2 border border-tertiary rounded-lg focus:ring-2 focus:ring-primary"
-          />
-          {errors.start_date && <p className="text-error text-sm">{errors.start_date.message}</p>}
-        </div>
-
-        <div>
-          <label htmlFor="end_date" className="block text-secondary font-medium">
-            {/* {END_DATA} */}
-            END DATE
-          </label>
-          <input
-            type="date"
-            id="end_date"
-            {...register("end_date", {
-              required: "End date is required",
-              validate: (value) => {
-                const startDate = watch("start_date");
-                if (startDate && new Date(value) < new Date(startDate)) {
-                  return "End date cannot be less than start date";
-                }
-                return true;
-              },
-            })}
-            className="w-full p-2 border border-tertiary rounded-lg focus:ring-2 focus:ring-primary"
-          />
-          {errors.end_date && <p className="text-error text-sm">{errors.end_date.message}</p>}
-        </div>
-
-        <div>
-          <label htmlFor="status" className="block text-secondary font-medium">
-            {/* {STATUS} */}
-            STATUS
-          </label>
-          <select
-            id="status"
-            {...register("status", { required: "Status is required" })}
-            className="w-full p-2 border border-tertiary rounded-lg focus:ring-2 focus:ring-primary"
-          >
-            <option value="pending">PENDING</option>
-            <option value="complete">COMPLETE</option>
-            <option value="incomplete">INCOMPLETE</option>
-          </select>
-          {errors.status && <p className="text-error text-sm">{errors.status.message}</p>}
-        </div>
-
-        <button
-          type="submit"
-          className="w-full bg-primary hover:bg-secondary text-white font-semibold px-4 py-2 rounded-lg transition"
-        >
+        <button type="submit" className="w-full bg-primary hover:bg-secondary text-white font-semibold px-4 py-2 rounded-lg transition">
           {formGoalData ? UPDATE_GOAL : ADD_GOAL}
         </button>
 
         <Link href="/">
-          <button
-            onClick={handleBack}
-            className="cursor-pointer w-full mt-4 bg-tertiary hover:bg-hover text-secondary font-bold py-2 rounded-lg transition duration-200"
-          >
+          <button onClick={handleBack} className="cursor-pointer w-full mt-4 bg-tertiary hover:bg-hover text-secondary font-bold py-2 rounded-lg transition duration-200">
             BACK TO DASHBOARD
           </button>
         </Link>
