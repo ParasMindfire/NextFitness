@@ -82,6 +82,7 @@ const Navbar: React.FC = () => {
     localStorage.removeItem("refreshToken");
     setUser(null);
     router.push("/login");
+    localStorage.removeItem("user-storage");
   };
 
   const getCurrentMonthDays = () => {
