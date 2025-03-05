@@ -20,6 +20,7 @@ import {
   DELETE,
   NO_WORKOUTS
 } from "../../../constants/constants";
+import useSWR from "swr";
 
 const WorkoutViews: React.FC = () => {
   const { workouts, loading, error, fetchWorkouts, trigger, setTrigger } = useWorkoutStore();
@@ -32,9 +33,17 @@ const WorkoutViews: React.FC = () => {
 
   const token: any = localStorage.getItem("accessToken");
 
-  useEffect(() => {
-    fetchWorkouts(token);
-  }, [trigger]);
+
+  const { data: FitnessGoal, isLoading, mutate } = useSWR(
+    token ? ["/fitnessGoals", token] : null,
+    ([url, token]) => fetcher(url, token),
+    { revalidateOnFocus: false } // Prevent unnecessary re-fetching when tab is focused
+  );
+  
+  const fetcher = async (url: string, token: string) => {
+    console.log("fetcher me aya ?");
+    return await fetchWorkouts(token);
+  };
 
   const sortedWorkouts = [...workouts].sort((a, b) => {
     const dateA = new Date(a.workout_date).getTime();
@@ -63,7 +72,8 @@ const WorkoutViews: React.FC = () => {
       await deleteWorkout(token, workoutId);
       getUserWorkouts(token);
       setIsModalOpen(false);
-      setTrigger(!trigger);
+      mutate();
+      // setTrigger(!trigger);
     }
   };
 

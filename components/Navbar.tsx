@@ -209,7 +209,7 @@ const Navbar: React.FC = () => {
                     <Link href="/workout-lists" className="block px-4 py-2 hover:bg-tertiary" onClick={closeMenu}>
                       {VIEW_WORKOUTS}
                     </Link>
-                    <Link onClick={handleAddWorkoutClick} href="/workout-form" className="block px-4 py-2 hover:bg-hover">
+                    <Link onClick={handleAddWorkoutClick} href="/workout-form" className="block px-4 py-2 hover:bg-tertiary">
                       {ADD_WORKOUT_TITLE}
                     </Link>
                   </div>
@@ -244,7 +244,7 @@ const Navbar: React.FC = () => {
                   <FaCalendarAlt className="mr-2" /> Workout Calendar
                 </button>
                 {isCalendarOpen && (
-                  <div className="fixed inset-0 bg-hover bg-opacity-95 flex items-center justify-center z-50 p-6">
+                  <div className="fixed inset-0 bg-tertiary bg-opacity-95 flex items-center justify-center z-50 p-6">
                     <div className="relative bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
                       {/* Close Button at Top Right */}
                       <button

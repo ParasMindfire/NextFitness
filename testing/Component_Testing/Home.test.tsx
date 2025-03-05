@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi, beforeEach } from 'vitest';
-import Landing from '../../app/(home)/page';
+import Landing from '../../app/(home)/Landing';
 import { useUserStore } from '../../app/store/useUserStore';
 
 // Mock useUserStore
@@ -24,7 +24,7 @@ describe('Landing Component', () => {
     expect(screen.getByText('Chat with AI')).toBeInTheDocument();
 
     // Use getAllByText to find all matching elements
-    const aiMessages = screen.getAllByText((content, element) => {
+    const aiMessages = screen.getAllByText((content:any, element:any) => {
       return element?.textContent?.includes('AI: Hi there! How can I assist you today?');
     });
     expect(aiMessages.length).toBeGreaterThan(0);

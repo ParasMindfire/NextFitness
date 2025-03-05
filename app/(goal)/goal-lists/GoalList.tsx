@@ -16,10 +16,13 @@ import {
   CONFIRM_DELETE,
   ARE_U_SURE
 } from "../../../constants/constants";
-import { deleteFitnessGoal } from "@/services/GoalAPI";
+import { deleteFitnessGoal, getAllFitnessGoals } from "@/services/GoalAPI";
+import { FitnessGoal } from "@/app/types";
+import useSWR from "swr";
+
 
 const FitnessViews = () => {
-  const { fitnessGoals, loading, error, fetchFitnessGoals, trigger, setTrigger } = useGoalStore();
+  const { fitnessGoals, loading, fetchFitnessGoals, trigger, setTrigger } = useGoalStore();
   const [currentPage, setCurrentPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedGoalId, setSelectedGoalId] = useState(null);
@@ -32,9 +35,16 @@ const FitnessViews = () => {
   const token: any = localStorage.getItem("accessToken");
   const router = useRouter();
 
-  useEffect(() => {
-    fetchFitnessGoals(token);
-  }, [trigger]);
+  const { data: FitnessGoal, error, isLoading, mutate } = useSWR(
+    token ? ["/fitnessGoals", token] : null,
+    ([url, token]) => fetcher(url, token),
+    { revalidateOnFocus: false } // Prevent unnecessary re-fetching when tab is focused
+  );
+  
+  const fetcher = async (url: string, token: string) => {
+    console.log("fetcher me aya ?");
+    return await fetchFitnessGoals(token);
+  };
 
   const nextPage = () => {
     if (indexOfLastGoal < fitnessGoals.length) setCurrentPage(currentPage + 1);
@@ -54,7 +64,8 @@ const FitnessViews = () => {
     if (selectedGoalId) {
       deleteFitnessGoal(token, selectedGoalId);
       setIsModalOpen(false);
-      setTrigger(!trigger);
+      mutate();
+      // setTrigger(!trigger);
     }
   };
 
@@ -147,3 +158,7 @@ const FitnessViews = () => {
 };
 
 export default FitnessViews;
+function fetchFitnessGoals(token: string) {
+  throw new Error("Function not implemented.");
+}
+

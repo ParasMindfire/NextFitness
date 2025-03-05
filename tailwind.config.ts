@@ -12,9 +12,9 @@ export default {
         xs: "475px",
       },
       colors: {
-        primary: "#b61da3",
-        secondary: "#8b037a",
-        tertiary: "#d5a9cf",
+        primary: "#D98324",
+        secondary: "#443627",
+        tertiary: "#EFDCAB",
         hover: "#6f506b",
         white: "#ffffff",
         error: "#ff4e00",

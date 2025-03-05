@@ -6,6 +6,7 @@ import { User } from '../../app/types';
 import { WorkoutDurationStats } from '@/components/WorkoutDurationStat';
 import { WorkoutCaloriesStats } from '@/components/WorkoutCaloriStat';
 import { useWorkoutStore } from '../store/useWorkoutStore';
+import useSWR from 'swr';
 // import { uploadUserPhoto } from '../../services/WorkoutAPI';
 
 const ProfilePage = () => {
