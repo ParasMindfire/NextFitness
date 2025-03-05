@@ -1,22 +1,29 @@
 "use server";
 
-import {User} from "../app/types"
+import { User } from "../app/types";
 
-// services/auth.ts
+const API_BASE_URL = process.env.API_BASE_URL || "";
+
+// Function to log in a user
 export const loginUser = async (data: { email: string; password: string }) => {
-  const response = await fetch(`${process.env.API_BASE_URL}/api/auth`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/auth`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
+    });
 
-  const result = await response.json();
-  if (!response.ok) throw new Error(result.message || "Login failed");
-  return result;
+    const result = await response.json();
+    if (!response.ok) throw new Error(result.message || "Login failed");
+
+    return result;
+  } catch (error) {
+    console.error("Error logging in:", error);
+    throw new Error("Login failed");
+  }
 };
 
+// Function to sign up a new user
 export const signupUser = async (data: {
   email: string;
   password: string;
@@ -24,53 +31,52 @@ export const signupUser = async (data: {
   phone: string;
   address: string;
 }) => {
-  console.log("kya daat aaya singup ", data);
-
-  const response = await fetch(`${process.env.API_BASE_URL}/api/users`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(data),
-  });
-
-  const result = await response.json();
-  if (!response.ok) throw new Error(result.message || "Login failed");
-  return result;
-};
-
-
-export const getAllUsers = async (): Promise<User[]> => {
   try {
-    const response = await fetch(`${process.env.API_BASE_URL}/api/users`, {
-      method: "GET",
-      cache: "no-store", // Ensures fresh data
+    console.log("Signup request data:", data);
+
+    const response = await fetch(`${API_BASE_URL}/api/users`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(data),
     });
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch users");
-    }
+    const result = await response.json();
+    if (!response.ok) throw new Error(result.message || "Signup failed");
 
-    return response.json();
+    return result;
+  } catch (error) {
+    console.error("Error signing up:", error);
+    throw new Error("Signup failed");
+  }
+};
+
+// Function to get all users
+export const getAllUsers = async (): Promise<User[]> => {
+  try {
+    const response = await fetch(`${API_BASE_URL}/api/users`, {
+      method: "GET",
+      cache: "no-store",
+    });
+
+    if (!response.ok) throw new Error("Failed to fetch users");
+
+    return await response.json();
   } catch (error) {
     console.error("Error fetching users:", error);
     throw error;
   }
 };
 
-export const getSingleUser = async (token:any): Promise<User> => {
+// Function to get a single user by token
+export const getSingleUser = async (token: string): Promise<User> => {
   try {
-    const response = await fetch(`${process.env.API_BASE_URL}/api/users/user`, {
+    const response = await fetch(`${API_BASE_URL}/api/users/user`, {
       method: "GET",
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { Authorization: `Bearer ${token}` },
       cache: "no-store",
     });
 
-    if (!response.ok) {
-      throw new Error("Failed to fetch user");
-    }
+    if (!response.ok) throw new Error("Failed to fetch user");
 
     const users = await response.json();
     return users[0]; // Assuming API returns an array
@@ -80,20 +86,24 @@ export const getSingleUser = async (token:any): Promise<User> => {
   }
 };
 
+// Function to upload a user's profile photo
+export const uploadUserPhoto = async (token: string, file: File, email: string) => {
+  try {
+    const formData = new FormData();
+    formData.append("photo", file);
+    formData.append("email", email);
 
-// export const uploadUserPhoto = async (token: string, file: File, email: string) => {
-//   const formData = new FormData();
-//   formData.append("photo", file);
-//   formData.append("email", email);
+    const response = await fetch(`${API_BASE_URL}/users/photo`, {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}` },
+      body: formData,
+    });
 
-//   const response = await fetch(`${process.env.API_BASE_URL}/users/photo`, {
-//     method: "POST",
-//     headers: { Authorization: `Bearer ${token}` },
-//     body: formData,
-//   });
+    if (!response.ok) throw new Error("Photo upload failed");
 
-//   if (!response.ok) throw new Error("Photo upload failed");
-//   return response.json();
-// };
-
-
+    return await response.json();
+  } catch (error) {
+    console.error("Error uploading photo:", error);
+    throw error;
+  }
+};
