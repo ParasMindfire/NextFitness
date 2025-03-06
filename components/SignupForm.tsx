@@ -16,8 +16,10 @@ const SignupForm = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
+  // Initialize form handling with react-hook-form
   const { register, handleSubmit, formState: { errors } } = useForm<SignupFormData>();
 
+  // Handle form submission
   const onSubmit = async (data: SignupFormData) => {
     setLoading(true);
     setError("");
@@ -43,6 +45,7 @@ const SignupForm = () => {
   return (
     <>
       <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+        {/* Username input field */}
         <input
           type="text"
           placeholder="Username"
@@ -55,6 +58,7 @@ const SignupForm = () => {
           <p className="text-error text-sm">{errors.name.message}</p>
         )}
 
+        {/* Email input field */}
         <input
           type="email"
           placeholder="Email"
@@ -71,6 +75,7 @@ const SignupForm = () => {
           <p className="text-error text-sm">{errors.email.message}</p>
         )}
 
+        {/* Password input field */}
         <input
           type="password"
           placeholder="Password"
@@ -87,12 +92,16 @@ const SignupForm = () => {
           <p className="text-error text-sm">{errors.password.message}</p>
         )}
 
+        {/* Display error message if any */}
         {error && <ErrorMessage message={error} />}
 
+        {/* Submit button with loading state */}
         <LoadingButton loading={loading} type="submit">
           {loading ? "Signing up..." : "SIGN UP"}
         </LoadingButton>
       </form>
+
+      {/* Button to navigate back to the landing page */}
       <LoadingButton loading={false} onClick={() => router.push("/")} className="mt-4">
         BACK TO LANDING
       </LoadingButton>

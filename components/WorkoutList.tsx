@@ -20,57 +20,67 @@ import useSWR from "swr";
 import DeleteModal from "./DeleteModal";
 
 const WorkoutList: React.FC = () => {
+  // State and store hooks
   const { workouts, loading, error, fetchWorkouts, trigger, setTrigger } = useWorkoutStore();
-  const [currentPage, setCurrentPage] = useState(1);
-  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc');
-  const workoutsPerPage = 4;
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [workoutId, setWorkoutId] = useState(null);
-  const router = useRouter();
+  const [currentPage, setCurrentPage] = useState(1); // Current page for pagination
+  const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc'); // Sort order state
+  const workoutsPerPage = 4; // Number of workouts to display per page
+  const [isModalOpen, setIsModalOpen] = useState(false); // Modal state for delete confirmation
+  const [workoutId, setWorkoutId] = useState(null); // ID of workout to delete
+  const router = useRouter(); // Router for navigation
+  const [token, setToken] = useState<string | null>(null); // Token for API requests
 
-  const [token, setToken] = useState<string | null>(null);
-
+  // Fetch token from local storage on component mount
   useEffect(() => {
     setToken(localStorage.getItem("accessToken"));
   }, []);
 
+  // Fetch fitness goals using SWR
   const { data: FitnessGoal, isLoading, mutate } = useSWR(
     token ? ["/fitnessGoals", token] : null,
     ([url, token]) => fetcher(url, token),
     { revalidateOnFocus: false }
   );
 
+  // Fetcher function for SWR
   const fetcher = async (url: string, token: string) => {
     return await fetchWorkouts(token);
   };
 
+  // Fetch workouts when token is available
   useEffect(() => {
     if (token) {
       fetchWorkouts(token);
     }
   }, [token]);
 
+  // Sort workouts by date
   const sortedWorkouts = [...workouts].sort((a, b) => {
     const dateA = new Date(a.workout_date).getTime();
     const dateB = new Date(b.workout_date).getTime();
     return sortOrder === 'asc' ? dateA - dateB : dateB - dateA;
   });
 
+  // Pagination logic
   const totalPages = Math.ceil(sortedWorkouts.length / workoutsPerPage);
   const indexOfLastWorkout = currentPage * workoutsPerPage;
   const indexOfFirstWorkout = indexOfLastWorkout - workoutsPerPage;
   const currentWorkouts = sortedWorkouts.slice(indexOfFirstWorkout, indexOfLastWorkout);
 
+  // Pagination controls
   const nextPage = () => currentPage < totalPages && setCurrentPage(currentPage + 1);
   const prevPage = () => currentPage > 1 && setCurrentPage(currentPage - 1);
 
+  // Toggle sort order
   const toggleSortOrder = () => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
 
+  // Handle delete button click
   const handleDeleteClick = (id: any) => {
     setWorkoutId(id);
     setIsModalOpen(true);
   };
 
+  // Confirm workout deletion
   const confirmDelete = async () => {
     if (workoutId && token) {
       await deleteWorkout(token, workoutId);
@@ -80,6 +90,7 @@ const WorkoutList: React.FC = () => {
     }
   };
 
+  // Navigate back to dashboard
   const handleBack = () => router.push("/");
 
   return (

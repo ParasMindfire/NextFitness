@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+// Array of motivational workout quotes
 const quotes = [
   "The only bad workout is the one that didn’t happen.",
   "Push yourself, no one else will.",
@@ -27,21 +28,25 @@ const quotes = [
 ];
 
 const AnimatedQuotes: React.FC = () => {
+  // State to track the current quote index
   const [currentQuoteIndex, setCurrentQuoteIndex] = useState(0);
 
   useEffect(() => {
+    // Automatically change the quote every 3 seconds
     const intervalId = setInterval(() => {
       setCurrentQuoteIndex((prevIndex) =>
         prevIndex === quotes.length - 1 ? 0 : prevIndex + 1
       );
-    }, 3000); // Switch every 3 seconds
+    }, 3000);
 
+    // Cleanup function to clear interval on unmount
     return () => clearInterval(intervalId);
   }, []);
 
   return (
     <div className="text-center px-4 py-4 bg-white rounded-3xl border-2 border-primary shadow-lg backdrop-blur-md transition-transform transform hover:scale-105 w-[90%] max-w-[600px] mx-auto">
       <AnimatePresence mode="wait">
+        {/* Animate the quotes when changing */}
         <motion.p
           key={currentQuoteIndex}
           initial={{ x: 100, opacity: 0 }}

@@ -16,12 +16,14 @@ import useSWR from "swr";
 import DeleteModal from "./DeleteModal";
 
 const FitnessGoalsList: React.FC = () => {
+  // State for goals, pagination, and delete modal
   const { fitnessGoals, loading, fetchFitnessGoals, trigger, setTrigger } = useGoalStore();
   const [currentPage, setCurrentPage] = useState(1);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedGoalId, setSelectedGoalId] = useState(null);
   const goalsPerPage = 3;
 
+  // Calculate pagination indexes
   const indexOfLastGoal = currentPage * goalsPerPage;
   const indexOfFirstGoal = indexOfLastGoal - goalsPerPage;
   const currentGoals = fitnessGoals.slice(indexOfFirstGoal, indexOfLastGoal);
@@ -29,20 +31,24 @@ const FitnessGoalsList: React.FC = () => {
   const token: any = localStorage.getItem("accessToken");
   const router = useRouter();
 
+  // Fetch fitness goals using SWR
   const { data: FitnessGoal, error, isLoading, mutate } = useSWR(
     token ? ["/fitnessGoals", token] : null,
     ([url, token]) => fetcher(url, token),
     { revalidateOnFocus: false }
   );
 
+  // Fetch function for fitness goals
   const fetcher = async (url: string, token: string) => {
     return await fetchFitnessGoals(token);
   };
 
+  // Fetch goals on component mount
   useEffect(() => {
     fetchFitnessGoals(token);
   }, [token]);
 
+  // Pagination functions
   const nextPage = () => {
     if (indexOfLastGoal < fitnessGoals.length) setCurrentPage(currentPage + 1);
   };
@@ -51,11 +57,13 @@ const FitnessGoalsList: React.FC = () => {
     if (currentPage > 1) setCurrentPage(currentPage - 1);
   };
 
+  // Handle delete confirmation
   const handleDeleteClick = (goalId: any) => {
     setSelectedGoalId(goalId);
     setIsModalOpen(true);
   };
 
+  // Delete goal and update UI
   const confirmDelete = () => {
     if (selectedGoalId) {
       deleteFitnessGoal(token, selectedGoalId);
@@ -64,6 +72,7 @@ const FitnessGoalsList: React.FC = () => {
     }
   };
 
+  // Navigate back to dashboard
   const handleBack = () => {
     router.push("/");
   };
@@ -75,6 +84,7 @@ const FitnessGoalsList: React.FC = () => {
       {loading && <p className="text-secondary">{LOAD_FITNESS}</p>}
       {error && <p className="text-error">{error}</p>}
 
+      {/* Display fitness goal cards */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-items-center">
         {currentGoals.length > 0 ? (
           currentGoals.map((goal) => (
@@ -85,6 +95,7 @@ const FitnessGoalsList: React.FC = () => {
         )}
       </div>
 
+      {/* Pagination and navigation buttons */}
       <div className="flex flex-col justify-center items-center mt-8 space-y-4">
         <div className="flex justify-center items-center space-x-8">
           <button
@@ -124,6 +135,7 @@ const FitnessGoalsList: React.FC = () => {
         </button>
       </div>
 
+      {/* Delete confirmation modal */}
       {isModalOpen && (
         <DeleteModal
           isOpen={isModalOpen}

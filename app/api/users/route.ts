@@ -2,17 +2,42 @@ import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import * as UserRepository from "@/lib/repository/UserRepo"; // Use @ for absolute imports if configured
 
+// GET - Fetch All Users
 export async function GET() {
-  console.log("middleware hii getalluser");
-  const [users] = await UserRepository.getAllUsers();
-  return NextResponse.json({ user: users }, { status: 200 });
+  try {
+    console.log("middleware hii getalluser");
+
+    /*
+      Fetching all users from the UserRepository.
+      The result is expected to be an array of users.
+    */
+    const [users] = await UserRepository.getAllUsers();
+
+    /*
+      Returning the list of users with a 200 OK response.
+    */
+    return NextResponse.json({ user: users }, { status: 200 });
+  } catch (error: any) {
+    /*
+      Handling any unexpected errors and returning a 500 Internal Server Error response.
+    */
+    return NextResponse.json({ error: error.message }, { status: 500 });
+  }
 }
 
+// POST - Register a New User
 export async function POST(req: Request) {
   try {
+    /*
+      Parsing the request body to extract user details.
+    */
     const body = await req.json();
     const { name, email, password, phone, address } = body;
 
+    /*
+      Validating if all required fields are provided.
+      If any field is missing, return a 400 Bad Request response.
+    */
     if (!name || !email || !password || !phone || !address) {
       return NextResponse.json(
         { error: "Enter All The Fields" },
@@ -20,17 +45,30 @@ export async function POST(req: Request) {
       );
     }
 
+    /*
+      Checking if a user with the given email already exists.
+    */
     const [existingUser] = await UserRepository.getUserByEmail(email);
 
     console.log("existing ", existingUser);
     if (existingUser.length > 0) {
+      /*
+        If a user already exists with the same email, return a 409 Conflict response.
+      */
       return NextResponse.json(
         { error: "User with this email already exists" },
         { status: 409 },
       );
     }
 
+    /*
+      Hashing the user's password before storing it in the database.
+    */
     const hashed_password = bcrypt.hashSync(password, 10);
+
+    /*
+      Inserting the new user into the UserRepository.
+    */
     await UserRepository.insertUser(
       name,
       email,
@@ -39,12 +77,19 @@ export async function POST(req: Request) {
       address,
     );
 
+    /*
+      Returning a success message with a 201 Created response.
+    */
     return NextResponse.json(
       { message: "User Registered Successfully" },
       { status: 201 },
     );
   } catch (error: any) {
     console.log("kya error hai ", error);
+
+    /*
+      Handling unexpected errors and returning a 500 Internal Server Error response.
+    */
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

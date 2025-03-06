@@ -5,12 +5,12 @@ import FitnessCard from "./GoalCard";
 import { PREVIOUS, NEXT } from "../constants/constants";
 
 interface GoalCardListProps {
-  currentGoals: any[];
-  currentPage: number;
-  totalPages: number;
-  onPrevPage: () => void;
-  onNextPage: () => void;
-  onDelete: (goalId: any) => void;
+  currentGoals: any[]; // List of fitness goals to display
+  currentPage: number; // Current page number
+  totalPages: number; // Total number of pages
+  onPrevPage: () => void; // Function to navigate to the previous page
+  onNextPage: () => void; // Function to navigate to the next page
+  onDelete: (goalId: any) => void; // Function to delete a goal
 }
 
 const GoalCardList: React.FC<GoalCardListProps> = ({
@@ -23,6 +23,7 @@ const GoalCardList: React.FC<GoalCardListProps> = ({
 }) => {
   return (
     <div>
+      {/* Display goal cards in a responsive grid layout */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-items-center">
         {currentGoals.length > 0 ? (
           currentGoals.map((goal) => (
@@ -32,6 +33,8 @@ const GoalCardList: React.FC<GoalCardListProps> = ({
           <p className="text-secondary">No fitness goals available.</p>
         )}
       </div>
+
+      {/* Pagination controls */}
       <div className="flex justify-center items-center space-x-8 mt-8">
         <button
           onClick={onPrevPage}
@@ -44,9 +47,11 @@ const GoalCardList: React.FC<GoalCardListProps> = ({
         >
           {PREVIOUS}
         </button>
+        
         <span className="text-secondary font-semibold text-lg">
           Page {currentPage} of {totalPages}
         </span>
+        
         <button
           onClick={onNextPage}
           disabled={currentPage === totalPages}

@@ -1,19 +1,17 @@
-"use client"
+"use client";
 
 import { useEffect, useState } from "react";
 import { useWorkoutStore } from "../app/store/useWorkoutStore";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import dayjs from "dayjs";
 import { WorkoutData } from "../app/types";
-
-import { 
-  WORKOUT_PROGRESS, 
-  TRACK_WORKOUT_DURATION, 
-  WEEKLY_PROGRESS, 
-  MONTHLY_PROGRESS, 
-  YEARLY_PROGRESS, 
+import {
+  WORKOUT_PROGRESS,
+  TRACK_WORKOUT_DURATION,
+  WEEKLY_PROGRESS,
+  MONTHLY_PROGRESS,
+  YEARLY_PROGRESS,
 } from "../constants/constants";
-
 
 // This page displays workout duration statistics.
 export const WorkoutDurationStats = () => {
@@ -22,6 +20,7 @@ export const WorkoutDurationStats = () => {
   const [monthlyData, setMonthlyData] = useState<WorkoutData[]>([]);
   const [yearlyData, setYearlyData] = useState<WorkoutData[]>([]);
 
+  // Update workout duration data when workouts change
   useEffect(() => {
     if (workouts.length > 0) {
       const today = new Date();
@@ -37,6 +36,7 @@ export const WorkoutDurationStats = () => {
 
   return (
     <div className="mt-6">
+      {/* Title and description for workout duration stats */}
       <h2 className="text-2xl font-bold text-center md:text-3xl">{WORKOUT_PROGRESS}</h2>
       <p className="text-gray-600 text-center">{TRACK_WORKOUT_DURATION}</p>
 
@@ -48,6 +48,7 @@ export const WorkoutDurationStats = () => {
 
         return (
           <>
+            {/* Weekly workout duration chart */}
             <div className="mt-8">
               <h3 className="text-lg font-semibold text-center text-blue-600 md:text-xl">{WEEKLY_PROGRESS}</h3>
               <p className="text-sm text-center text-gray-500">
@@ -65,6 +66,7 @@ export const WorkoutDurationStats = () => {
               </ResponsiveContainer>
             </div>
 
+            {/* Monthly workout duration chart */}
             <div className="mt-8">
               <h3 className="text-lg font-semibold text-center text-green-600 md:text-xl">{MONTHLY_PROGRESS}</h3>
               <p className="text-sm text-center text-gray-500">
@@ -82,6 +84,7 @@ export const WorkoutDurationStats = () => {
               </ResponsiveContainer>
             </div>
 
+            {/* Yearly workout duration chart */}
             <div className="mt-8">
               <h3 className="text-lg font-semibold text-center text-yellow-600 md:text-xl">{YEARLY_PROGRESS}</h3>
               <p className="text-sm text-center text-gray-500">
@@ -104,4 +107,3 @@ export const WorkoutDurationStats = () => {
     </div>
   );
 };
-

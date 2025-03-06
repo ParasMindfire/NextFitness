@@ -1,6 +1,7 @@
 import React from 'react';
 import LoginForm from '../../../components/LoginForm';
 
+{/* Container to center the login form on the screen */}
 const Login = () => {
   return (
     <div className="flex justify-center items-center min-h-screen bg-tertiary">

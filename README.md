@@ -1,71 +1,65 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Fitness Tracker Application
+
+Welcome to the Fitness Tracker Application! This application helps you track your workouts, set fitness goals, and visualize your progress using graphs.
+
+## Table of Contents
+
+- [Getting Started](#getting-started)
+- [About the Application](#about-the-application)
+- [Features](#features)
+- [Screenshots](#screenshots)
 
 ## Getting Started
 
-First, run the development server:
+Follow these steps to get the application up and running on your local machine:
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. **Clone the Repository**
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+   ```bash
+   git clone https://github.com/your-username/fitness-tracker.git
+   cd fitness-tracker
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+2. npm install
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+3. npm run dev
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
+## About The Application
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The Fitness Tracker Application is designed to help users track their fitness journey. With this application, you can:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- **Add and manage your workouts**: Easily add, edit, and delete workouts. Track details such as duration, calories burned, and more.
+- **Set and track fitness goals**: Define your fitness goals and monitor your progress towards achieving them.
+- **View your progress**: Use intuitive graphs and charts to visualize your workout data and track your improvements over time.
+- **Stay motivated**: Visualize your achievements to keep yourself motivated and on track.See workout calender and streaks
 
-## Deploy on Vercel
+## Features
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- **Workout Management**: Easily add, edit, and delete workouts. Track details such as duration, calories burned, and more.
+- **Goal Setting**: Set fitness goals and track your progress towards achieving them.
+- **Visualizations**: Use graphs and charts to visualize your workout data and track your improvements.
+- **User-Friendly Interface**: Intuitive and easy-to-use interface for a seamless user experience.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
-Always ask what should be in server side and what should be in client side
+## Screenshots
 
-keep whatever is necessary only in app like api fonts and pages keep component outside app
+### Screenshot 1: Landing Page
 
-SSG
-static rendering
-ISR-Timebased revalidation,revalidate request after som etime,on demand revalidation apply it in your project
-SSR revalidate 0
-partial rerendering PPR
+![Landing Page](./public/landing.png)
+*Landing page featuring a navbar and an AI chat interface for user interaction.*
 
-learn about how error is handles in error.tsx
+### Screenshot 2: Profile Page
 
-how routes work in next
+![Profile Page](./public/profile.png)
+*Profile page displaying user details and charts to track fitness progress.*
 
-dynamic metadata
+### Screenshot 3: Workout Calendar
 
-file based metadata
+![Workout Calendar](./public/calender.png)
+*Workout calendar view for scheduling and tracking workouts.*
 
-know the prorities o fmatedata
 
-use next form
 
-use auth.js for authentication in nextjs maybe use google or github on timing 1hr 13min
 
-form action with server action read this docs tos know how on click button willwork in nextjs
-use next/form 1hr 20mins and 1hr 45 min
 
-you can add @layer utilities in global.css
 
-you can use shadcn to use component more resuabley apply all css of tailwing in global.css layouts 1hr 40
-
-if you want to allow images from all the sources update nextconfig.ts 2hr 8mins
-
-use sanity for managing contents 2hr 13min

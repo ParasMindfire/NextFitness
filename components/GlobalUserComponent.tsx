@@ -13,7 +13,7 @@ const UserGoals: React.FC = () => {
       const fetchUsers = async () => {
         try {
           const usersData: workoutByAll[] = await getAllWorkouts();
-          // Limit the displayed cards to 7 (adjust as needed)
+          // Limit the displayed goals to 7
           setUsersWorkouts(usersData.slice(0, 7));
         } catch (err) {
           setError("Failed to fetch user goals");
@@ -29,13 +29,17 @@ const UserGoals: React.FC = () => {
 
   return (
     <div className="p-6 bg-white shadow-lg rounded-lg mt-8">
+      {/* Section heading */}
       <h2 className="text-2xl font-bold text-center mb-4 text-primary">Community Goals</h2>
+      
+      {/* Display user goals in a grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
         {usersWorkouts.map((user, id) => (
         <div
           key={id}
           className="border border-tertiary p-4 rounded-lg shadow hover:shadow-xl transition transform hover:scale-105"
         >
+          {/* Display user workout details */}
           <h3 className="text-xl font-semibold text-primary mb-2">{user.name}</h3>
           <p className="text-secondary mb-1">
             <strong>Exercise Type:</strong> {user.excercise_type}

@@ -43,13 +43,13 @@ const Navbar: React.FC = () => {
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
-  
-
+  // Fetch token from local storage on component mount
   useEffect(() => {
     const storedToken = localStorage.getItem("accessToken") || "";
     setToken(storedToken);
   }, []);
 
+  // Fetch streak and workout dates when user or workouts change
   useEffect(() => {
     if (user && token) {
       const fetchStreak = async () => {
@@ -77,6 +77,7 @@ const Navbar: React.FC = () => {
     }
   }, [user, workouts, token]);
 
+  // Handle logout functionality
   const handleLogout = () => {
     localStorage.removeItem("accessToken");
     localStorage.removeItem("refreshToken");
@@ -85,6 +86,7 @@ const Navbar: React.FC = () => {
     localStorage.removeItem("user-storage");
   };
 
+  // Get days of the current month
   const getCurrentMonthDays = () => {
     const today = new Date();
     const year = today.getFullYear();
@@ -94,6 +96,7 @@ const Navbar: React.FC = () => {
     return Array.from({ length: daysInMonth }, (_, i) => new Date(year, month, i + 1));
   };
 
+  // Toggle menu visibility
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
     setIsWorkoutsOpen(false);
@@ -102,6 +105,7 @@ const Navbar: React.FC = () => {
     setIsCalendarOpen(false);
   };
 
+  // Toggle workouts dropdown visibility
   const toggleWorkouts = () => {
     setIsWorkoutsOpen(!isWorkoutsOpen);
     setIsGoalsOpen(false);
@@ -109,6 +113,7 @@ const Navbar: React.FC = () => {
     setIsCalendarOpen(false);
   };
 
+  // Toggle goals dropdown visibility
   const toggleGoals = () => {
     setIsGoalsOpen(!isGoalsOpen);
     setIsWorkoutsOpen(false);
@@ -116,14 +121,15 @@ const Navbar: React.FC = () => {
     setIsCalendarOpen(false);
   };
 
+  // Toggle profile dropdown visibility
   const toggleProfile = () => {
-    // closeMenu();
     setIsProfileOpen(!isProfileOpen);
     setIsWorkoutsOpen(false);
     setIsGoalsOpen(false);
     setIsCalendarOpen(false);
   };
 
+  // Toggle calendar visibility
   const toggleCalendar = () => {
     closeMenu();
     console.log("Toggle Calendar Clicked");
@@ -137,22 +143,26 @@ const Navbar: React.FC = () => {
     setIsProfileOpen(false);
   };
 
+  // Log calendar state changes
   useEffect(() => {
     console.log("isCalendarOpen:", isCalendarOpen);
   }, [isCalendarOpen]);
 
+  // Handle add workout click
   const handleAddWorkoutClick = () => {
     closeMenu();
     setFormData(null);
-    setIsWorkoutsOpen(false); // Close the dropdown
+    setIsWorkoutsOpen(false);
   };
 
+  // Handle add goal click
   const handleAddGoalClick = () => {
     closeMenu();
     setFormGoalData(null);
-    setIsGoalsOpen(false); // Close the dropdown
+    setIsGoalsOpen(false);
   };
 
+  // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
@@ -169,6 +179,7 @@ const Navbar: React.FC = () => {
     };
   }, []);
 
+  // Close all menus
   const closeMenu = () => {
     setIsMenuOpen(false);
     setIsWorkoutsOpen(false);
@@ -247,7 +258,6 @@ const Navbar: React.FC = () => {
                 {isCalendarOpen && (
                   <div className="fixed inset-0 bg-tertiary bg-opacity-95 flex items-center justify-center z-50 p-6">
                     <div className="relative bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
-                      {/* Close Button at Top Right */}
                       <button
                         onClick={() => setIsCalendarOpen(false)}
                         className="absolute top-2 right-2 text-gray-600 hover:text-gray-900 text-lg"
@@ -255,11 +265,9 @@ const Navbar: React.FC = () => {
                         ✖
                       </button>
 
-                      {/* Title */}
                       <h2 className="text-xl font-bold text-center mb-4">Workouts This Month</h2>
 
-                      {/* Calendar Grid with Bottom Padding */}
-                      <div className="grid grid-cols-7 gap-2 pb-16"> {/* Extra padding to prevent overlap */}
+                      <div className="grid grid-cols-7 gap-2 pb-16">
                         {getCurrentMonthDays().map((day) => {
                           const dateStr = day.toLocaleDateString("en-CA");
                           const isWorkoutDay = workoutDates.some(
@@ -275,12 +283,12 @@ const Navbar: React.FC = () => {
                               key={dateStr}
                               className={`w-10 h-10 flex items-center justify-center rounded-full ${
                                 isFutureDate
-                                  ? "bg-nAllowed text-white" // Future date
+                                  ? "bg-nAllowed text-white"
                                   : workoutCount > 1
-                                  ? "bg-secondary text-white" // Multiple workouts
+                                  ? "bg-secondary text-white"
                                   : isWorkoutDay
-                                  ? "bg-primary text-white" // Single workout
-                                  : "bg-error text-white" // No workout
+                                  ? "bg-primary text-white"
+                                  : "bg-error text-white"
                               }`}
                             >
                               {day.getDate()}
@@ -289,9 +297,7 @@ const Navbar: React.FC = () => {
                         })}
                       </div>
 
-                      {/* Legend at Bottom Right with Proper Positioning */}
                       <div className="absolute bottom-4 right-4 bg-gray-100 p-3 rounded-lg shadow-md">
-                        {/* <h3 className="text-sm font-semibold mb-1">Legend</h3> */}
                         <div className="flex items-center space-x-2 mb-1">
                           <div className="w-4 h-4 bg-primary rounded-full"></div>
                           <span className="text-xs">Workout Added</span>
@@ -306,7 +312,6 @@ const Navbar: React.FC = () => {
                         </div>
                       </div>
 
-                      {/* Close Button at Bottom */}
                       <button
                         onClick={() => setIsCalendarOpen(false)}
                         className="mt-6 text-primary hover:underline w-full text-center"

@@ -1,19 +1,17 @@
-"use client"
+"use client";
 
 import { useEffect, useState } from "react";
 import { useWorkoutStore } from "../app/store/useWorkoutStore";
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import dayjs from "dayjs";
 import { CaloriesData } from "../app/types";
-import { 
-  WEEKLY_CALORIES_BURNED, 
-  MONTHLY_CALORIES_BURNED, 
-  YEARLY_CALORIES_BURNED, 
-  CALORIES_BURNED_PROGRESS, 
-  CALORIE_STATS_DESCRIPTION 
+import {
+  WEEKLY_CALORIES_BURNED,
+  MONTHLY_CALORIES_BURNED,
+  YEARLY_CALORIES_BURNED,
+  CALORIES_BURNED_PROGRESS,
+  CALORIE_STATS_DESCRIPTION
 } from "../constants/constants";
-
-
 
 // This page shows the statistics related to the calories burned during workouts.
 export const WorkoutCaloriesStats = () => {
@@ -22,6 +20,7 @@ export const WorkoutCaloriesStats = () => {
   const [monthlyData, setMonthlyData] = useState<CaloriesData[]>([]);
   const [yearlyData, setYearlyData] = useState<CaloriesData[]>([]);
 
+  // Update calories data when workouts change
   useEffect(() => {
     if (workouts.length > 0) {
       const today = new Date();
@@ -37,6 +36,7 @@ export const WorkoutCaloriesStats = () => {
 
   return (
     <div className="mt-6">
+      {/* Title and description for the calories burned stats */}
       <h2 className="text-2xl font-bold text-center md:text-3xl">{CALORIES_BURNED_PROGRESS}</h2>
       <p className="text-gray-600 text-center">{CALORIE_STATS_DESCRIPTION}</p>
 
@@ -48,6 +48,7 @@ export const WorkoutCaloriesStats = () => {
 
         return (
           <>
+            {/* Weekly calories burned chart */}
             <div className="mt-8">
               <h3 className="text-lg font-semibold text-center text-red-600 md:text-xl">{WEEKLY_CALORIES_BURNED}</h3>
               <p className="text-sm text-center text-gray-500">
@@ -65,6 +66,7 @@ export const WorkoutCaloriesStats = () => {
               </ResponsiveContainer>
             </div>
 
+            {/* Monthly calories burned chart */}
             <div className="mt-8">
               <h3 className="text-lg font-semibold text-center text-purple-600 md:text-xl">{MONTHLY_CALORIES_BURNED}</h3>
               <p className="text-sm text-center text-gray-500">
@@ -82,6 +84,7 @@ export const WorkoutCaloriesStats = () => {
               </ResponsiveContainer>
             </div>
 
+            {/* Yearly calories burned chart */}
             <div className="mt-8">
               <h3 className="text-lg font-semibold text-center text-orange-600 md:text-xl">{YEARLY_CALORIES_BURNED}</h3>
               <p className="text-sm text-center text-gray-500">
@@ -104,4 +107,3 @@ export const WorkoutCaloriesStats = () => {
     </div>
   );
 };
-

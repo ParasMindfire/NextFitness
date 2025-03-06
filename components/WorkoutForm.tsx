@@ -19,6 +19,7 @@ const WorkoutForm: React.FC = () => {
   const { formData, setFormData, id } = useWorkoutStore();
   const router = useRouter();
 
+  // Initialize form handling with react-hook-form
   const {
     register,
     handleSubmit,
@@ -33,6 +34,7 @@ const WorkoutForm: React.FC = () => {
     },
   });
 
+  // Reset form fields when formData changes
   useEffect(() => {
     if (formData) {
       reset({
@@ -44,6 +46,7 @@ const WorkoutForm: React.FC = () => {
     }
   }, [formData, reset]);
 
+  // Handle form submission
   const onSubmit = async (data: WorkoutFormData) => {
     if (data.duration <= 0) {
       showToast("Duration must be greater than 0", "error");
@@ -84,6 +87,7 @@ const WorkoutForm: React.FC = () => {
     }
   };
 
+  // Handle back button click
   const handleBack = () => {
     setFormData(null);
     router.push("/");
@@ -95,10 +99,12 @@ const WorkoutForm: React.FC = () => {
       className="max-w-md mx-auto p-6 bg-white shadow-lg rounded-lg border border-tertiary space-y-3"
       aria-labelledby="workoutFormTitle"
     >
+      {/* Form title */}
       <h2 id="workoutFormTitle" className="text-xl font-semibold text-primary text-center mb-4">
         {formData ? "EDIT WORKOUT" : "ADD WORKOUT"}
       </h2>
 
+      {/* Exercise type field */}
       <FormField
         label="EXERCISE TYPE"
         id="exercise_type"
@@ -118,6 +124,7 @@ const WorkoutForm: React.FC = () => {
         ]}
       />
 
+      {/* Duration field */}
       <FormField
         label="DURATION"
         id="duration"
@@ -131,6 +138,7 @@ const WorkoutForm: React.FC = () => {
         }}
       />
 
+      {/* Calories burned field */}
       <FormField
         label="CALORIES BURNED"
         id="calories_burned"
@@ -144,6 +152,7 @@ const WorkoutForm: React.FC = () => {
         }}
       />
 
+      {/* Workout date field */}
       <FormField
         label="WORKOUT DATE"
         id="workout_date"
@@ -153,6 +162,7 @@ const WorkoutForm: React.FC = () => {
         validation={{ required: "Workout date is required" }}
       />
 
+      {/* Submit button */}
       <button
         type="submit"
         className="cursor-pointer mt-5 w-full bg-primary hover:bg-hover text-white text-lg font-medium py-3 rounded-md transition-all"
@@ -161,6 +171,7 @@ const WorkoutForm: React.FC = () => {
         {formData ? "UPDATE WORKOUT" : "ADD WORKOUT"}
       </button>
 
+      {/* Back button */}
       <button
         type="button"
         onClick={handleBack}

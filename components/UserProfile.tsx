@@ -9,12 +9,14 @@ const UserProfile: React.FC = () => {
   const [user, setUser] = useState<User | null>(null);
   const { fetchWorkouts } = useWorkoutStore();
 
+  // Fetch user and workouts on component mount
   useEffect(() => {
-    const token:any= localStorage.getItem("accessToken");
+    const token: any = localStorage.getItem("accessToken");
     fetchWorkouts(token);
     fetchUser(token);
   }, []);
 
+  // Fetch user data from API
   const fetchUser = async (token: string) => {
     try {
       const incomingUser = await getSingleUser(token);
@@ -26,6 +28,7 @@ const UserProfile: React.FC = () => {
 
   return (
     <div className="flex flex-col md:flex-row border rounded-2xl shadow-lg p-4 space-y-4 md:space-y-0">
+      {/* Profile picture section */}
       <div className="flex justify-center items-center w-full md:w-1/6 p-4 bg-white mr-2">
         <label htmlFor="photo-upload" className="cursor-pointer relative">
           {user?.profile_pic ? (
@@ -42,6 +45,7 @@ const UserProfile: React.FC = () => {
         </label>
       </div>
 
+      {/* User details section */}
       <div className="w-full md:w-2/6 p-10 pl-5 bg-primary mr-2">
         <h2 className="text-xl font-bold text-white mb-2 md:text-2xl">User Details</h2>
         <div className="space-y-1 text-white">
@@ -52,6 +56,7 @@ const UserProfile: React.FC = () => {
         </div>
       </div>
 
+      {/* Additional info section */}
       <div className="w-full md:w-3/6 p-10 border-l border-tertiary bg-secondary">
         <h2 className="text-xl font-bold text-white mb-2 md:text-2xl">Additional Info</h2>
         <div className="space-y-1 text-white">

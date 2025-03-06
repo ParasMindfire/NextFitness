@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { useGoalStore } from "../app/store/useGoalStore";
@@ -18,9 +18,11 @@ interface FitnessFormData {
 }
 
 const FitnessForm = () => {
+  // Get goal state and router
   const { id, setId, formGoalData, setFormGoalData } = useGoalStore();
   const router = useRouter();
 
+  // Form setup with default values
   const { register, handleSubmit, watch, reset, formState: { errors } } = useForm<FitnessFormData>({
     defaultValues: {
       goal_type: "weight_loss",
@@ -32,6 +34,7 @@ const FitnessForm = () => {
     },
   });
 
+  // Populate form if editing an existing goal
   useEffect(() => {
     if (formGoalData) {
       reset({
@@ -45,6 +48,7 @@ const FitnessForm = () => {
     }
   }, [formGoalData, reset]);
 
+  // Handle form submission for creating or updating a goal
   const onSubmit = async (data: FitnessFormData) => {
     if (data.start_date && data.end_date && new Date(data.end_date) < new Date(data.start_date)) {
       console.log("End date cannot be less than start date");
@@ -64,20 +68,14 @@ const FitnessForm = () => {
         showToast("Goal Added Successfully", "success");
       }
       setFormGoalData(null);
-      reset({
-        goal_type: "weight_loss",
-        target_value: 0,
-        current_progress: 0,
-        start_date: "",
-        end_date: "",
-        status: "pending",
-      });
+      reset();
       router.push("/goal-lists");
     } catch (error) {
       showToast("An error occurred. Please try again!", "error");
     }
   };
 
+  // Handle back button click
   const handleBack = () => {
     setFormGoalData(null);
     router.push("/");
@@ -85,10 +83,12 @@ const FitnessForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="bg-white p-6 rounded-2xl shadow-xl w-[500px] space-y-4">
+      {/* Form title */}
       <h2 className="text-xl font-semibold mb-4 text-center text-primary">
         {formGoalData ? "Edit Fitness Goal" : "Add Fitness Goal"}
       </h2>
 
+      {/* Form fields */}
       <FormField
         label="Goal Type"
         id="goal_type"
@@ -168,6 +168,7 @@ const FitnessForm = () => {
         ]}
       />
 
+      {/* Submit button */}
       <button
         type="submit"
         className="w-full bg-primary hover:bg-secondary text-white font-semibold px-4 py-2 rounded-lg transition"
@@ -175,6 +176,7 @@ const FitnessForm = () => {
         {formGoalData ? "UPDATE GOAL" : "ADD GOAL"}
       </button>
 
+      {/* Back button */}
       <button
         type="button"
         onClick={handleBack}

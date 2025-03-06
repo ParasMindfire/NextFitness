@@ -17,11 +17,13 @@ const FitnessCard = ({ goal, onDelete }: FitnessCardProps) => {
   const { setId, setFormGoalData } = useGoalStore();
   const router = useRouter();
 
+  // Calculate the percentage of goal progress
   let percentage = (goal.current_progress / goal.target_value) * 100;
   if (percentage > 100) {
     percentage = 100;
   }
 
+  // Handle goal edit action
   const handleEdit = (id: any) => {
     setFormGoalData(goal);
     router.push("/goal-form");
@@ -30,27 +32,22 @@ const FitnessCard = ({ goal, onDelete }: FitnessCardProps) => {
 
   return (
     <div className="bg-primary rounded-2xl shadow-xl p-8 w-full text-white transition-transform transform hover:scale-105 hover:shadow-2xl">
+      {/* Display goal type */}
       <h2 className="text-2xl font-bold uppercase text-center mb-4">
         {goal.goal_type.replace("_", " ")}
       </h2>
 
+      {/* Display goal details */}
       <div className="space-y-3 text-white text-sm">
-        <p>
-          <span className="font-semibold text-white">{TARGET}</span> {goal.target_value}
-        </p>
-        <p>
-          <span className="font-semibold text-white">{PROGRESS}</span> {goal.current_progress}
-        </p>
-        <p>
-          <span className="font-semibold text-white">{START}</span> {new Date(goal.start_date).toLocaleDateString()}
-        </p>
+        <p><span className="font-semibold text-white">{TARGET}</span> {goal.target_value}</p>
+        <p><span className="font-semibold text-white">{PROGRESS}</span> {goal.current_progress}</p>
+        <p><span className="font-semibold text-white">{START}</span> {new Date(goal.start_date).toLocaleDateString()}</p>
         {goal.end_date && (
-          <p>
-            <span className="font-semibold text-white">{END}</span> {new Date(goal.end_date).toLocaleDateString()}
-          </p>
+          <p><span className="font-semibold text-white">{END}</span> {new Date(goal.end_date).toLocaleDateString()}</p>
         )}
       </div>
 
+      {/* Goal status indicator */}
       <span
         className={`absolute top-3 right-3 text-xs font-semibold px-2 py-1 rounded-full ${
           goal.status === "complete"
@@ -61,6 +58,7 @@ const FitnessCard = ({ goal, onDelete }: FitnessCardProps) => {
         {goal.status.toUpperCase()}
       </span>
 
+      {/* Progress bar */}
       <div className="mt-4">
         <div className="flex mb-2 items-center justify-between">
           <span className="text-sm font-semibold inline-block py-1 px-2 uppercase rounded-full text-secondary bg-tertiary">
@@ -79,6 +77,7 @@ const FitnessCard = ({ goal, onDelete }: FitnessCardProps) => {
         </div>
       </div>
 
+      {/* Edit and Delete buttons */}
       <div className="flex justify-between mt-4">
         <button
           onClick={() => handleEdit(goal.goal_id)}

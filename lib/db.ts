@@ -1,5 +1,7 @@
 import { Sequelize } from "sequelize";
 
+
+//intialising database
 export const sequelize = new Sequelize(
   process.env.DB_NAME || "", // Database name
   process.env.DB_USER || "", // Database username

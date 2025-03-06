@@ -1,6 +1,8 @@
 import React from 'react';
 import SignupForm from '../../../components/SignupForm';
 
+
+{/* Container to center the signup form on the screen */}
 const Signup = () => {
   return (
     <div className="flex justify-center items-center min-h-screen bg-tertiary">
