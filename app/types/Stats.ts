@@ -1,11 +1,9 @@
 export interface CaloriesData {
-    date: string;
-    calories: number;
-  }
-
-
+  date: string;
+  calories: number;
+}
 
 export interface WorkoutData {
-    date: string;
-    duration: number;
-  }
+  date: string;
+  duration: number;
+}

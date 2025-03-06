@@ -1,4 +1,4 @@
-import {create} from 'zustand';
+import { create } from 'zustand';
 
 interface ThemeState {
   theme: string;
@@ -6,7 +6,7 @@ interface ThemeState {
 }
 
 const useThemeStore = create<ThemeState>((set) => ({
-  theme: "default", // Default theme
+  theme: 'default', // Default theme
   setTheme: (theme: string) => set(() => ({ theme })),
 }));
 

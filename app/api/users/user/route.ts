@@ -1,7 +1,7 @@
-import { NextRequest, NextResponse } from "next/server";
-import * as UserRepository from "@/lib/repository/UserRepo"; // Ensure correct import path
-import bcrypt from "bcryptjs";
-import * as Sentry from "@sentry/nextjs";
+import { NextRequest, NextResponse } from 'next/server';
+import * as UserRepository from '@/lib/repository/UserRepo'; // Ensure correct import path
+import bcrypt from 'bcryptjs';
+import * as Sentry from '@sentry/nextjs';
 
 // GET User by ID
 export async function GET(req: NextRequest) {
@@ -10,16 +10,16 @@ export async function GET(req: NextRequest) {
       Extracting the user ID from the request headers.
       This ID is required to fetch the user details.
     */
-    const id: any = req.headers.get("id");
+    const id: any = req.headers.get('id');
 
-    console.log("id ", id);
+    console.log('id ', id);
 
     if (!id) {
       /*
         If the user ID is missing, return a 400 Bad Request response.
       */
       return NextResponse.json(
-        { error: "User ID is required" },
+        { error: 'User ID is required' },
         { status: 400 }
       );
     }
@@ -33,7 +33,7 @@ export async function GET(req: NextRequest) {
       /*
         If no user is found, return a 404 Not Found response.
       */
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
     /*
@@ -56,7 +56,7 @@ export async function PATCH(req: NextRequest) {
       Parsing the request body to extract the new password.
     */
     const body = await req.json();
-    const email: any = req.headers.get("email");
+    const email: any = req.headers.get('email');
 
     const { newPassword } = body;
 
@@ -65,7 +65,7 @@ export async function PATCH(req: NextRequest) {
         If the new password is not provided, return a 400 Bad Request response.
       */
       return NextResponse.json(
-        { error: "New Password was not entered" },
+        { error: 'New Password was not entered' },
         { status: 400 }
       );
     }
@@ -79,10 +79,10 @@ export async function PATCH(req: NextRequest) {
       /*
         If no user is found, return a 404 Not Found response.
       */
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
-    console.log("user ", user);
+    console.log('user ', user);
 
     /*
       Checking if the new password is the same as the old password.
@@ -91,7 +91,7 @@ export async function PATCH(req: NextRequest) {
     const oldPassword: any = user[0].password;
     if (bcrypt.compareSync(newPassword, oldPassword)) {
       return NextResponse.json(
-        { error: "Old Password and New Password cannot be the same" },
+        { error: 'Old Password and New Password cannot be the same' },
         { status: 400 }
       );
     }
@@ -111,7 +111,7 @@ export async function PATCH(req: NextRequest) {
       Returning a success message with a 200 OK response.
     */
     return NextResponse.json(
-      { message: "New Password updated successfully" },
+      { message: 'New Password updated successfully' },
       { status: 200 }
     );
   } catch (error: any) {

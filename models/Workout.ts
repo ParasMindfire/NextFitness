@@ -1,10 +1,10 @@
-import { DataTypes } from "sequelize";
-import { sequelize } from "../lib/db";
-import User from "./User";
+import { DataTypes } from 'sequelize';
+import { sequelize } from '../lib/db';
+import User from './User';
 
 //Workout Logging Model
 const Workout = sequelize.define(
-  "Workout",
+  'Workout',
   {
     workout_id: {
       type: DataTypes.INTEGER,
@@ -15,7 +15,7 @@ const Workout = sequelize.define(
       type: DataTypes.INTEGER,
       references: {
         model: User,
-        key: "user_id",
+        key: 'user_id',
       },
       allowNull: false,
     },
@@ -37,9 +37,9 @@ const Workout = sequelize.define(
     },
   },
   {
-    tableName: "workouts",
+    tableName: 'workouts',
     timestamps: false,
-  },
+  }
 );
 
 export default Workout;

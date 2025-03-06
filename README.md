@@ -19,10 +19,11 @@ Follow these steps to get the application up and running on your local machine:
    git clone https://github.com/your-username/fitness-tracker.git
    cd fitness-tracker
 
+   ```
+
 2. npm install
 
 3. npm run dev
-
 
 ## About The Application
 
@@ -40,26 +41,19 @@ The Fitness Tracker Application is designed to help users track their fitness jo
 - **Visualizations**: Use graphs and charts to visualize your workout data and track your improvements.
 - **User-Friendly Interface**: Intuitive and easy-to-use interface for a seamless user experience.
 
-
 ## Screenshots
 
 ### Screenshot 1: Landing Page
 
 ![Landing Page](./public/landing.png)
-*Landing page featuring a navbar and an AI chat interface for user interaction.*
+_Landing page featuring a navbar and an AI chat interface for user interaction._
 
 ### Screenshot 2: Profile Page
 
 ![Profile Page](./public/profile.png)
-*Profile page displaying user details and charts to track fitness progress.*
+_Profile page displaying user details and charts to track fitness progress._
 
 ### Screenshot 3: Workout Calendar
 
 ![Workout Calendar](./public/calender.png)
-*Workout calendar view for scheduling and tracking workouts.*
-
-
-
-
-
-
+_Workout calendar view for scheduling and tracking workouts._

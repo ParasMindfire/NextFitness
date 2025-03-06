@@ -1,6 +1,6 @@
-import { FitnessGoal } from "../types";
-import { create } from "zustand";
-import { getAllFitnessGoals } from "../../services/GoalAPI";
+import { FitnessGoal } from '../types';
+import { create } from 'zustand';
+import { getAllFitnessGoals } from '../../services/GoalAPI';
 
 interface FitnessGoalState {
   fitnessGoals: FitnessGoal[];
@@ -10,8 +10,8 @@ interface FitnessGoalState {
   id: number | null;
   setFitnessGoals: (goals: FitnessGoal[]) => void;
   setFormGoalData: (data: FitnessGoal | null) => void;
-  setId: (id: number|null) => void;
-  fetchFitnessGoals: (token:any) => Promise<void>;
+  setId: (id: number | null) => void;
+  fetchFitnessGoals: (token: any) => Promise<void>;
   trigger: boolean;
   setTrigger: (flag: boolean) => void;
 }
@@ -26,16 +26,16 @@ export const useGoalStore = create<FitnessGoalState>((set) => ({
   id: null,
   setFitnessGoals: (goals: FitnessGoal[]) => set({ fitnessGoals: goals }),
   setFormGoalData: (data: FitnessGoal | null) => set({ formGoalData: data }),
-  setId: (id: number|null) => set({ id }),
+  setId: (id: number | null) => set({ id }),
 
-  fetchFitnessGoals: async (token:any) => {
+  fetchFitnessGoals: async (token: any) => {
     try {
       set({ loading: true, error: null });
       const data = await getAllFitnessGoals(token);
       set({ fitnessGoals: data, loading: false });
     } catch (error) {
-      console.error("Error fetching fitness goals:", error);
-      set({ error: "Failed to load fitness goals", loading: false });
+      console.error('Error fetching fitness goals:', error);
+      set({ error: 'Failed to load fitness goals', loading: false });
     }
   },
 

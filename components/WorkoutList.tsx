@@ -1,10 +1,10 @@
-"use client";
+'use client';
 
-import React, { useEffect, useState } from "react";
-import { WorkoutCard } from "../components/WorkoutCard";
-import { useWorkoutStore } from "../app/store/useWorkoutStore";
-import { deleteWorkout, getUserWorkouts } from "../services/WorkoutAPI";
-import { useRouter } from "next/navigation";
+import React, { useEffect, useState } from 'react';
+import { WorkoutCard } from '../components/WorkoutCard';
+import { useWorkoutStore } from '../app/store/useWorkoutStore';
+import { deleteWorkout, getUserWorkouts } from '../services/WorkoutAPI';
+import { useRouter } from 'next/navigation';
 import {
   YOUR_WORKOUTS,
   LOADING_WORKOUTS,
@@ -14,14 +14,15 @@ import {
   NO_WORKOUTS,
   PREVIOUS,
   NEXT,
-  BACK_TO_DASHBOARD
-} from "../constants/constants";
-import useSWR from "swr";
-import DeleteModal from "./DeleteModal";
+  BACK_TO_DASHBOARD,
+} from '../constants/constants';
+import useSWR from 'swr';
+import DeleteModal from './DeleteModal';
 
 const WorkoutList: React.FC = () => {
   // State and store hooks
-  const { workouts, loading, error, fetchWorkouts, trigger, setTrigger } = useWorkoutStore();
+  const { workouts, loading, error, fetchWorkouts, trigger, setTrigger } =
+    useWorkoutStore();
   const [currentPage, setCurrentPage] = useState(1); // Current page for pagination
   const [sortOrder, setSortOrder] = useState<'asc' | 'desc'>('asc'); // Sort order state
   const workoutsPerPage = 4; // Number of workouts to display per page
@@ -32,12 +33,16 @@ const WorkoutList: React.FC = () => {
 
   // Fetch token from local storage on component mount
   useEffect(() => {
-    setToken(localStorage.getItem("accessToken"));
+    setToken(localStorage.getItem('accessToken'));
   }, []);
 
   // Fetch fitness goals using SWR
-  const { data: FitnessGoal, isLoading, mutate } = useSWR(
-    token ? ["/fitnessGoals", token] : null,
+  const {
+    data: FitnessGoal,
+    isLoading,
+    mutate,
+  } = useSWR(
+    token ? ['/fitnessGoals', token] : null,
     ([url, token]) => fetcher(url, token),
     { revalidateOnFocus: false }
   );
@@ -65,14 +70,19 @@ const WorkoutList: React.FC = () => {
   const totalPages = Math.ceil(sortedWorkouts.length / workoutsPerPage);
   const indexOfLastWorkout = currentPage * workoutsPerPage;
   const indexOfFirstWorkout = indexOfLastWorkout - workoutsPerPage;
-  const currentWorkouts = sortedWorkouts.slice(indexOfFirstWorkout, indexOfLastWorkout);
+  const currentWorkouts = sortedWorkouts.slice(
+    indexOfFirstWorkout,
+    indexOfLastWorkout
+  );
 
   // Pagination controls
-  const nextPage = () => currentPage < totalPages && setCurrentPage(currentPage + 1);
+  const nextPage = () =>
+    currentPage < totalPages && setCurrentPage(currentPage + 1);
   const prevPage = () => currentPage > 1 && setCurrentPage(currentPage - 1);
 
   // Toggle sort order
-  const toggleSortOrder = () => setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
+  const toggleSortOrder = () =>
+    setSortOrder(sortOrder === 'asc' ? 'desc' : 'asc');
 
   // Handle delete button click
   const handleDeleteClick = (id: any) => {
@@ -91,46 +101,54 @@ const WorkoutList: React.FC = () => {
   };
 
   // Navigate back to dashboard
-  const handleBack = () => router.push("/");
+  const handleBack = () => router.push('/');
 
   return (
-    <div className="bg-white p-8 rounded-2xl shadow-2xl w-full max-w-6xl mx-auto text-center mt-24">
-      <h2 className="text-4xl font-extrabold text-secondary mb-6">{YOUR_WORKOUTS}</h2>
+    <div className='bg-white p-8 rounded-2xl shadow-2xl w-full max-w-6xl mx-auto text-center mt-24'>
+      <h2 className='text-4xl font-extrabold text-secondary mb-6'>
+        {YOUR_WORKOUTS}
+      </h2>
 
-      {loading && <p className="text-primary">{LOADING_WORKOUTS}</p>}
-      {error && <p className="text-error">{error}</p>}
+      {loading && <p className='text-primary'>{LOADING_WORKOUTS}</p>}
+      {error && <p className='text-error'>{error}</p>}
 
       {workouts.length > 0 ? (
         <>
-          <div className="flex justify-end mb-8">
+          <div className='flex justify-end mb-8'>
             <button
               onClick={toggleSortOrder}
-              className="cursor-pointer bg-primary text-white font-semibold px-6 py-3 rounded-lg transition-all hover:bg-hover"
+              className='cursor-pointer bg-primary text-white font-semibold px-6 py-3 rounded-lg transition-all hover:bg-hover'
             >
               Sort by Date ({sortOrder === ASC ? ASCENDING : DESCENDING})
             </button>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full">
+          <div className='grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 w-full'>
             {currentWorkouts.map((workout) => (
-              <WorkoutCard key={workout.workout_id} workout={workout} onDelete={handleDeleteClick} />
+              <WorkoutCard
+                key={workout.workout_id}
+                workout={workout}
+                onDelete={handleDeleteClick}
+              />
             ))}
           </div>
 
           {totalPages > 1 && (
-            <div className="flex flex-col justify-center items-center mt-8 space-y-4">
-              <div className="flex justify-center items-center space-x-8">
+            <div className='flex flex-col justify-center items-center mt-8 space-y-4'>
+              <div className='flex justify-center items-center space-x-8'>
                 <button
                   onClick={prevPage}
                   disabled={currentPage === 1}
                   className={`px-6 py-3 rounded-lg text-white font-medium transition ${
-                    currentPage === 1 ? "bg-nAllowed cursor-not-allowed" : "bg-primary hover:bg-hover cursor-pointer"
+                    currentPage === 1
+                      ? 'bg-nAllowed cursor-not-allowed'
+                      : 'bg-primary hover:bg-hover cursor-pointer'
                   }`}
                 >
                   {PREVIOUS}
                 </button>
 
-                <span className="text-secondary font-semibold text-lg">
+                <span className='text-secondary font-semibold text-lg'>
                   Page {currentPage} of {totalPages}
                 </span>
 
@@ -138,7 +156,9 @@ const WorkoutList: React.FC = () => {
                   onClick={nextPage}
                   disabled={currentPage === totalPages}
                   className={`px-6 py-3 rounded-lg text-white font-medium transition ${
-                    currentPage === totalPages ? "bg-nAllowed cursor-not-allowed" : "bg-primary hover:bg-hover cursor-pointer"
+                    currentPage === totalPages
+                      ? 'bg-nAllowed cursor-not-allowed'
+                      : 'bg-primary hover:bg-hover cursor-pointer'
                   }`}
                 >
                   {NEXT}
@@ -147,7 +167,7 @@ const WorkoutList: React.FC = () => {
 
               <button
                 onClick={handleBack}
-                className="cursor-pointer w-full max-w-xs bg-tertiary hover:bg-hover hover:text-white text-secondary font-bold py-3 rounded-lg transition duration-200"
+                className='cursor-pointer w-full max-w-xs bg-tertiary hover:bg-hover hover:text-white text-secondary font-bold py-3 rounded-lg transition duration-200'
               >
                 {BACK_TO_DASHBOARD}
               </button>
@@ -155,7 +175,7 @@ const WorkoutList: React.FC = () => {
           )}
         </>
       ) : (
-        <p className="text-gray-500 mt-6">{NO_WORKOUTS}</p>
+        <p className='text-gray-500 mt-6'>{NO_WORKOUTS}</p>
       )}
 
       {isModalOpen && (

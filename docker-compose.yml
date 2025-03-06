@@ -8,7 +8,7 @@ services:
       dockerfile: Dockerfile
       target: ${NODE_ENV:-development}
     ports:
-      - "3000:3000"
+      - '3000:3000'
     environment:
       - NODE_ENV=${NODE_ENV:-development}
       - DATABASE_URL=mysql://root:Pa1ra2@3@mysql-db:3306/fitness_tracker
@@ -33,12 +33,22 @@ services:
       MYSQL_ROOT_PASSWORD: Pa1ra2@3
       MYSQL_DATABASE: fitness_tracker
     ports:
-      - "3307:3306"  # Changed to avoid port conflict
+      - '3307:3306' # Changed to avoid port conflict
     volumes:
       - mysql-data:/var/lib/mysql
     command: --default-authentication-plugin=mysql_native_password
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pPa1ra2@3"]
+      test:
+        [
+          'CMD',
+          'mysqladmin',
+          'ping',
+          '-h',
+          'localhost',
+          '-u',
+          'root',
+          '-pPa1ra2@3',
+        ]
       interval: 5s
       timeout: 5s
       retries: 5

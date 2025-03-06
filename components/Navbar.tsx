@@ -1,14 +1,22 @@
-"use client";
+'use client';
 
-import Link from "next/link";
-import { useRouter } from "next/navigation";
-import React, { useEffect, useState, useRef } from "react";
-import { useUserStore } from "../app/store/useUserStore";
-import { fetchStreakMonth, fetchWorkoutDates } from "../services/WorkoutAPI";
-import { useWorkoutStore } from "@/app/store/useWorkoutStore";
-import { Workout } from "../app/types";
-import { useGoalStore } from "@/app/store/useGoalStore";
-import { FaBars, FaTimes, FaDumbbell, FaBullseye, FaCalendarAlt, FaFireAlt, FaUser } from "react-icons/fa";
+import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState, useRef } from 'react';
+import { useUserStore } from '../app/store/useUserStore';
+import { fetchStreakMonth, fetchWorkoutDates } from '../services/WorkoutAPI';
+import { useWorkoutStore } from '@/app/store/useWorkoutStore';
+import { Workout } from '../app/types';
+import { useGoalStore } from '@/app/store/useGoalStore';
+import {
+  FaBars,
+  FaTimes,
+  FaDumbbell,
+  FaBullseye,
+  FaCalendarAlt,
+  FaFireAlt,
+  FaUser,
+} from 'react-icons/fa';
 
 import {
   NAVBAR_TITLE,
@@ -21,10 +29,10 @@ import {
   LOGOUT_BUTTON,
   LOGIN_BUTTON,
   SIGNUP_BUTTON,
-} from "../constants/constants";
+} from '../constants/constants';
 
 const Navbar: React.FC = () => {
-  const [token, setToken] = useState<string>("");
+  const [token, setToken] = useState<string>('');
   const [isMenuOpen, setIsMenuOpen] = useState<boolean>(false);
   const [isWorkoutsOpen, setIsWorkoutsOpen] = useState<boolean>(false);
   const [isGoalsOpen, setIsGoalsOpen] = useState<boolean>(false);
@@ -45,7 +53,7 @@ const Navbar: React.FC = () => {
 
   // Fetch token from local storage on component mount
   useEffect(() => {
-    const storedToken = localStorage.getItem("accessToken") || "";
+    const storedToken = localStorage.getItem('accessToken') || '';
     setToken(storedToken);
   }, []);
 
@@ -53,9 +61,12 @@ const Navbar: React.FC = () => {
   useEffect(() => {
     if (user && token) {
       const fetchStreak = async () => {
-        const currStreak: number | { streak: number } = await fetchStreakMonth(token);
-        console.log("Fetched Streak:", currStreak);
-        setStreak(typeof currStreak === "object" ? currStreak.streak : currStreak);
+        const currStreak: number | { streak: number } =
+          await fetchStreakMonth(token);
+        console.log('Fetched Streak:', currStreak);
+        setStreak(
+          typeof currStreak === 'object' ? currStreak.streak : currStreak
+        );
       };
 
       const fetchDates = async () => {
@@ -79,11 +90,11 @@ const Navbar: React.FC = () => {
 
   // Handle logout functionality
   const handleLogout = () => {
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("refreshToken");
+    localStorage.removeItem('accessToken');
+    localStorage.removeItem('refreshToken');
     setUser(null);
-    router.push("/login");
-    localStorage.removeItem("user-storage");
+    router.push('/login');
+    localStorage.removeItem('user-storage');
   };
 
   // Get days of the current month
@@ -93,7 +104,10 @@ const Navbar: React.FC = () => {
     const month = today.getMonth();
     const daysInMonth = new Date(year, month + 1, 0).getDate();
 
-    return Array.from({ length: daysInMonth }, (_, i) => new Date(year, month, i + 1));
+    return Array.from(
+      { length: daysInMonth },
+      (_, i) => new Date(year, month, i + 1)
+    );
   };
 
   // Toggle menu visibility
@@ -132,10 +146,10 @@ const Navbar: React.FC = () => {
   // Toggle calendar visibility
   const toggleCalendar = () => {
     closeMenu();
-    console.log("Toggle Calendar Clicked");
+    console.log('Toggle Calendar Clicked');
     setIsCalendarOpen((prev) => {
       const newState = !prev;
-      console.log("New State:", newState);
+      console.log('New State:', newState);
       return newState;
     });
     setIsWorkoutsOpen(false);
@@ -145,7 +159,7 @@ const Navbar: React.FC = () => {
 
   // Log calendar state changes
   useEffect(() => {
-    console.log("isCalendarOpen:", isCalendarOpen);
+    console.log('isCalendarOpen:', isCalendarOpen);
   }, [isCalendarOpen]);
 
   // Handle add workout click
@@ -165,7 +179,10 @@ const Navbar: React.FC = () => {
   // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
         setIsWorkoutsOpen(false);
         setIsGoalsOpen(false);
         setIsProfileOpen(false);
@@ -173,9 +190,9 @@ const Navbar: React.FC = () => {
       }
     };
 
-    document.addEventListener("mousedown", handleClickOutside);
+    document.addEventListener('mousedown', handleClickOutside);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener('mousedown', handleClickOutside);
     };
   }, []);
 
@@ -189,87 +206,110 @@ const Navbar: React.FC = () => {
   };
 
   return (
-    <nav className="bg-primary p-4 mb-4 relative z-50" ref={dropdownRef}>
-      <div className="flex justify-between items-center">
-        <div className="text-white text-2xl font-bold">
-          <Link href="/" onClick={closeMenu}>{NAVBAR_TITLE}</Link>
+    <nav className='bg-primary p-4 mb-4 relative z-50' ref={dropdownRef}>
+      <div className='flex justify-between items-center'>
+        <div className='text-white text-2xl font-bold'>
+          <Link href='/' onClick={closeMenu}>
+            {NAVBAR_TITLE}
+          </Link>
         </div>
 
-        <div className="md:hidden">
-          <button onClick={toggleMenu} className="text-white focus:outline-none">
+        <div className='md:hidden'>
+          <button
+            onClick={toggleMenu}
+            className='text-white focus:outline-none'
+          >
             {isMenuOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
           </button>
         </div>
 
         <div
           className={`flex flex-col md:flex-row md:items-center space-y-2 md:space-y-0 md:space-x-4 absolute md:static bg-primary md:bg-transparent w-full md:w-auto left-0 md:pl-0 pl-4 transition-all duration-300 ease-in-out ${
-            isMenuOpen ? "top-16" : "top-[-490px]"
+            isMenuOpen ? 'top-16' : 'top-[-490px]'
           } z-50`}
         >
           {user ? (
             <>
-              <div className="relative">
+              <div className='relative'>
                 <button
                   onClick={toggleWorkouts}
-                  className="text-white hover:bg-primary px-4 py-2 rounded-lg flex items-center"
+                  className='text-white hover:bg-primary px-4 py-2 rounded-lg flex items-center'
                 >
-                  <FaDumbbell className="mr-2" />
+                  <FaDumbbell className='mr-2' />
                   {WORKOUTS}
                 </button>
                 {isWorkoutsOpen && (
-                  <div className="absolute left-0 bg-white text-black shadow-lg rounded-lg w-48 z-50">
-                    <Link href="/workout-lists" className="block px-4 py-2 hover:bg-tertiary" onClick={closeMenu}>
+                  <div className='absolute left-0 bg-white text-black shadow-lg rounded-lg w-48 z-50'>
+                    <Link
+                      href='/workout-lists'
+                      className='block px-4 py-2 hover:bg-tertiary'
+                      onClick={closeMenu}
+                    >
                       {VIEW_WORKOUTS}
                     </Link>
-                    <Link onClick={handleAddWorkoutClick} href="/workout-form" className="block px-4 py-2 hover:bg-tertiary">
+                    <Link
+                      onClick={handleAddWorkoutClick}
+                      href='/workout-form'
+                      className='block px-4 py-2 hover:bg-tertiary'
+                    >
                       {ADD_WORKOUT_TITLE}
                     </Link>
                   </div>
                 )}
               </div>
 
-              <div className="relative">
+              <div className='relative'>
                 <button
                   onClick={toggleGoals}
-                  className="text-white hover:bg-primary px-4 py-2 rounded-lg flex items-center"
+                  className='text-white hover:bg-primary px-4 py-2 rounded-lg flex items-center'
                 >
-                  <FaBullseye className="mr-2" />
+                  <FaBullseye className='mr-2' />
                   {FITNESS_GOALS_TITLE}
                 </button>
                 {isGoalsOpen && (
-                  <div className="absolute left-0 bg-white text-black shadow-lg rounded-lg w-48 z-50">
-                    <Link href="/goal-lists" className="block px-4 py-2 hover:bg-tertiary" onClick={closeMenu}>
+                  <div className='absolute left-0 bg-white text-black shadow-lg rounded-lg w-48 z-50'>
+                    <Link
+                      href='/goal-lists'
+                      className='block px-4 py-2 hover:bg-tertiary'
+                      onClick={closeMenu}
+                    >
                       {VIEW_FITNESS_GOALS}
                     </Link>
-                    <Link href="/goal-form" className="block px-4 py-2 hover:bg-tertiary" onClick={handleAddGoalClick}>
+                    <Link
+                      href='/goal-form'
+                      className='block px-4 py-2 hover:bg-tertiary'
+                      onClick={handleAddGoalClick}
+                    >
                       {ADD_FITNESS_GOAL_TITLE}
                     </Link>
                   </div>
                 )}
               </div>
 
-              <div className="relative">
+              <div className='relative'>
                 <button
                   onClick={toggleCalendar}
-                  className="text-white hover:bg-primary px-4 py-2 rounded-lg flex items-center"
+                  className='text-white hover:bg-primary px-4 py-2 rounded-lg flex items-center'
                 >
-                  <FaCalendarAlt className="mr-2" /> Workout Calendar
+                  <FaCalendarAlt className='mr-2' /> Workout Calendar
                 </button>
                 {isCalendarOpen && (
-                  <div className="fixed inset-0 bg-tertiary bg-opacity-95 flex items-center justify-center z-50 p-6">
-                    <div className="relative bg-white rounded-lg shadow-lg p-6 w-full max-w-md">
+                  <div className='fixed inset-0 bg-tertiary bg-opacity-95 flex items-center justify-center z-50 p-6'>
+                    <div className='relative bg-white rounded-lg shadow-lg p-6 w-full max-w-md'>
                       <button
                         onClick={() => setIsCalendarOpen(false)}
-                        className="absolute top-2 right-2 text-gray-600 hover:text-gray-900 text-lg"
+                        className='absolute top-2 right-2 text-gray-600 hover:text-gray-900 text-lg'
                       >
                         ✖
                       </button>
 
-                      <h2 className="text-xl font-bold text-center mb-4">Workouts This Month</h2>
+                      <h2 className='text-xl font-bold text-center mb-4'>
+                        Workouts This Month
+                      </h2>
 
-                      <div className="grid grid-cols-7 gap-2 pb-16">
+                      <div className='grid grid-cols-7 gap-2 pb-16'>
                         {getCurrentMonthDays().map((day) => {
-                          const dateStr = day.toLocaleDateString("en-CA");
+                          const dateStr = day.toLocaleDateString('en-CA');
                           const isWorkoutDay = workoutDates.some(
                             (workout) => workout.workout_date === dateStr
                           );
@@ -283,12 +323,12 @@ const Navbar: React.FC = () => {
                               key={dateStr}
                               className={`w-10 h-10 flex items-center justify-center rounded-full ${
                                 isFutureDate
-                                  ? "bg-nAllowed text-white"
+                                  ? 'bg-nAllowed text-white'
                                   : workoutCount > 1
-                                  ? "bg-secondary text-white"
-                                  : isWorkoutDay
-                                  ? "bg-primary text-white"
-                                  : "bg-error text-white"
+                                    ? 'bg-secondary text-white'
+                                    : isWorkoutDay
+                                      ? 'bg-primary text-white'
+                                      : 'bg-error text-white'
                               }`}
                             >
                               {day.getDate()}
@@ -297,24 +337,24 @@ const Navbar: React.FC = () => {
                         })}
                       </div>
 
-                      <div className="absolute bottom-4 right-4 bg-gray-100 p-3 rounded-lg shadow-md">
-                        <div className="flex items-center space-x-2 mb-1">
-                          <div className="w-4 h-4 bg-primary rounded-full"></div>
-                          <span className="text-xs">Workout Added</span>
+                      <div className='absolute bottom-4 right-4 bg-gray-100 p-3 rounded-lg shadow-md'>
+                        <div className='flex items-center space-x-2 mb-1'>
+                          <div className='w-4 h-4 bg-primary rounded-full'></div>
+                          <span className='text-xs'>Workout Added</span>
                         </div>
-                        <div className="flex items-center space-x-2 mb-1">
-                          <div className="w-4 h-4 bg-secondary rounded-full"></div>
-                          <span className="text-xs">Multiple Workouts</span>
+                        <div className='flex items-center space-x-2 mb-1'>
+                          <div className='w-4 h-4 bg-secondary rounded-full'></div>
+                          <span className='text-xs'>Multiple Workouts</span>
                         </div>
-                        <div className="flex items-center space-x-2">
-                          <div className="w-4 h-4 bg-error rounded-full"></div>
-                          <span className="text-xs">No Workout</span>
+                        <div className='flex items-center space-x-2'>
+                          <div className='w-4 h-4 bg-error rounded-full'></div>
+                          <span className='text-xs'>No Workout</span>
                         </div>
                       </div>
 
                       <button
                         onClick={() => setIsCalendarOpen(false)}
-                        className="mt-6 text-primary hover:underline w-full text-center"
+                        className='mt-6 text-primary hover:underline w-full text-center'
                       >
                         Close
                       </button>
@@ -323,27 +363,31 @@ const Navbar: React.FC = () => {
                 )}
               </div>
 
-              <div className="text-white px-4 py-2 rounded-lg flex items-center">
-                <FaFireAlt className="mr-2" />
+              <div className='text-white px-4 py-2 rounded-lg flex items-center'>
+                <FaFireAlt className='mr-2' />
                 Streak: {streak} days
               </div>
 
-              <div className="relative">
+              <div className='relative'>
                 <button
                   onClick={toggleProfile}
-                  className="text-white hover:bg-primary px-4 py-2 rounded-lg flex items-center"
+                  className='text-white hover:bg-primary px-4 py-2 rounded-lg flex items-center'
                 >
-                  <FaUser className="mr-2" />
-                  {user && user.name ? user.name : "Profile"}
+                  <FaUser className='mr-2' />
+                  {user && user.name ? user.name : 'Profile'}
                 </button>
                 {isProfileOpen && (
-                  <div className="absolute top-full left-0 mt-2 bg-white text-black shadow-lg rounded-lg min-w-32 z-50">
-                    <Link href="/profile" className="block px-4 py-2 hover:bg-tertiary" onClick={closeMenu}>
+                  <div className='absolute top-full left-0 mt-2 bg-white text-black shadow-lg rounded-lg min-w-32 z-50'>
+                    <Link
+                      href='/profile'
+                      className='block px-4 py-2 hover:bg-tertiary'
+                      onClick={closeMenu}
+                    >
                       View Profile
                     </Link>
                     <button
                       onClick={handleLogout}
-                      className="block w-full text-left px-4 py-2 hover:bg-tertiary"
+                      className='block w-full text-left px-4 py-2 hover:bg-tertiary'
                     >
                       {LOGOUT_BUTTON}
                     </button>
@@ -353,10 +397,18 @@ const Navbar: React.FC = () => {
             </>
           ) : (
             <>
-              <Link href="/login" className="text-white hover:bg-primary px-4 py-2 rounded-lg" onClick={closeMenu}>
+              <Link
+                href='/login'
+                className='text-white hover:bg-primary px-4 py-2 rounded-lg'
+                onClick={closeMenu}
+              >
                 {LOGIN_BUTTON}
               </Link>
-              <Link href="/signup" className="text-white hover:bg-primary px-4 py-2 rounded-lg" onClick={closeMenu}>
+              <Link
+                href='/signup'
+                className='text-white hover:bg-primary px-4 py-2 rounded-lg'
+                onClick={closeMenu}
+              >
                 {SIGNUP_BUTTON}
               </Link>
             </>

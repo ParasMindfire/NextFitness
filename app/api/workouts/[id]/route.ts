@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
-import * as workoutRepo from "@/lib/repository/WorkoutRepo";
-import * as Sentry from "@sentry/nextjs";
+import { NextRequest, NextResponse } from 'next/server';
+import * as workoutRepo from '@/lib/repository/WorkoutRepo';
+import * as Sentry from '@sentry/nextjs';
 
 export async function GET(
   req: NextRequest,
@@ -15,7 +15,7 @@ export async function GET(
 
     if (!id) {
       return NextResponse.json(
-        { error: "Workout ID is required" },
+        { error: 'Workout ID is required' },
         { status: 400 }
       );
     }
@@ -27,7 +27,7 @@ export async function GET(
     const workoutId = Number(id);
     if (isNaN(workoutId)) {
       return NextResponse.json(
-        { error: "Invalid Workout ID format" },
+        { error: 'Invalid Workout ID format' },
         { status: 400 }
       );
     }
@@ -55,7 +55,7 @@ export async function GET(
     */
     Sentry.captureException(error);
     return NextResponse.json(
-      { error: "Something went wrong" },
+      { error: 'Something went wrong' },
       { status: 500 }
     );
   }

@@ -1,11 +1,11 @@
-import { NextResponse } from "next/server";
-import * as workoutRepo from "../../../lib/repository/WorkoutRepo";
-import * as Sentry from "@sentry/nextjs";
+import { NextResponse } from 'next/server';
+import * as workoutRepo from '../../../lib/repository/WorkoutRepo';
+import * as Sentry from '@sentry/nextjs';
 
 export async function GET(req: Request) {
   try {
-    const id: any = req.headers.get("id");
-    console.log("id ", id);
+    const id: any = req.headers.get('id');
+    console.log('id ', id);
 
     const workouts = await workoutRepo.getWorkoutsByUser(id);
 
@@ -44,7 +44,7 @@ export async function GET(req: Request) {
   } catch (error) {
     Sentry.captureException(error);
     return NextResponse.json(
-      { error: "Something went wrong" },
+      { error: 'Something went wrong' },
       { status: 500 }
     );
   }

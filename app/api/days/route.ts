@@ -1,12 +1,12 @@
-import * as workoutRepo from "../../../lib/repository/WorkoutRepo";
-import * as Sentry from "@sentry/nextjs";
+import * as workoutRepo from '../../../lib/repository/WorkoutRepo';
+import * as Sentry from '@sentry/nextjs';
 
 export async function GET(req: Request) {
   try {
     // Get user ID from request headers
-    const id = req.headers.get("id");
+    const id = req.headers.get('id');
     if (!id) {
-      return new Response(JSON.stringify({ error: "User ID is required" }), {
+      return new Response(JSON.stringify({ error: 'User ID is required' }), {
         status: 400,
       });
     }
@@ -14,11 +14,11 @@ export async function GET(req: Request) {
     // Parse URL parameters for year and month
     const url = new URL(req.url);
     const year =
-      url.searchParams.get("year") || new Date().getFullYear().toString();
+      url.searchParams.get('year') || new Date().getFullYear().toString();
     const month =
-      url.searchParams.get("month") || (new Date().getMonth() + 1).toString();
+      url.searchParams.get('month') || (new Date().getMonth() + 1).toString();
 
-    console.log("Year:", year, "Month:", month);
+    console.log('Year:', year, 'Month:', month);
 
     // Define start and end dates for the selected month
     const startDate = new Date(`${year}-${month}-01`);
@@ -37,16 +37,16 @@ export async function GET(req: Request) {
         ...workout,
         workout_date: new Date(workout.workout_date)
           .toISOString()
-          .split("T")[0], // Format date to yyyy-mm-dd
+          .split('T')[0], // Format date to yyyy-mm-dd
       }));
 
     return new Response(JSON.stringify(monthlyWorkouts), { status: 200 });
   } catch (error) {
     Sentry.captureException(error);
-    console.error("Error fetching workouts:", error);
+    console.error('Error fetching workouts:', error);
 
     // Return internal server error response
-    return new Response(JSON.stringify({ error: "Internal Server Error" }), {
+    return new Response(JSON.stringify({ error: 'Internal Server Error' }), {
       status: 500,
     });
   }

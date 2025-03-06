@@ -24,8 +24,10 @@ describe('Landing Component', () => {
     expect(screen.getByText('Chat with AI')).toBeInTheDocument();
 
     // Use getAllByText to find all matching elements
-    const aiMessages = screen.getAllByText((content:any, element:any) => {
-      return element?.textContent?.includes('AI: Hi there! How can I assist you today?');
+    const aiMessages = screen.getAllByText((content: any, element: any) => {
+      return element?.textContent?.includes(
+        'AI: Hi there! How can I assist you today?'
+      );
     });
     expect(aiMessages.length).toBeGreaterThan(0);
   });

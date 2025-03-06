@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
-import * as UserRepository from "@/lib/repository/UserRepo"; // Ensure correct import path
-import * as Sentry from "@sentry/nextjs";
+import { NextRequest, NextResponse } from 'next/server';
+import * as UserRepository from '@/lib/repository/UserRepo'; // Ensure correct import path
+import * as Sentry from '@sentry/nextjs';
 
 // DELETE User by ID
 export async function DELETE(
@@ -20,7 +20,7 @@ export async function DELETE(
         return a 400 Bad Request response.
       */
       return NextResponse.json(
-        { error: "User ID is required" },
+        { error: 'User ID is required' },
         { status: 400 }
       );
     }
@@ -35,7 +35,7 @@ export async function DELETE(
       to indicate successful deletion.
     */
     return NextResponse.json(
-      { message: "User deleted successfully" },
+      { message: 'User deleted successfully' },
       { status: 200 }
     );
   } catch (error: any) {

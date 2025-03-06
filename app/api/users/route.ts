@@ -1,12 +1,12 @@
-import { NextRequest, NextResponse } from "next/server";
-import bcrypt from "bcryptjs";
-import * as UserRepository from "@/lib/repository/UserRepo"; // Use @ for absolute imports if configured
-import * as Sentry from "@sentry/nextjs";
+import { NextRequest, NextResponse } from 'next/server';
+import bcrypt from 'bcryptjs';
+import * as UserRepository from '@/lib/repository/UserRepo'; // Use @ for absolute imports if configured
+import * as Sentry from '@sentry/nextjs';
 
 // GET - Fetch All Users
 export async function GET() {
   try {
-    console.log("middleware hii getalluser");
+    console.log('middleware hii getalluser');
 
     /*
       Fetching all users from the UserRepository.
@@ -42,7 +42,7 @@ export async function POST(req: Request) {
     */
     if (!name || !email || !password || !phone || !address) {
       return NextResponse.json(
-        { error: "Enter All The Fields" },
+        { error: 'Enter All The Fields' },
         { status: 400 }
       );
     }
@@ -52,13 +52,13 @@ export async function POST(req: Request) {
     */
     const [existingUser] = await UserRepository.getUserByEmail(email);
 
-    console.log("existing ", existingUser);
+    console.log('existing ', existingUser);
     if (existingUser.length > 0) {
       /*
         If a user already exists with the same email, return a 409 Conflict response.
       */
       return NextResponse.json(
-        { error: "User with this email already exists" },
+        { error: 'User with this email already exists' },
         { status: 409 }
       );
     }
@@ -83,11 +83,11 @@ export async function POST(req: Request) {
       Returning a success message with a 201 Created response.
     */
     return NextResponse.json(
-      { message: "User Registered Successfully" },
+      { message: 'User Registered Successfully' },
       { status: 201 }
     );
   } catch (error: any) {
-    console.log("kya error hai ", error);
+    console.log('kya error hai ', error);
     Sentry.captureException(error);
     /*
       Handling unexpected errors and returning a 500 Internal Server Error response.

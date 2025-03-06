@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React from 'react';
 
@@ -26,16 +26,16 @@ const FormField: React.FC<FormFieldProps> = ({
   return (
     <div>
       {/* Label for the input field */}
-      <label htmlFor={id} className="block text-secondary font-medium">
+      <label htmlFor={id} className='block text-secondary font-medium'>
         {label}
       </label>
 
       {/* Render select dropdown if type is "select" */}
-      {type === "select" ? (
+      {type === 'select' ? (
         <select
           id={id}
           {...register(id, validation)}
-          className="w-full p-2 border border-tertiary rounded-lg focus:ring-2 focus:ring-primary"
+          className='w-full p-2 border border-tertiary rounded-lg focus:ring-2 focus:ring-primary'
         >
           {options?.map((option) => (
             <option key={option.value} value={option.value}>
@@ -50,12 +50,12 @@ const FormField: React.FC<FormFieldProps> = ({
           id={id}
           placeholder={placeholder}
           {...register(id, validation)}
-          className="w-full p-2 border border-tertiary rounded-lg focus:ring-2 focus:ring-primary"
+          className='w-full p-2 border border-tertiary rounded-lg focus:ring-2 focus:ring-primary'
         />
       )}
 
       {/* Display validation error if present */}
-      {errors[id] && <p className="text-error text-sm">{errors[id].message}</p>}
+      {errors[id] && <p className='text-error text-sm'>{errors[id].message}</p>}
     </div>
   );
 };

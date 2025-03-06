@@ -1,8 +1,8 @@
-import { NextRequest, NextResponse } from "next/server";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import * as UserRepository from "@/lib/repository/UserRepo"; // Ensure correct import path
-import * as Sentry from "@sentry/nextjs";
+import { NextRequest, NextResponse } from 'next/server';
+import bcrypt from 'bcryptjs';
+import jwt from 'jsonwebtoken';
+import * as UserRepository from '@/lib/repository/UserRepo'; // Ensure correct import path
+import * as Sentry from '@sentry/nextjs';
 
 export async function POST(req: NextRequest) {
   try {
@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
     // Validate input fields
     if (!email || !password) {
       return NextResponse.json(
-        { error: "Enter All The Fields" },
+        { error: 'Enter All The Fields' },
         { status: 400 }
       );
     }
@@ -21,13 +21,13 @@ export async function POST(req: NextRequest) {
     // Fetch user by email
     const [user]: any = await UserRepository.getUserByEmail(email);
     if (!user || user.length === 0) {
-      return NextResponse.json({ error: "User not found" }, { status: 404 });
+      return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
     // Compare provided password with stored hash
     if (!bcrypt.compareSync(password, user[0].password)) {
       return NextResponse.json(
-        { error: "Invalid Credentials" },
+        { error: 'Invalid Credentials' },
         { status: 401 }
       );
     }
@@ -36,16 +36,16 @@ export async function POST(req: NextRequest) {
     const accessToken = jwt.sign(
       { id: user[0].user_id, email: user[0].email },
       process.env.JWT_SECRET as string,
-      { expiresIn: "15m" }
+      { expiresIn: '15m' }
     );
 
     return NextResponse.json(
-      { message: "Login successful", accessToken, user: user[0] },
+      { message: 'Login successful', accessToken, user: user[0] },
       { status: 200 }
     );
   } catch (error: any) {
     Sentry.captureException(error);
-    console.error("Login error:", error);
+    console.error('Login error:', error);
 
     // Return server error response
     return NextResponse.json({ error: error.message }, { status: 500 });

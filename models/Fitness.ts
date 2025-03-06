@@ -1,10 +1,10 @@
-import { DataTypes } from "sequelize";
-import { sequelize } from "../lib/db";
-import User from "./User";
+import { DataTypes } from 'sequelize';
+import { sequelize } from '../lib/db';
+import User from './User';
 
 //Fitness Goal Model
 const FitnessGoal = sequelize.define(
-  "FitnessGoal",
+  'FitnessGoal',
   {
     goal_id: {
       type: DataTypes.INTEGER,
@@ -15,12 +15,12 @@ const FitnessGoal = sequelize.define(
       type: DataTypes.INTEGER,
       references: {
         model: User,
-        key: "user_id",
+        key: 'user_id',
       },
       allowNull: false,
     },
     goal_type: {
-      type: DataTypes.ENUM("weight_loss", "workout_per_week"),
+      type: DataTypes.ENUM('weight_loss', 'workout_per_week'),
       allowNull: false,
     },
     target_value: {
@@ -40,15 +40,15 @@ const FitnessGoal = sequelize.define(
       allowNull: true,
     },
     status: {
-      type: DataTypes.ENUM("pending", "complete", "incomplete"),
+      type: DataTypes.ENUM('pending', 'complete', 'incomplete'),
       allowNull: false,
-      defaultValue: "pending",
+      defaultValue: 'pending',
     },
   },
   {
-    tableName: "fitness_goals",
+    tableName: 'fitness_goals',
     timestamps: false,
-  },
+  }
 );
 
 export default FitnessGoal;

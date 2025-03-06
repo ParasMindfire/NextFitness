@@ -1,6 +1,6 @@
-import { NextRequest, NextResponse } from "next/server";
-import * as fitnessGoalsRepo from "../../../../lib/repository/FitnessRepo";
-import * as Sentry from "@sentry/nextjs";
+import { NextRequest, NextResponse } from 'next/server';
+import * as fitnessGoalsRepo from '../../../../lib/repository/FitnessRepo';
+import * as Sentry from '@sentry/nextjs';
 
 // Get single fitness goal
 export async function GET(
@@ -12,7 +12,7 @@ export async function GET(
       Extracting the 'id' parameter from the request.
       This ID is used to fetch a specific fitness goal.
     */
-    console.log("Received ID:", params);
+    console.log('Received ID:', params);
 
     const { id } = params;
     if (!id) {
@@ -21,7 +21,7 @@ export async function GET(
         The ID is required to fetch a specific fitness goal.
       */
       return NextResponse.json(
-        { error: "Goal ID is required" },
+        { error: 'Goal ID is required' },
         { status: 400 }
       );
     }
@@ -77,7 +77,7 @@ export async function PATCH(
         If any of the required fields are missing, return a 400 Bad Request error.
       */
       return NextResponse.json(
-        { error: "All fields are required" },
+        { error: 'All fields are required' },
         { status: 400 }
       );
     }
@@ -96,7 +96,7 @@ export async function PATCH(
       Returning a success message after successful update.
     */
     return NextResponse.json(
-      { message: "Fitness goal updated successfully" },
+      { message: 'Fitness goal updated successfully' },
       { status: 200 }
     );
   } catch (error: any) {
@@ -124,7 +124,7 @@ export async function DELETE(
         If no ID is provided, return a 400 Bad Request error.
       */
       return NextResponse.json(
-        { error: "Goal ID is required" },
+        { error: 'Goal ID is required' },
         { status: 400 }
       );
     }
@@ -138,7 +138,7 @@ export async function DELETE(
       Returning a success message after successful deletion.
     */
     return NextResponse.json(
-      { message: "Fitness goal deleted successfully" },
+      { message: 'Fitness goal deleted successfully' },
       { status: 200 }
     );
   } catch (error: any) {

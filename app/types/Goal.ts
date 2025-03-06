@@ -9,12 +9,12 @@ export interface Fitness {
 export interface FitnessGoal {
   goal_id: number;
   user_id: number;
-  goal_type: "weight_loss" | "workout_per_week";
+  goal_type: 'weight_loss' | 'workout_per_week';
   target_value: number;
   current_progress: number;
   start_date: string;
   end_date: string | null;
-  status: "pending" | "complete" | "incomplete";
+  status: 'pending' | 'complete' | 'incomplete';
 }
 
 export interface FitnessCardProps {

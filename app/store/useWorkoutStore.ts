@@ -1,6 +1,6 @@
-import { Workout } from "../types";
-import { create } from "zustand";
-import { getUserWorkouts } from "../../services/WorkoutAPI";
+import { Workout } from '../types';
+import { create } from 'zustand';
+import { getUserWorkouts } from '../../services/WorkoutAPI';
 
 interface WorkoutState {
   workouts: Workout[];
@@ -11,9 +11,9 @@ interface WorkoutState {
   setWorkouts: (workouts: Workout[]) => void;
   setFormData: (data: Workout | null) => void;
   setId: (id: number) => void;
-  fetchWorkouts: (token:any) => Promise<void>;
-  trigger:boolean;
-  setTrigger:(flag:boolean)=>void;
+  fetchWorkouts: (token: any) => Promise<void>;
+  trigger: boolean;
+  setTrigger: (flag: boolean) => void;
 }
 
 // const token:any=localStorage.getItem("accessToken");
@@ -28,18 +28,17 @@ export const useWorkoutStore = create<WorkoutState>((set) => ({
   setFormData: (data: Workout | null) => set({ formData: data }),
   setId: (id: number) => set({ id }),
 
-  fetchWorkouts: async (token:any) => {
+  fetchWorkouts: async (token: any) => {
     try {
       set({ loading: true, error: null });
       const data = await getUserWorkouts(token);
       set({ workouts: data, loading: false });
     } catch (error) {
-      console.error("Error fetching workouts:", error);
-      set({ error: "Failed to load workouts", loading: false });
+      console.error('Error fetching workouts:', error);
+      set({ error: 'Failed to load workouts', loading: false });
     }
   },
 
-  trigger:false,
-  setTrigger: (flag: boolean) => set((state) => ({ trigger: !state.trigger }))
-
+  trigger: false,
+  setTrigger: (flag: boolean) => set((state) => ({ trigger: !state.trigger })),
 }));

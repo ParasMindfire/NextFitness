@@ -1,9 +1,9 @@
-import { sequelize } from "../db";
+import { sequelize } from '../db';
 
 // Get all workouts
 export const getAllWorkouts = async (): Promise<any> => {
   const [workouts]: any = await sequelize.query(
-    "select email,name , exercise_type ,duration,calories_burned,workout_id from users inner join workouts on users.user_id=workouts.user_id;",
+    'select email,name , exercise_type ,duration,calories_burned,workout_id from users inner join workouts on users.user_id=workouts.user_id;'
   );
   return workouts;
 };
@@ -11,10 +11,10 @@ export const getAllWorkouts = async (): Promise<any> => {
 // Get all workouts for a specific user
 export const getWorkoutsByUser = async (userId: number): Promise<any> => {
   const [workouts]: any = await sequelize.query(
-    "SELECT * FROM workouts WHERE user_id = ?",
+    'SELECT * FROM workouts WHERE user_id = ?',
     {
       replacements: [userId],
-    },
+    }
   );
   return workouts;
 };
@@ -25,10 +25,10 @@ export const createWorkout = async (
   exerciseType: string,
   duration: number,
   caloriesBurned: number,
-  workoutDate: string,
+  workoutDate: string
 ): Promise<void> => {
   await sequelize.query(
-    "INSERT INTO workouts (user_id, exercise_type, duration, calories_burned, workout_date) VALUES (?, ?, ?, ?, ?)",
+    'INSERT INTO workouts (user_id, exercise_type, duration, calories_burned, workout_date) VALUES (?, ?, ?, ?, ?)',
     {
       replacements: [
         userId,
@@ -37,7 +37,7 @@ export const createWorkout = async (
         caloriesBurned,
         workoutDate,
       ],
-    },
+    }
   );
 };
 
@@ -45,13 +45,13 @@ export const createWorkout = async (
 export const findWorkout = async (
   userId: number,
   workoutDate: string,
-  exerciseType: string,
+  exerciseType: string
 ): Promise<any> => {
   const [existingExercise]: any = await sequelize.query(
-    "SELECT * FROM workouts WHERE workout_date = ? AND exercise_type = ? AND user_id = ?",
+    'SELECT * FROM workouts WHERE workout_date = ? AND exercise_type = ? AND user_id = ?',
     {
       replacements: [workoutDate, exerciseType, userId],
-    },
+    }
   );
   return existingExercise;
 };
@@ -59,10 +59,10 @@ export const findWorkout = async (
 // Get a workout by its ID
 export const getWorkoutById = async (workoutId: number): Promise<any> => {
   const [workout]: any = await sequelize.query(
-    "SELECT * FROM workouts WHERE workout_id = ?",
+    'SELECT * FROM workouts WHERE workout_id = ?',
     {
       replacements: [workoutId],
-    },
+    }
   );
   return workout;
 };
@@ -74,10 +74,10 @@ export const updateWorkout = async (
   exerciseType: string,
   duration: number,
   caloriesBurned: number,
-  workoutDate: string,
+  workoutDate: string
 ): Promise<void> => {
   await sequelize.query(
-    "UPDATE workouts SET exercise_type = ?, duration = ?, calories_burned = ?, workout_date = ? WHERE user_id = ? AND workout_id = ?",
+    'UPDATE workouts SET exercise_type = ?, duration = ?, calories_burned = ?, workout_date = ? WHERE user_id = ? AND workout_id = ?',
     {
       replacements: [
         exerciseType,
@@ -87,19 +87,19 @@ export const updateWorkout = async (
         userId,
         workoutId,
       ],
-    },
+    }
   );
 };
 
 // Delete a workout
 export const deleteWorkout = async (
   userId: number,
-  workoutId: number,
+  workoutId: number
 ): Promise<void> => {
   await sequelize.query(
-    "DELETE FROM workouts WHERE user_id = ? AND workout_id = ?",
+    'DELETE FROM workouts WHERE user_id = ? AND workout_id = ?',
     {
       replacements: [userId, workoutId],
-    },
+    }
   );
 };

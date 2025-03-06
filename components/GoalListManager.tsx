@@ -1,21 +1,21 @@
-"use client";
+'use client';
 
 import React, { useState } from 'react';
 import GoalCardList from './GoalCardList';
 import DeleteModal from './DeleteModal';
-import { useGoalStore } from "../app/store/useGoalStore";
-import { deleteFitnessGoal } from "@/services/GoalAPI";
+import { useGoalStore } from '../app/store/useGoalStore';
+import { deleteFitnessGoal } from '@/services/GoalAPI';
 
 const GoalListManager = () => {
   // Get fitness goals and trigger state from the store
   const { fitnessGoals, trigger, setTrigger } = useGoalStore();
-  
+
   // Pagination state
   const [currentPage, setCurrentPage] = useState(1);
-  
+
   // Modal state for delete confirmation
   const [isModalOpen, setIsModalOpen] = useState(false);
-  
+
   // State to store the goal ID selected for deletion
   const [selectedGoalId, setSelectedGoalId] = useState(null);
 
@@ -24,10 +24,10 @@ const GoalListManager = () => {
   // Calculate indexes for slicing the goals array
   const indexOfLastGoal = currentPage * goalsPerPage;
   const indexOfFirstGoal = indexOfLastGoal - goalsPerPage;
-  
+
   // Get the goals for the current page
   const currentGoals = fitnessGoals.slice(indexOfFirstGoal, indexOfLastGoal);
-  
+
   // Calculate total number of pages
   const totalPages = Math.ceil(fitnessGoals.length / goalsPerPage);
 
@@ -49,7 +49,7 @@ const GoalListManager = () => {
 
   // Confirm deletion and trigger re-fetch of goals
   const confirmDelete = () => {
-    const token = localStorage.getItem("accessToken");
+    const token = localStorage.getItem('accessToken');
     if (selectedGoalId && token) {
       deleteFitnessGoal(token, selectedGoalId);
       setIsModalOpen(false);

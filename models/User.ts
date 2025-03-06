@@ -1,10 +1,9 @@
-import { DataTypes } from "sequelize";
-import { sequelize } from "../lib/db";
-
+import { DataTypes } from 'sequelize';
+import { sequelize } from '../lib/db';
 
 //user model
 const User = sequelize.define(
-  "User",
+  'User',
   {
     user_id: { type: DataTypes.INTEGER, autoIncrement: true, primaryKey: true },
     name: { type: DataTypes.STRING, allowNull: false },
@@ -15,9 +14,9 @@ const User = sequelize.define(
     profile_pic: { type: DataTypes.STRING },
   },
   {
-    tableName: "users",
+    tableName: 'users',
     timestamps: false,
-  },
+  }
 );
 
 export default User;
