@@ -43,6 +43,8 @@ export const signupUser = async (data: {
     const result = await response.json();
     if (!response.ok) throw new Error(result.message || 'Signup failed');
 
+    console.log("kya result aya ",result);
+
     return result;
   } catch (error) {
     console.error('Error signing up:', error);

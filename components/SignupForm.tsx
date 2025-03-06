@@ -30,7 +30,9 @@ const SignupForm = () => {
     try {
       const result = await signupUser(data);
 
-      if (result.message === 'Signup successful') {
+      console.log("result ",result);
+
+      if (result.message === 'User Registered Successfully') {
         localStorage.setItem('accessToken', result.accessToken);
         setUser(result.user);
         router.push('/');
@@ -95,6 +97,26 @@ const SignupForm = () => {
         {errors.password && (
           <p className='text-error text-sm'>{errors.password.message}</p>
         )}
+
+        <input
+            type="text"
+            placeholder="Phone Number"
+            {...register("phone", { required: "Phone number is required" })}
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-primary"
+          />
+          {errors.phone && (
+            <p className="text-error text-sm">{errors.phone.message}</p>
+          )}
+
+          <input
+            type="text"
+            placeholder="Address"
+            {...register("address", { required: "Address is required" })}
+            className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-500"
+          />
+          {errors.address && (
+            <p className="text-error text-sm">{errors.address.message}</p>
+          )}
 
         {/* Display error message if any */}
         {error && <ErrorMessage message={error} />}
