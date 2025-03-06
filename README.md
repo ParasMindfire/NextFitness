@@ -16,7 +16,7 @@ Follow these steps to get the application up and running on your local machine:
 1. **Clone the Repository**
 
    ```bash
-   git clone https://github.com/your-username/fitness-tracker.git
+   git clone https://github.com/ParasMindfire/NextFitness.git
    cd fitness-tracker
 
    ```
