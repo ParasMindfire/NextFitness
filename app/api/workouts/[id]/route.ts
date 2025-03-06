@@ -1,9 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import * as workoutRepo from "@/lib/repository/WorkoutRepo";
+import * as Sentry from "@sentry/nextjs";
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: { id: string } }
 ) {
   try {
     /* 
@@ -15,7 +16,7 @@ export async function GET(
     if (!id) {
       return NextResponse.json(
         { error: "Workout ID is required" },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -27,7 +28,7 @@ export async function GET(
     if (isNaN(workoutId)) {
       return NextResponse.json(
         { error: "Invalid Workout ID format" },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -40,7 +41,7 @@ export async function GET(
     if (!workout.length) {
       return NextResponse.json(
         { error: `Workout with ID=${workoutId} not found` },
-        { status: 404 },
+        { status: 404 }
       );
     }
 
@@ -52,9 +53,10 @@ export async function GET(
     /* 
       Handle any unexpected errors and return a generic server error response.
     */
+    Sentry.captureException(error);
     return NextResponse.json(
       { error: "Something went wrong" },
-      { status: 500 },
+      { status: 500 }
     );
   }
 }

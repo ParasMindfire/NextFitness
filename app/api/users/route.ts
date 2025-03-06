@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import * as UserRepository from "@/lib/repository/UserRepo"; // Use @ for absolute imports if configured
+import * as Sentry from "@sentry/nextjs";
 
 // GET - Fetch All Users
 export async function GET() {
@@ -21,6 +22,7 @@ export async function GET() {
     /*
       Handling any unexpected errors and returning a 500 Internal Server Error response.
     */
+    Sentry.captureException(error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
@@ -41,7 +43,7 @@ export async function POST(req: Request) {
     if (!name || !email || !password || !phone || !address) {
       return NextResponse.json(
         { error: "Enter All The Fields" },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -57,7 +59,7 @@ export async function POST(req: Request) {
       */
       return NextResponse.json(
         { error: "User with this email already exists" },
-        { status: 409 },
+        { status: 409 }
       );
     }
 
@@ -74,7 +76,7 @@ export async function POST(req: Request) {
       email,
       hashed_password,
       phone,
-      address,
+      address
     );
 
     /*
@@ -82,11 +84,11 @@ export async function POST(req: Request) {
     */
     return NextResponse.json(
       { message: "User Registered Successfully" },
-      { status: 201 },
+      { status: 201 }
     );
   } catch (error: any) {
     console.log("kya error hai ", error);
-
+    Sentry.captureException(error);
     /*
       Handling unexpected errors and returning a 500 Internal Server Error response.
     */

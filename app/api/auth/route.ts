@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
 import * as UserRepository from "@/lib/repository/UserRepo"; // Ensure correct import path
+import * as Sentry from "@sentry/nextjs";
 
 export async function POST(req: NextRequest) {
   try {
@@ -43,8 +44,9 @@ export async function POST(req: NextRequest) {
       { status: 200 }
     );
   } catch (error: any) {
+    Sentry.captureException(error);
     console.error("Login error:", error);
-    
+
     // Return server error response
     return NextResponse.json({ error: error.message }, { status: 500 });
   }

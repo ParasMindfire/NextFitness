@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import * as fitnessGoalsRepo from "../../../../lib/repository/FitnessRepo";
+import * as Sentry from "@sentry/nextjs";
 
 // Get single fitness goal
 export async function GET(
   req: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: { id: string } }
 ) {
   try {
     /*
@@ -21,7 +22,7 @@ export async function GET(
       */
       return NextResponse.json(
         { error: "Goal ID is required" },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -36,7 +37,7 @@ export async function GET(
       */
       return NextResponse.json(
         { error: `Goal with ID=${id} not found` },
-        { status: 404 },
+        { status: 404 }
       );
     }
 
@@ -49,6 +50,7 @@ export async function GET(
       Handling any unexpected errors that occur during execution.
       Returning a 500 Internal Server Error response.
     */
+    Sentry.captureException(error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
@@ -56,7 +58,7 @@ export async function GET(
 // Update fitness goal
 export async function PATCH(
   req: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: { id: string } }
 ) {
   try {
     /*
@@ -64,7 +66,7 @@ export async function PATCH(
       This ID is used to identify the fitness goal to be updated.
     */
     const { id } = params;
-    
+
     /*
       Extracting JSON body from the request which contains the fields to be updated.
     */
@@ -76,7 +78,7 @@ export async function PATCH(
       */
       return NextResponse.json(
         { error: "All fields are required" },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -87,7 +89,7 @@ export async function PATCH(
       parseInt(id),
       target_value,
       current_progress,
-      status,
+      status
     );
 
     /*
@@ -95,12 +97,13 @@ export async function PATCH(
     */
     return NextResponse.json(
       { message: "Fitness goal updated successfully" },
-      { status: 200 },
+      { status: 200 }
     );
   } catch (error: any) {
     /*
       Handling unexpected errors and returning a 500 Internal Server Error response.
     */
+    Sentry.captureException(error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
@@ -108,7 +111,7 @@ export async function PATCH(
 // Delete fitness goal
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: { id: string } }
 ) {
   try {
     /*
@@ -122,7 +125,7 @@ export async function DELETE(
       */
       return NextResponse.json(
         { error: "Goal ID is required" },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -136,12 +139,13 @@ export async function DELETE(
     */
     return NextResponse.json(
       { message: "Fitness goal deleted successfully" },
-      { status: 200 },
+      { status: 200 }
     );
   } catch (error: any) {
     /*
       Handling unexpected errors and returning a 500 Internal Server Error response.
     */
+    Sentry.captureException(error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

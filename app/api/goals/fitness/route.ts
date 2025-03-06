@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 import * as fitnessGoalsRepo from "../../../../lib/repository/FitnessRepo";
+import * as Sentry from "@sentry/nextjs";
 
 // Get all fitness goals for authenticated user
 export async function GET(req: NextRequest) {
@@ -29,7 +30,7 @@ export async function GET(req: NextRequest) {
       */
       return NextResponse.json(
         { error: "No fitness goals found" },
-        { status: 404 },
+        { status: 404 }
       );
     }
 
@@ -41,6 +42,8 @@ export async function GET(req: NextRequest) {
     /*
       Handling unexpected errors and returning a 500 Internal Server Error response.
     */
+    Sentry.captureException(error);
+
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
@@ -80,7 +83,7 @@ export async function POST(req: NextRequest) {
       */
       return NextResponse.json(
         { error: "All fields are required" },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -93,7 +96,7 @@ export async function POST(req: NextRequest) {
       target_value,
       current_progress,
       start_date,
-      end_date,
+      end_date
     );
 
     /*
@@ -101,12 +104,14 @@ export async function POST(req: NextRequest) {
     */
     return NextResponse.json(
       { message: "Fitness goal created successfully" },
-      { status: 201 },
+      { status: 201 }
     );
   } catch (error: any) {
     /*
       Handling unexpected errors and returning a 500 Internal Server Error response.
     */
+    Sentry.captureException(error);
+
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

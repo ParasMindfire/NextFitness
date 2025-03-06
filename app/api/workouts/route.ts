@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import * as workoutRepo from "../../../lib/repository/WorkoutRepo";
+import * as Sentry from "@sentry/nextjs";
 
 // Fetch all workouts from the database.
 export async function GET() {
@@ -13,7 +14,7 @@ export async function GET() {
     if (!workouts.length) {
       return NextResponse.json(
         { error: "No Data To Show in Workouts" },
-        { status: 404 },
+        { status: 404 }
       );
     }
 
@@ -25,10 +26,8 @@ export async function GET() {
     /* 
       Handle any unexpected errors and return a generic server error response.
     */
+    Sentry.captureException(error);
     console.error("Error fetching workouts:", error);
-    return NextResponse.json(
-      { error: error },
-      { status: 500 },
-    );
+    return NextResponse.json({ error: error }, { status: 500 });
   }
 }

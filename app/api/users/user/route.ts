@@ -1,11 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import * as UserRepository from "@/lib/repository/UserRepo"; // Ensure correct import path
 import bcrypt from "bcryptjs";
+import * as Sentry from "@sentry/nextjs";
 
 // GET User by ID
-export async function GET(
-  req: NextRequest,
-) {
+export async function GET(req: NextRequest) {
   try {
     /*
       Extracting the user ID from the request headers.
@@ -21,7 +20,7 @@ export async function GET(
       */
       return NextResponse.json(
         { error: "User ID is required" },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -45,11 +44,12 @@ export async function GET(
     /*
       Handling unexpected errors and returning a 500 Internal Server Error response.
     */
+    Sentry.captureException(error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
 
-// ✅ PATCH - Update User Password
+// PATCH - Update User Password
 export async function PATCH(req: NextRequest) {
   try {
     /*
@@ -66,7 +66,7 @@ export async function PATCH(req: NextRequest) {
       */
       return NextResponse.json(
         { error: "New Password was not entered" },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -92,7 +92,7 @@ export async function PATCH(req: NextRequest) {
     if (bcrypt.compareSync(newPassword, oldPassword)) {
       return NextResponse.json(
         { error: "Old Password and New Password cannot be the same" },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -112,12 +112,13 @@ export async function PATCH(req: NextRequest) {
     */
     return NextResponse.json(
       { message: "New Password updated successfully" },
-      { status: 200 },
+      { status: 200 }
     );
   } catch (error: any) {
     /*
       Handling unexpected errors and returning a 500 Internal Server Error response.
     */
+    Sentry.captureException(error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

@@ -1,10 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 import * as UserRepository from "@/lib/repository/UserRepo"; // Ensure correct import path
+import * as Sentry from "@sentry/nextjs";
 
 // DELETE User by ID
 export async function DELETE(
   req: NextRequest,
-  { params }: { params: { id: string } },
+  { params }: { params: { id: string } }
 ) {
   try {
     /*
@@ -20,7 +21,7 @@ export async function DELETE(
       */
       return NextResponse.json(
         { error: "User ID is required" },
-        { status: 400 },
+        { status: 400 }
       );
     }
 
@@ -35,12 +36,13 @@ export async function DELETE(
     */
     return NextResponse.json(
       { message: "User deleted successfully" },
-      { status: 200 },
+      { status: 200 }
     );
   } catch (error: any) {
     /*
       Handling unexpected errors and returning a 500 Internal Server Error response.
     */
+    Sentry.captureException(error);
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
