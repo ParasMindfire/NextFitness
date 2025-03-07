@@ -4,7 +4,7 @@ export const getAllUsers = async () => {
   return await sequelize.query('SELECT * FROM users');
 };
 
-export const getUserByEmail = async (email: string) => {
+export const getUserByEmail = async (email: string | undefined | null) => {
   // console.log("yahan aya ? ");
   return await sequelize.query('SELECT * FROM users WHERE email = ?', {
     replacements: [email],

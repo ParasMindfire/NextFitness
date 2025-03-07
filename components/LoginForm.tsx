@@ -10,6 +10,7 @@ import { showToast } from '@/utils/Toast'; // Function to show toast notificatio
 import ErrorMessage from './ErrorMessage'; // Component for displaying error messages
 import LoadingButton from './LoadingButton'; // Button component with loading state
 import * as Sentry from '@sentry/nextjs';
+import { GoogleSignInButton } from './authButtons';
 
 const LoginForm = () => {
   const setUser = useUserStore((state: any) => state.setUser); // Store user data
@@ -53,7 +54,10 @@ const LoginForm = () => {
 
   return (
     <>
+      <GoogleSignInButton/>
       <form className='space-y-4' onSubmit={handleSubmit(onSubmit)}>
+        
+        {/* <GithubSignInButton/> */}
         {/* Email Input */}
         <input
           type='email'

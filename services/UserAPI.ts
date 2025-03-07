@@ -7,7 +7,7 @@ const API_BASE_URL = process.env.API_BASE_URL || '';
 // Function to log in a user
 export const loginUser = async (data: { email: string; password: string }) => {
   try {
-    const response = await fetch(`${API_BASE_URL}/api/auth`, {
+    const response = await fetch(`${API_BASE_URL}/api/login`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(data),

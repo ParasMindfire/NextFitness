@@ -4,6 +4,7 @@ import './globals.css';
 import Navbar from '@/components/Navbar';
 import Breadcrumbs from '../components/BreadCrumb';
 import { ToastContainer } from 'react-toastify';
+import SessionProviderWrapper from '@/helpers/SessionWrapper';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -30,12 +31,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased max-w-full overflow-x-hidden`}
       >
-        <div className='max-w-screen min-h-screen mx-auto'>
-          <Navbar />
-          <Breadcrumbs />
-          <ToastContainer />
-          <main className='p-4'>{children}</main>
-        </div>
+        <SessionProviderWrapper>
+          <div className='max-w-screen min-h-screen mx-auto'>
+            <Navbar />
+            <Breadcrumbs />
+            <ToastContainer />
+            <main className='p-4'>{children}</main>
+          </div>
+        </SessionProviderWrapper>
       </body>
     </html>
   );

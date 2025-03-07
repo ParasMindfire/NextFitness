@@ -2,7 +2,7 @@ import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { Request } from 'node-fetch';
 import bcrypt from 'bcryptjs';
 import * as UserRepository from '../../lib/repository/UserRepo'; // Ensure correct import path
-import { POST } from '../../app/api/auth/route'; // Adjust the path as necessary
+import { POST } from '../../app/api/auth/[...nextauth]/route'; // Adjust the path as necessary
 
 // Mock the UserRepository
 vi.mock('@/lib/repository/UserRepo', () => ({

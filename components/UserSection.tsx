@@ -1,13 +1,25 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useSession } from 'next-auth/react';
 import { useUserStore } from '../app/store/useUserStore';
 import UserGoalsComponent from '@/components/UserGoalsComponent';
 import ChatComponent from '@/components/ChatComponent';
 import AuthComponent from '@/components/AuthComponent';
 
 const UserSection: React.FC = () => {
-  const { user } = useUserStore();
+  const { data: session, status } = useSession();
+  const { user, setUser } = useUserStore();
+
+  useEffect(() => {
+    if (session && session.user) {
+      setUser(session.user);
+    }
+  }, [session, setUser]);
+
+  if (status === 'loading') {
+    return <div>Loading...</div>; // Optional: Show a loading state
+  }
 
   return (
     <div className='flex-1 p-4 md:p-8 space-y-6'>
