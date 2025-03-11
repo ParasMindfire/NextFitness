@@ -9,6 +9,7 @@ export async function GET() {
       Retrieve all workouts from the repository.
       If no workouts are found, return a 404 response.
     */
+   
     const workouts = await workoutRepo.getAllWorkouts();
 
     if (!workouts.length) {

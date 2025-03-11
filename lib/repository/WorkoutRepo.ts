@@ -1,105 +1,68 @@
-import { sequelize } from '../db';
+import Workout from "../../models/Workout";
+// import User from "../../models/User";
 
-// Get all workouts
+// Get all workouts with user details
 export const getAllWorkouts = async (): Promise<any> => {
-  const [workouts]: any = await sequelize.query(
-    'select email,name , exercise_type ,duration,calories_burned,workout_id from users inner join workouts on users.user_id=workouts.user_id;'
-  );
-  return workouts;
+  return await Workout.find().populate("userId", "email name");
 };
 
 // Get all workouts for a specific user
-export const getWorkoutsByUser = async (userId: number): Promise<any> => {
-  const [workouts]: any = await sequelize.query(
-    'SELECT * FROM workouts WHERE user_id = ?',
-    {
-      replacements: [userId],
-    }
-  );
-  return workouts;
+export const getWorkoutsByUser = async (userId: string): Promise<any> => {
+  return await Workout.find({ userId });
 };
 
 // Create a new workout
 export const createWorkout = async (
-  userId: number,
+  userId: string,
   exerciseType: string,
   duration: number,
   caloriesBurned: number,
-  workoutDate: string
+  workoutDate: Date
 ): Promise<void> => {
-  await sequelize.query(
-    'INSERT INTO workouts (user_id, exercise_type, duration, calories_burned, workout_date) VALUES (?, ?, ?, ?, ?)',
-    {
-      replacements: [
-        userId,
-        exerciseType,
-        duration,
-        caloriesBurned,
-        workoutDate,
-      ],
-    }
-  );
+  const workout = new Workout({
+    userId,
+    exerciseType,
+    duration,
+    caloriesBurned,
+    workoutDate,
+  });
+  await workout.save();
 };
 
 // Find a workout by user ID, date, and exercise type
 export const findWorkout = async (
-  userId: number,
-  workoutDate: string,
+  userId: string,
+  workoutDate: Date,
   exerciseType: string
 ): Promise<any> => {
-  const [existingExercise]: any = await sequelize.query(
-    'SELECT * FROM workouts WHERE workout_date = ? AND exercise_type = ? AND user_id = ?',
-    {
-      replacements: [workoutDate, exerciseType, userId],
-    }
-  );
-  return existingExercise;
+  return await Workout.findOne({ userId, workoutDate, exerciseType });
 };
 
 // Get a workout by its ID
-export const getWorkoutById = async (workoutId: number): Promise<any> => {
-  const [workout]: any = await sequelize.query(
-    'SELECT * FROM workouts WHERE workout_id = ?',
-    {
-      replacements: [workoutId],
-    }
-  );
-  return workout;
+export const getWorkoutById = async (workoutId: string): Promise<any> => {
+  return await Workout.findById(workoutId);
 };
 
 // Update a workout
 export const updateWorkout = async (
-  userId: number,
-  workoutId: number,
+  userId: string,
+  workoutId: string,
   exerciseType: string,
   duration: number,
   caloriesBurned: number,
-  workoutDate: string
+  workoutDate: Date
 ): Promise<void> => {
-  await sequelize.query(
-    'UPDATE workouts SET exercise_type = ?, duration = ?, calories_burned = ?, workout_date = ? WHERE user_id = ? AND workout_id = ?',
-    {
-      replacements: [
-        exerciseType,
-        duration,
-        caloriesBurned,
-        workoutDate,
-        userId,
-        workoutId,
-      ],
-    }
+  await Workout.findOneAndUpdate(
+    { _id: workoutId, userId },
+    { exerciseType, duration, caloriesBurned, workoutDate },
+    { new: true }
   );
 };
 
 // Delete a workout
 export const deleteWorkout = async (
-  userId: number,
-  workoutId: number
+  userId: string,
+  workoutId: string
 ): Promise<void> => {
-  await sequelize.query(
-    'DELETE FROM workouts WHERE user_id = ? AND workout_id = ?',
-    {
-      replacements: [userId, workoutId],
-    }
-  );
+  await Workout.findOneAndDelete({ _id: workoutId, userId });
 };

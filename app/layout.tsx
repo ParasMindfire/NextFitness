@@ -5,6 +5,7 @@ import Navbar from '@/components/Navbar';
 import Breadcrumbs from '../components/BreadCrumb';
 import { ToastContainer } from 'react-toastify';
 import SessionProviderWrapper from '@/helpers/SessionWrapper';
+// import db from '../lib/db'
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -33,7 +34,7 @@ export default function RootLayout({
       >
         <SessionProviderWrapper>
           <div className='max-w-screen min-h-screen mx-auto'>
-            <Navbar />
+            <Navbar /> 
             <Breadcrumbs />
             <ToastContainer />
             <main className='p-4'>{children}</main>

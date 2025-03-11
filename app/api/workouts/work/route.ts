@@ -93,7 +93,7 @@ export async function PATCH(req: Request) {
       );
     }
 
-    const formattedDate = format(new Date(workout_date), 'yyyy-MM-dd');
+    const formattedDate:any= format(new Date(workout_date), 'yyyy-MM-dd');
     await workoutRepo.updateWorkout(
       id,
       workout_id,

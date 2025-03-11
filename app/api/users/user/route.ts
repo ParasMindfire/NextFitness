@@ -27,7 +27,7 @@ export async function GET(req: NextRequest) {
     /*
       Fetching the user details from the repository using the provided ID.
     */
-    const [user]: any = await UserRepository.getUserById(Number(id));
+    const [user]: any = await UserRepository.getUserById(id);
 
     if (!user || user.length === 0) {
       /*

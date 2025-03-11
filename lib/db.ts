@@ -1,30 +1,25 @@
-import { Sequelize } from 'sequelize';
+import mongoose from "mongoose";
 
-//intialising database
-export const sequelize = new Sequelize(
-  process.env.DB_NAME || '', // Database name
-  process.env.DB_USER || '', // Database username
-  process.env.DB_PASSWORD, // Database password
-  {
-    host: process.env.DB_HOST || '127.0.0.1', // Database host
-    dialect: 'mysql', // Defining the SQL dialect as MySQL
-    dialectModule: require('mysql2'),
-    logging: console.log,
-  }
-);
+const MONGODB_URI = process.env.MONGODB_URI;
 
-try {
-  sequelize.authenticate();
-  console.log('Connection has been established successfully.');
-} catch (error) {
-  console.error('Error connecting to the database:', error);
+if (!MONGODB_URI) {
+  throw new Error("MongoDB URI is missing in environment variables");
 }
 
-sequelize
-  .sync()
-  .then(() => {
-    console.log('Database synced successfully.');
-  })
-  .catch((error) => {
-    console.error('Error syncing database:', error);
-  });
+const connectDB = async () => {
+  try {
+    if (mongoose.connection.readyState >= 1) {
+      console.log("Using existing MongoDB connection");
+      return;
+    }
+
+    await mongoose.connect(MONGODB_URI);
+
+    console.log("MongoDB Connected Successfully");
+  } catch (error) {
+    console.error(" MongoDB Connection Error:", error);
+    throw new Error("Database connection failed");
+  }
+};
+
+export default connectDB;

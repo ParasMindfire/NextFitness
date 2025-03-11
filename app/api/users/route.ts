@@ -12,7 +12,7 @@ export async function GET() {
       Fetching all users from the UserRepository.
       The result is expected to be an array of users.
     */
-    const [users] = await UserRepository.getAllUsers();
+    const users = await UserRepository.getAllUsers();
 
     /*
       Returning the list of users with a 200 OK response.
@@ -50,10 +50,10 @@ export async function POST(req: Request) {
     /*
       Checking if a user with the given email already exists.
     */
-    const [existingUser] = await UserRepository.getUserByEmail(email);
+    const existingUser:any = await UserRepository.getUserByEmail(email);
 
     console.log('existing ', existingUser);
-    if (existingUser.length > 0) {
+    if (existingUser) {
       /*
         If a user already exists with the same email, return a 409 Conflict response.
       */
@@ -71,13 +71,15 @@ export async function POST(req: Request) {
     /*
       Inserting the new user into the UserRepository.
     */
-    await UserRepository.insertUser(
+    const user=await UserRepository.insertUser(
       name,
       email,
       hashed_password,
       phone,
       address
     );
+
+    console.log("user kya ha ",user);
 
     /*
       Returning a success message with a 201 Created response.

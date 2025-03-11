@@ -1,54 +1,31 @@
-import { DataTypes } from 'sequelize';
-import { sequelize } from '../lib/db';
-import User from './User';
+import mongoose, { Schema, Document } from "mongoose";
 
-//Fitness Goal Model
-const FitnessGoal = sequelize.define(
-  'FitnessGoal',
+// Interface for TypeScript support
+interface IFitnessGoal extends Document {
+  user_id: mongoose.Schema.Types.ObjectId;
+  goal_type: string;
+  target_value: number;
+  current_progress: number;
+  start_date: Date;
+  end_date: Date;
+  status?: string;
+}
+
+// Define Fitness Goal Schema
+const FitnessGoalSchema = new Schema<IFitnessGoal>(
   {
-    goal_id: {
-      type: DataTypes.INTEGER,
-      autoIncrement: true,
-      primaryKey: true,
-    },
-    user_id: {
-      type: DataTypes.INTEGER,
-      references: {
-        model: User,
-        key: 'user_id',
-      },
-      allowNull: false,
-    },
-    goal_type: {
-      type: DataTypes.ENUM('weight_loss', 'workout_per_week'),
-      allowNull: false,
-    },
-    target_value: {
-      type: DataTypes.FLOAT,
-      allowNull: false,
-    },
-    current_progress: {
-      type: DataTypes.FLOAT,
-      allowNull: false,
-    },
-    start_date: {
-      type: DataTypes.DATE,
-      allowNull: false,
-    },
-    end_date: {
-      type: DataTypes.DATE,
-      allowNull: true,
-    },
-    status: {
-      type: DataTypes.ENUM('pending', 'complete', 'incomplete'),
-      allowNull: false,
-      defaultValue: 'pending',
-    },
+    user_id: { type: Schema.Types.ObjectId, ref: "User", required: true },
+    goal_type: { type: String, required: true },
+    target_value: { type: Number, required: true },
+    current_progress: { type: Number, required: true },
+    start_date: { type: Date, required: true },
+    end_date: { type: Date, required: true },
+    status: { type: String, default: "in-progress" },
   },
-  {
-    tableName: 'fitness_goals',
-    timestamps: false,
-  }
+  { timestamps: true }
 );
+
+// Create FitnessGoal Model
+const FitnessGoal = mongoose.model<IFitnessGoal>("FitnessGoal", FitnessGoalSchema);
 
 export default FitnessGoal;

@@ -25,7 +25,7 @@ export async function GET(req: Request) {
     const endDate = new Date(Number(year), Number(month), 0); // Last day of the month
 
     // Fetch workouts for the given user ID
-    const workouts = await workoutRepo.getWorkoutsByUser(Number(id));
+    const workouts = await workoutRepo.getWorkoutsByUser(id);
 
     // Filter workouts within the given month and format workout dates
     const monthlyWorkouts = workouts

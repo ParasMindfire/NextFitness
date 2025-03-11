@@ -19,8 +19,8 @@ export async function POST(req: NextRequest) {
     }
 
     // Fetch user by email
-    const [user]: any = await UserRepository.getUserByEmail(email);
-    if (!user || user.length === 0) {
+    const user: any = await UserRepository.getUserByEmail(email);
+    if (!user) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 

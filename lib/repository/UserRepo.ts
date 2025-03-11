@@ -1,22 +1,19 @@
-import { sequelize } from '../db';
+import User from "../../models/User";
 
 export const getAllUsers = async () => {
-  return await sequelize.query('SELECT * FROM users');
+  return await User.find();
 };
+
 
 export const getUserByEmail = async (email: string | undefined | null) => {
-  // console.log("yahan aya ? ");
-  return await sequelize.query('SELECT * FROM users WHERE email = ?', {
-    replacements: [email],
-  });
+  return await User.findOne({ email });
 };
 
-export const getUserById = async (id: number) => {
-  console.log('id ', id);
-  return await sequelize.query('SELECT * FROM users WHERE user_id = ?', {
-    replacements: [id],
-  });
+
+export const getUserById = async (id: string) => {
+  return await User.findById(id);
 };
+
 
 export const insertUser = async (
   name: string,
@@ -25,41 +22,20 @@ export const insertUser = async (
   phone: string,
   address: string
 ) => {
-  console.log(
-    name + ' ' + email + ' ' + phone + ' ' + address + ' ' + password
-  );
-  return await sequelize.query(
-    'INSERT INTO users (name, email, password, phone, address) VALUES (?, ?, ?, ?, ?)',
-    { replacements: [name, email, password, phone, address] }
+  const user = new User({ name, email, password, phone, address });
+  return await user.save();
+};
+
+
+export const updateUserPassword = async (email: string, newPassword: string) => {
+  return await User.findOneAndUpdate(
+    { email },
+    { password: newPassword },
+    { new: true }
   );
 };
 
-export const updateUserPassword = async (
-  email: string,
-  newPassword: string
-) => {
-  return await sequelize.query(
-    'UPDATE users SET password = ? WHERE email = ?',
-    {
-      replacements: [newPassword, email],
-    }
-  );
-};
 
 export const deleteUserByEmail = async (email: string) => {
-  return await sequelize.query('DELETE FROM users WHERE email = ?', {
-    replacements: [email],
-  });
-};
-
-export const updateUserProfilePic = async (
-  email: string,
-  profilePic: string
-) => {
-  return await sequelize.query(
-    'UPDATE users SET profile_pic = ? WHERE email = ?',
-    {
-      replacements: [profilePic, email],
-    }
-  );
+  return await User.findOneAndDelete({ email });
 };

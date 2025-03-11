@@ -19,18 +19,8 @@ export async function GET(
         { status: 400 }
       );
     }
-
-    /* 
-      Convert the extracted ID into a number.
-      If the ID is not a valid number, return an error response.
-    */
-    const workoutId = Number(id);
-    if (isNaN(workoutId)) {
-      return NextResponse.json(
-        { error: 'Invalid Workout ID format' },
-        { status: 400 }
-      );
-    }
+    
+    const workoutId = id;
 
     /* 
       Fetch the workout details from the repository using the given ID.

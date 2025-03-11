@@ -29,9 +29,9 @@ export async function GET(
     /*
       Fetching the fitness goal from the repository based on the given ID.
     */
-    const goal = await fitnessGoalsRepo.getSingleFitnessGoal(parseInt(id));
+    const goal = await fitnessGoalsRepo.getSingleFitnessGoal(id);
 
-    if (!goal.length) {
+    if (!goal) {
       /*
         If the goal is not found in the database, return a 404 Not Found error.
       */
@@ -44,7 +44,7 @@ export async function GET(
     /*
       Returning the found fitness goal as a JSON response with a 200 status.
     */
-    return NextResponse.json(goal[0], { status: 200 });
+    return NextResponse.json(goal, { status: 200 });
   } catch (error: any) {
     /*
       Handling any unexpected errors that occur during execution.
@@ -86,7 +86,7 @@ export async function PATCH(
       Calling repository function to update the fitness goal in the database.
     */
     await fitnessGoalsRepo.updateFitnessGoal(
-      parseInt(id),
+      id,
       target_value,
       current_progress,
       status
@@ -132,7 +132,7 @@ export async function DELETE(
     /*
       Calling repository function to delete the fitness goal from the database.
     */
-    await fitnessGoalsRepo.deleteFitnessGoal(parseInt(id));
+    await fitnessGoalsRepo.deleteFitnessGoal(id);
 
     /*
       Returning a success message after successful deletion.

@@ -1,71 +1,49 @@
-import { sequelize } from '../db';
+import FitnessGoal from "../../models/Fitness";
 
-// Retrieves all fitness goals for a given user
-export const getAllFitnessGoals = async (userId: number): Promise<any> => {
-  const [fitnessGoals]: any = await sequelize.query(
-    'SELECT * FROM fitness_goals WHERE user_id = ?',
-    { replacements: [userId] }
-  );
-  return fitnessGoals;
+export const getAllFitnessGoals = async (userId: string) => {
+  return await FitnessGoal.find({ user_id: userId });
 };
 
-// Retrieves a single fitness goal based on its goal_id
-export const getSingleFitnessGoal = async (goalId: number): Promise<any> => {
-  const [goal]: any = await sequelize.query(
-    'SELECT * FROM fitness_goals WHERE goal_id = ?',
-    { replacements: [goalId] }
-  );
-  return goal;
+export const getSingleFitnessGoal = async (goalId: string) => {
+  return await FitnessGoal.findById(goalId);
 };
 
-// Creates a new fitness goal for a user
 export const createFitnessGoal = async (
-  userId: number,
+  userId: string,
   goalType: string,
   targetValue: number,
   currentProgress: number,
   startDate: string,
   endDate: string
-): Promise<void> => {
-  await sequelize.query(
-    'INSERT INTO fitness_goals (user_id, goal_type, target_value, current_progress, start_date, end_date) VALUES (?, ?, ?, ?, ?, ?)',
-    {
-      replacements: [
-        userId,
-        goalType,
-        targetValue,
-        currentProgress,
-        startDate,
-        endDate,
-      ],
-    }
-  );
+) => {
+  const fitnessGoal = new FitnessGoal({
+    user_id: userId,
+    goal_type: goalType,
+    target_value: targetValue,
+    current_progress: currentProgress,
+    start_date: new Date(startDate),
+    end_date: new Date(endDate),
+  });
+  return await fitnessGoal.save();
 };
 
-// Updates an existing fitness goal based on goal_id
 export const updateFitnessGoal = async (
-  goalId: number,
+  goalId: string,
   targetValue: number,
   currentProgress: number,
   status: string
-): Promise<void> => {
-  await sequelize.query(
-    'UPDATE fitness_goals SET target_value=?, current_progress=?, status=? WHERE goal_id=?',
-    { replacements: [targetValue, currentProgress, status, goalId] }
+) => {
+  return await FitnessGoal.findByIdAndUpdate(
+    goalId,
+    { target_value: targetValue, current_progress: currentProgress, status },
+    { new: true }
   );
 };
 
-// Deletes a fitness goal based on its goal_id
-export const deleteFitnessGoal = async (goalId: number): Promise<void> => {
-  await sequelize.query('DELETE FROM fitness_goals WHERE goal_id=?', {
-    replacements: [goalId],
-  });
+export const deleteFitnessGoal = async (goalId: string) => {
+  return await FitnessGoal.findByIdAndDelete(goalId);
 };
 
-export const getAllFitnesswithUsername = async (): Promise<void> => {
-  const [goals]: any = await sequelize.query(
-    'select * from fitness_goals inner join users on fitness_goals.user_id=users.user_id'
-  );
-
-  return goals;
+export const getAllFitnesswithUsername = async () => {
+  return await FitnessGoal.find().populate("user_id", "name email");
 };
