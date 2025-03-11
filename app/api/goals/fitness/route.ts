@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 import * as fitnessGoalsRepo from '../../../../lib/repository/FitnessRepo';
+import * as userRepo from '../../../../lib/repository/UserRepo'
 import * as Sentry from '@sentry/nextjs';
 
 // Get all fitness goals for authenticated user
@@ -9,9 +10,18 @@ export async function GET(req: NextRequest) {
       Extracting the 'id' from request headers.
       This ID represents the authenticated user.
     */
-    const userId: any = req.headers.get('id');
+    const id: any = req.headers.get('id');
 
-    if (!userId) {
+    console.log("acca to id kya ara ? ",id);
+
+    const userId:any=await userRepo.getIDByUserId(id);
+    const userObject = userId.toObject();
+
+    console.log("user kya ara ?? fitness me ",userId);
+
+    console.log("user id kya ara ?? fitness me ",userObject.user_id);
+
+    if (!userObject.user_id) {
       /*
         If no user ID is found in the request headers,
         return a 401 Unauthorized response.
@@ -22,7 +32,9 @@ export async function GET(req: NextRequest) {
     /*
       Fetching all fitness goals associated with the authenticated user.
     */
-    const fitnessGoals = await fitnessGoalsRepo.getAllFitnessGoals(userId);
+    const fitnessGoals = await fitnessGoalsRepo.getAllFitnessGoals(userObject.user_id);
+
+    console.log("fitness goals a re la kya ",fitnessGoals);
 
     if (!fitnessGoals.length) {
       /*
@@ -55,9 +67,12 @@ export async function POST(req: NextRequest) {
       Extracting the 'id' from request headers.
       This ID represents the authenticated user.
     */
-    const userId: any = req.headers.get('id');
+    const id: any = req.headers.get('id');
 
-    if (!userId) {
+    const userId=await userRepo.getIDByUserId(id);
+    const userObject = userId.toObject();
+
+    if (!userObject.user_id) {
       /*
         If no user ID is found in the request headers,
         return a 401 Unauthorized response.
@@ -87,11 +102,13 @@ export async function POST(req: NextRequest) {
       );
     }
 
+    console.log("hahha ",userObject.user_id);
+
     /*
       Calling repository function to create a new fitness goal for the user.
     */
     await fitnessGoalsRepo.createFitnessGoal(
-      userId,
+      userObject.user_id,
       goal_type,
       target_value,
       current_progress,

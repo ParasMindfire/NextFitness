@@ -1,13 +1,18 @@
 import { NextResponse } from 'next/server';
 import * as workoutRepo from '../../../lib/repository/WorkoutRepo';
+import * as userRepo from '../../../lib/repository/UserRepo'
 import * as Sentry from '@sentry/nextjs';
 
 export async function GET(req: Request) {
   try {
+    console.log("yahan a ra ? ");
     const id: any = req.headers.get('id');
+    const userId=await userRepo.getIDByUserId(id);
     console.log('id ', id);
 
-    const workouts = await workoutRepo.getWorkoutsByUser(id);
+    console.log("id kya ara user ka in api of strek ",id);
+
+    const workouts = await workoutRepo.getWorkoutsByUser(userId.user_id);
 
     if (!workouts.length)
       return NextResponse.json({ streak: 0 }, { status: 200 });

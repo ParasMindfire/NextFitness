@@ -1,14 +1,19 @@
 import { NextResponse } from 'next/server';
 import * as workoutRepo from '../../../../lib/repository/WorkoutRepo';
+import * as userRepo from '../../../../lib/repository/UserRepo';
 import { format } from 'date-fns';
+import connectDB from '@/lib/db';
 
 // Fetch all workouts for a specific user.
 export async function GET(req: Request) {
   try {
+    connectDB();
     const id: any = req.headers.get('id');
-    console.log('get workout by single user id', id);
-    const workouts = await workoutRepo.getWorkoutsByUser(id);
-    if (!workouts.length) {
+    const userId=await userRepo.getIDByUserId(id);
+    console.log('dekho kya ara', userId);
+    const workouts = await workoutRepo.getWorkoutsByUser(userId.user_id);
+    console.log("workout by single use aya ? ",workouts);
+    if (!workouts) {
       return NextResponse.json(
         { error: 'No Data To Show in Workouts By User' },
         { status: 404 }
@@ -27,6 +32,7 @@ export async function GET(req: Request) {
 export async function POST(req: Request) {
   try {
     const id: any = req.headers.get('id');
+    const userId=await userRepo.getIDByUserId(id);
     const { exercise_type, duration, calories_burned, workout_date } =
       await req.json();
 
@@ -38,7 +44,7 @@ export async function POST(req: Request) {
     }
 
     const existingExercise = await workoutRepo.findWorkout(
-      id,
+      userId.user_id,
       workout_date,
       exercise_type
     );
@@ -50,7 +56,7 @@ export async function POST(req: Request) {
     }
 
     await workoutRepo.createWorkout(
-      id,
+      userId.user_id,
       exercise_type,
       duration,
       calories_burned,
@@ -72,6 +78,7 @@ export async function POST(req: Request) {
 export async function PATCH(req: Request) {
   try {
     const id: any = req.headers.get('id');
+    const userId=await userRepo.getIDByUserId(id);
     const {
       workout_id,
       exercise_type,
@@ -95,7 +102,7 @@ export async function PATCH(req: Request) {
 
     const formattedDate:any= format(new Date(workout_date), 'yyyy-MM-dd');
     await workoutRepo.updateWorkout(
-      id,
+      userId.user_id,
       workout_id,
       exercise_type,
       duration,
@@ -118,6 +125,7 @@ export async function PATCH(req: Request) {
 export async function DELETE(req: Request) {
   try {
     const id: any = req.headers.get('id');
+    const userId=await userRepo.getIDByUserId(id);
     const { workout_id } = await req.json();
 
     if (!workout_id) {
@@ -127,7 +135,7 @@ export async function DELETE(req: Request) {
       );
     }
 
-    await workoutRepo.deleteWorkout(id, workout_id);
+    await workoutRepo.deleteWorkout(userId.user_id, workout_id);
     return NextResponse.json(
       { message: 'Workout Deleted Successfully' },
       { status: 200 }

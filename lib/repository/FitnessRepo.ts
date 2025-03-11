@@ -1,7 +1,12 @@
+import mongoose from "mongoose";
 import FitnessGoal from "../../models/Fitness";
+import connectDB from "../db";
 
 export const getAllFitnessGoals = async (userId: string) => {
-  return await FitnessGoal.find({ user_id: userId });
+  // connectDB();
+  const allFitness=await FitnessGoal.find();
+  console.log("all goals ",allFitness);
+  return await FitnessGoal.find({ user_id:userId });
 };
 
 export const getSingleFitnessGoal = async (goalId: string) => {
@@ -16,6 +21,7 @@ export const createFitnessGoal = async (
   startDate: string,
   endDate: string
 ) => {
+  connectDB();
   const fitnessGoal = new FitnessGoal({
     user_id: userId,
     goal_type: goalType,
@@ -28,20 +34,34 @@ export const createFitnessGoal = async (
 };
 
 export const updateFitnessGoal = async (
-  goalId: string,
+  goal_id: string,
   targetValue: number,
   currentProgress: number,
   status: string
 ) => {
-  return await FitnessGoal.findByIdAndUpdate(
-    goalId,
+  console.log("yahan kya ar babu 1",goal_id);
+  console.log("yahan kya ar babu 2",targetValue)
+  console.log("yahan kya ar babu 3",currentProgress)
+
+  const numericGoalId = parseInt(goal_id, 10);
+    if (isNaN(numericGoalId)) {
+      throw new Error(`Invalid goal_id: ${goal_id}`);
+    }
+
+  return await FitnessGoal.findOneAndUpdate(
+    { goal_id:numericGoalId},
     { target_value: targetValue, current_progress: currentProgress, status },
     { new: true }
   );
 };
 
-export const deleteFitnessGoal = async (goalId: string) => {
-  return await FitnessGoal.findByIdAndDelete(goalId);
+export const deleteFitnessGoal = async (goal_id: string) => {
+    const numericGoalId = parseInt(goal_id, 10);
+    if (isNaN(numericGoalId)) {
+      throw new Error(`Invalid goal_id: ${goal_id}`);
+    }
+
+  return await FitnessGoal.findByIdAndDelete(goal_id);
 };
 
 export const getAllFitnesswithUsername = async () => {

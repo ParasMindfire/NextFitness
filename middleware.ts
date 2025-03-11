@@ -26,13 +26,13 @@ export async function middleware(req: NextRequest) {
     (timestamp: number) => now - timestamp < TIME_FRAME
   );
 
-  if (recentRequests.length >= MAX_REQUESTS) {
-    console.warn(`Rate limit exceeded for IP: ${clientIp}`);
-    return NextResponse.json(
-      { error: 'Too many requests, please try again later.' },
-      { status: 429 }
-    );
-  }
+  // if (recentRequests.length >= MAX_REQUESTS) {
+  //   console.warn(`Rate limit exceeded for IP: ${clientIp}`);
+  //   return NextResponse.json(
+  //     { error: 'Too many requests, please try again later.' },
+  //     { status: 429 }
+  //   );
+  // }
 
   recentRequests.push(now);
   rateLimitMap.set(clientIp, recentRequests);

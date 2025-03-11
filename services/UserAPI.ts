@@ -14,6 +14,8 @@ export const loginUser = async (data: { email: string; password: string }) => {
     });
 
     const result = await response.json();
+    console.log("result kya aya login services ",result);
+    
     if (!response.ok) throw new Error(result.message || 'Login failed');
 
     return result;

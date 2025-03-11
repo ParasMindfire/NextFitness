@@ -1,4 +1,5 @@
 'use server';
+import * as jose from 'jose';
 
 // Function to get all workouts
 export const getAllWorkouts = async () => {
@@ -81,13 +82,28 @@ export const deleteWorkout = async (token: string, workout_id: number) => {
 
 // Function to fetch streak data for the month
 export const fetchStreakMonth = async (token: string) => {
-  const response = await fetch(`${process.env.API_BASE_URL}/api/streaks`, {
-    headers: { Authorization: `Bearer ${token}` },
-    cache: 'no-store',
-  });
+  try {
+    console.log("token in fetchStreakMOnth",token);
+    console.log("BAse url ",process.env.API_BASE_URL);
 
-  if (!response.ok) throw new Error('Failed to fetch streak');
-  return response.json();
+    if(!token)return;
+
+    const decoded = jose.decodeJwt(token);
+    if (decoded.exp && decoded.exp * 1000 < Date.now()) {
+      console.log("⚠️ Token has expired. Skipping API call.");
+      return { error: "Session expired. Please log in again." };
+    }
+
+    const response = await fetch(`${process.env.API_BASE_URL}/api/streaks`, {
+      headers: { Authorization: `Bearer ${token}` },
+      cache: 'no-store',
+    });
+
+    if (!response.ok) throw new Error('Failed to fetch streak');
+    return response.json();
+  } catch (error) {
+    console.log("errro ",error);
+  } 
 };
 
 // Function to fetch workout dates for a specific month and year
@@ -99,6 +115,14 @@ export const fetchWorkoutDates = async (
   const url = new URL(`${process.env.API_BASE_URL}/api/days`);
   url.searchParams.append('year', year);
   url.searchParams.append('month', month);
+
+  if(!token)return;
+
+  const decoded = jose.decodeJwt(token);
+    if (decoded.exp && decoded.exp * 1000 < Date.now()) {
+      console.log("⚠️ Token has expired. Skipping API call.");
+      return { error: "Session expired. Please log in again." };
+    }
 
   const response = await fetch(url.toString(), {
     method: 'GET',

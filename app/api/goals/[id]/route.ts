@@ -65,7 +65,9 @@ export async function PATCH(
       Extracting the 'id' parameter from the request.
       This ID is used to identify the fitness goal to be updated.
     */
-    const { id } = params;
+    const { id } = await params;
+
+    console.log("parameters ",id);
 
     /*
       Extracting JSON body from the request which contains the fields to be updated.
@@ -118,7 +120,10 @@ export async function DELETE(
       Extracting the 'id' parameter from the request.
       This ID is used to identify the fitness goal that needs to be deleted.
     */
-    const { id } = params;
+
+    const { id } = await params;
+
+    console.log("para aya ? ",id);
     if (!id) {
       /*
         If no ID is provided, return a 400 Bad Request error.

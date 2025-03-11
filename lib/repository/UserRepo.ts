@@ -39,3 +39,18 @@ export const updateUserPassword = async (email: string, newPassword: string) => 
 export const deleteUserByEmail = async (email: string) => {
   return await User.findOneAndDelete({ email });
 };
+
+
+export const getIDByUserId = async (_id: string): Promise<any> => {
+  try {
+    // Step 1: Find the user by `_id`
+    const user = await User.findById(_id);
+    if (!user) throw new Error("User not found");
+    
+    return user;
+  } catch (error) {
+    console.error("Error fetching workouts:", error);
+    throw new Error("Failed to fetch workouts");
+  }
+};
+

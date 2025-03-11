@@ -2,10 +2,12 @@ import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import * as UserRepository from '@/lib/repository/UserRepo'; // Use @ for absolute imports if configured
 import * as Sentry from '@sentry/nextjs';
+import connectDB from '@/lib/db';
 
 // GET - Fetch All Users
 export async function GET() {
   try {
+    connectDB();
     console.log('middleware hii getalluser');
 
     /*
@@ -27,9 +29,14 @@ export async function GET() {
   }
 }
 
+
+
+
+
 // POST - Register a New User
 export async function POST(req: Request) {
   try {
+    connectDB();
     /*
       Parsing the request body to extract user details.
     */
