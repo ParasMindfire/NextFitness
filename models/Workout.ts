@@ -2,21 +2,23 @@ import mongoose, { Schema, Document } from "mongoose";
 
 // Define Workout Interface
 interface IWorkout extends Document {
-  userId: mongoose.Types.ObjectId;
-  exerciseType: string;
+  workout_id: number;
+  user_id: number;
+  exercise_type: string;
   duration: number;
-  caloriesBurned: number;
-  workoutDate: Date;
+  calories_burned: number;
+  workout_date: Date;
 }
 
 // Define Workout Schema
 const WorkoutSchema = new Schema<IWorkout>({
-  userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
-  exerciseType: { type: String, required: true },
+  workout_id: { type: Number, required: true },
+  user_id: { type: Number, required: true },
+  exercise_type: { type: String, required: true },
   duration: { type: Number, required: true },
-  caloriesBurned: { type: Number, required: true },
-  workoutDate: { type: Date, required: true },
-});
+  calories_burned: { type: Number, required: true },
+  workout_date: { type: Date, required: true },
+}, { timestamps: true });
 
 const Workout = mongoose.model<IWorkout>("Workout", WorkoutSchema);
 export default Workout;

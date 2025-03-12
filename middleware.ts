@@ -39,17 +39,17 @@ export async function middleware(req: NextRequest) {
 
   let token =
     req.headers.get('authorization') || req.headers.get('Authorization');
-  console.log('Received token:', token);
+  // console.log('Received token:', token);
 
   if (!token || !token.startsWith('Bearer ')) {
-    console.log('⚠️ Token missing or incorrectly formatted');
+    // console.log('⚠️ Token missing or incorrectly formatted');
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
   try {
     token = token.replace('Bearer ', '');
     const { payload } = await jose.jwtVerify(token, secretKey);
-    console.log('Decoded Token:', payload);
+    // console.log('Decoded Token:', payload);
 
     if (!payload.id) {
       console.log('Token missing required payload (id)');

@@ -6,13 +6,13 @@ import * as Sentry from '@sentry/nextjs';
 export async function GET(req: Request) {
   try {
     console.log("yahan a ra ? ");
-    const id: any = req.headers.get('id');
-    const userId=await userRepo.getIDByUserId(id);
-    console.log('id ', id);
+    const userId: any = req.headers.get('id');
+    // const userId=await userRepo.getIDByUserId(id);
+    // console.log('id ', id);
 
-    console.log("id kya ara user ka in api of strek ",id);
+    console.log("id kya ara user ka in api of strek ",userId);
 
-    const workouts = await workoutRepo.getWorkoutsByUser(userId.user_id);
+    const workouts = await workoutRepo.getWorkoutsByUser(userId);
 
     if (!workouts.length)
       return NextResponse.json({ streak: 0 }, { status: 200 });

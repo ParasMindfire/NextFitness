@@ -12,6 +12,7 @@ const UserProfile: React.FC = () => {
   // Fetch user and workouts on component mount
   useEffect(() => {
     const token: any = localStorage.getItem('accessToken');
+    console.log("profile effect");
     fetchWorkouts(token);
     fetchUser(token);
   }, []);
@@ -19,7 +20,9 @@ const UserProfile: React.FC = () => {
   // Fetch user data from API
   const fetchUser = async (token: string) => {
     try {
+      console.log("user log");
       const incomingUser = await getSingleUser(token);
+      console.log("incoming profile usr ",incomingUser);
       setUser(incomingUser);
     } catch (error) {
       console.error('Error fetching user:', error);

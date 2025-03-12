@@ -7,8 +7,10 @@ import connectDB from '@/lib/db';
 
 export async function POST(req: NextRequest) {
   try {
-    // Parse the request body
+    // Connect to database
     connectDB();
+
+    // Parse the request body
     const body = await req.json();
     const { email, password } = body;
 
@@ -22,29 +24,45 @@ export async function POST(req: NextRequest) {
 
     // Fetch user by email
     const user: any = await UserRepository.getUserByEmail(email);
-    console.log("user form mongoose ",user);
+    console.log("User from mongoose:", user);
 
     if (!user) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });
     }
 
     // Compare provided password with stored hash
-    if (!bcrypt.compareSync(password, user.password)) {
+    const isPasswordCorrect = bcrypt.compareSync(password, user.password);
+    if (!isPasswordCorrect) {
       return NextResponse.json(
         { error: 'Invalid Credentials' },
         { status: 401 }
       );
     }
 
+    // Define the JWT payload
+    const payload = {
+      id: user.user_id,   // Assigning the user ID as payload
+      email: user.email,
+      role: user.role || 'user', // Optional role if you have roles in the schema
+    };
+
     // Generate JWT access token
-    const accessToken = jwt.sign(
-      { id: user._id, email: user.email },
-      process.env.JWT_SECRET as string,
-      { expiresIn: '15m' }
-    );
+    const accessToken = jwt.sign(payload, process.env.JWT_SECRET as string, {
+      expiresIn: '15m',
+    });
 
     return NextResponse.json(
-      { message: 'Login successful', accessToken, user: user },
+      {
+        message: 'Login successful',
+        accessToken,
+        user: {
+          id: user._id,
+          name: user.name,
+          email: user.email,
+          phone: user.phone,
+          address: user.address,
+        },
+      },
       { status: 200 }
     );
   } catch (error: any) {

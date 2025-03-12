@@ -11,11 +11,11 @@ export async function GET(req: NextRequest) {
       This ID is required to fetch the user details.
     */
     const id: any = req.headers.get('id');
-    const userId=await UserRepository.getIDByUserId(id);
+    // const userId=await UserRepository.getIDByUserId(id);
 
     console.log('id ', id);
 
-    if (!userId.user_id) {
+    if (!id) {
       /*
         If the user ID is missing, return a 400 Bad Request response.
       */
@@ -28,7 +28,9 @@ export async function GET(req: NextRequest) {
     /*
       Fetching the user details from the repository using the provided ID.
     */
-    const user: any = await UserRepository.getUserById(userId.user_id);
+    const user: any = await UserRepository.getUserById(id);
+
+    // console.log("sigle user ",user);
 
     if (!user || user.length === 0) {
       /*

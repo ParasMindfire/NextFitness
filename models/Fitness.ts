@@ -2,8 +2,8 @@ import mongoose, { Schema, Document } from "mongoose";
 
 // Interface for TypeScript support
 interface IFitnessGoal extends Document {
-  goal_id:number,
-  userId: mongoose.Schema.Types.ObjectId;
+  goal_id: number;
+  user_id: number;
   goal_type: string;
   target_value: number;
   current_progress: number;
@@ -15,8 +15,8 @@ interface IFitnessGoal extends Document {
 // Define Fitness Goal Schema
 const FitnessGoalSchema = new Schema<IFitnessGoal>(
   {
-    goal_id:{type:Number,required:true},
-    userId: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
+    goal_id: { type: Number, required: true },
+    user_id: { type: Number, required: true },
     goal_type: { type: String, required: true },
     target_value: { type: Number, required: true },
     current_progress: { type: Number, required: true },
@@ -28,6 +28,6 @@ const FitnessGoalSchema = new Schema<IFitnessGoal>(
 );
 
 // Create FitnessGoal Model
-const FitnessGoal = mongoose.model<IFitnessGoal>("Goal", FitnessGoalSchema);
+const FitnessGoal = mongoose.model<IFitnessGoal>("FitnessGoal", FitnessGoalSchema);
 
 export default FitnessGoal;

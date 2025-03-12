@@ -1,20 +1,27 @@
 import User from "../../models/User";
 
+// Get all users
 export const getAllUsers = async () => {
   return await User.find();
 };
 
-
+// Get user by email
 export const getUserByEmail = async (email: string | undefined | null) => {
   return await User.findOne({ email });
 };
 
-
-export const getUserById = async (id: string) => {
-  return await User.findById(id);
+// Get user by user_id
+export const getUserById = async (user_id: number) => {
+  return await User.findOne({ user_id });
 };
 
+// Add this function to fetch the next user_id
+export const getNextUserId = async (): Promise<number> => {
+  const lastUser = await User.findOne().sort({ user_id: -1 }); // Get last user by descending order
+  return lastUser ? lastUser.user_id + 1 : 1; // If no user exists, start from 1
+};
 
+// Fix insertUser to generate user_id
 export const insertUser = async (
   name: string,
   email: string,
@@ -22,11 +29,18 @@ export const insertUser = async (
   phone: string,
   address: string
 ) => {
-  const user = new User({ name, email, password, phone, address });
+  const user_id = await getNextUserId(); // Generate user_id
+  const user = new User({ user_id, name, email, password, phone, address });
   return await user.save();
 };
 
+// Fix delete function to use user_id instead of email
+export const deleteUserById = async (id: string) => {
+  return await User.findOneAndDelete({ user_id: id });
+};
 
+
+// Update user password
 export const updateUserPassword = async (email: string, newPassword: string) => {
   return await User.findOneAndUpdate(
     { email },
@@ -35,22 +49,19 @@ export const updateUserPassword = async (email: string, newPassword: string) => 
   );
 };
 
-
+// Delete user by email
 export const deleteUserByEmail = async (email: string) => {
   return await User.findOneAndDelete({ email });
 };
 
-
-export const getIDByUserId = async (_id: string): Promise<any> => {
+// Get user by user_id
+export const getUserByUserId = async (user_id: number) => {
   try {
-    // Step 1: Find the user by `_id`
-    const user = await User.findById(_id);
+    const user = await User.findOne({ user_id });
     if (!user) throw new Error("User not found");
-    
     return user;
   } catch (error) {
-    console.error("Error fetching workouts:", error);
-    throw new Error("Failed to fetch workouts");
+    console.error("Error fetching user:", error);
+    throw new Error("Failed to fetch user");
   }
 };
-

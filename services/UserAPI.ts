@@ -83,7 +83,7 @@ export const getSingleUser = async (token: string): Promise<User> => {
     if (!response.ok) throw new Error('Failed to fetch user');
 
     const users = await response.json();
-    return users[0]; // Assuming API returns an array
+    return users; // Assuming API returns an array
   } catch (error) {
     console.error('Error fetching single user:', error);
     throw error;
