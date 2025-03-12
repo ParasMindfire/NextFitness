@@ -7,32 +7,32 @@ if (!jwtSecret) {
 }
 const secretKey = new TextEncoder().encode(jwtSecret);
 
-// 🚀 Rate limiting configuration
+// Rate limiting configuration
 const rateLimitMap = new Map(); // In-memory store (Use Redis in production)
 const MAX_REQUESTS = 10; // Allow 10 requests
 const TIME_FRAME = 60 * 1000; // 1 minute
 
 export async function middleware(req: NextRequest) {
-  console.log('🚀 Middleware executed!');
+  console.log('Middleware executed!');
 
-  // 📌 Extract Client IP (Next.js does not provide `req.ip`, use x-forwarded-for)
+  //  Extract Client IP (Next.js does not provide `req.ip`, use x-forwarded-for)
   const clientIp =
     req.headers.get('x-forwarded-for')?.split(',')[0] || 'unknown';
 
-  // 🚀 Apply Rate Limiting
+  // Apply Rate Limiting
   const now = Date.now();
   const requestLog = rateLimitMap.get(clientIp) || [];
   const recentRequests = requestLog.filter(
     (timestamp: number) => now - timestamp < TIME_FRAME
   );
 
-  if (recentRequests.length >= MAX_REQUESTS) {
-    console.warn(`Rate limit exceeded for IP: ${clientIp}`);
-    return NextResponse.json(
-      { error: 'Too many requests, please try again later.' },
-      { status: 429 }
-    );
-  }
+  // if (recentRequests.length >= MAX_REQUESTS) {
+  //   console.warn(`Rate limit exceeded for IP: ${clientIp}`);
+  //   return NextResponse.json(
+  //     { error: 'Too many requests, please try again later.' },
+  //     { status: 429 }
+  //   );
+  // }
 
   recentRequests.push(now);
   rateLimitMap.set(clientIp, recentRequests);
@@ -42,7 +42,7 @@ export async function middleware(req: NextRequest) {
   console.log('Received token:', token);
 
   if (!token || !token.startsWith('Bearer ')) {
-    console.log('⚠️ Token missing or incorrectly formatted');
+    console.log('Token missing or incorrectly formatted');
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
 
@@ -61,7 +61,7 @@ export async function middleware(req: NextRequest) {
     requestHeaders.set('id', String(payload.id));
     requestHeaders.set('email', String(payload.email));
 
-    // 🚀 Add CSP Headers
+    // Add CSP Headers
     const response = NextResponse.next({
       request: { headers: requestHeaders },
     });
