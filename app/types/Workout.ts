@@ -25,7 +25,7 @@ export interface WorkoutCardProps {
 
 export interface workoutByAll {
   name: string;
-  excercise_type: string;
+  exercise_type: string;
   duration: number;
   calories_burned: number;
   workout_date: string;

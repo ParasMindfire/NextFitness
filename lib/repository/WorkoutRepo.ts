@@ -3,12 +3,18 @@ import Workout from "../../models/Workout";
 
 // Get all workouts with user details
 export const getAllWorkouts = async (): Promise<any> => {
-  return await Workout.find().populate("userId", "email name");
+  console.log("eloloo");
+  return await Workout.find();
 };
 
 // Get all workouts for a specific user
-export const getWorkoutsByUser = async (userId: string): Promise<any> => {
-  return await Workout.find({ userId });
+export const getWorkoutsByUser = async (user_id: string|number): Promise<any> => {
+  user_id=Number(user_id)
+  console.log("type of ",typeof user_id);
+  console.log("userid ",user_id);
+  const wws=await Workout.find();
+  console.log("wws ",wws);
+  return await Workout.find({ user_id });
 };
 
 export const getNextWorkoutId = async (): Promise<number> => {
@@ -108,16 +114,19 @@ export const updateWorkout = async (
   workoutDate: Date
 ): Promise<void> => {
   await Workout.findOneAndUpdate(
-    { _id: workoutId, userId },
-    { exerciseType, duration, caloriesBurned, workoutDate },
+    { workout_id: workoutId, user_id:userId },
+    { exercise_type:exerciseType, duration, calories_burned:caloriesBurned, workout_date:workoutDate },
     { new: true }
   );
 };
 
 // Delete a workout
 export const deleteWorkout = async (
-  userId: string,
+  userId: string | number,
   workoutId: string
 ): Promise<void> => {
-  await Workout.findOneAndDelete({ _id: workoutId, userId });
+  userId=Number(userId);
+  console.log("user id ",userId);
+  console.log("workoutId ",workoutId);
+  await Workout.findOneAndDelete({ workout_id: workoutId, user_id:userId });
 };

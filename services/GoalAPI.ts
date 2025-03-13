@@ -21,10 +21,11 @@ export const getAllFitnessGoals = async (token: string) => {
       cache: 'no-store',
     });
 
-    if (!response.ok) {
-      throw new Error(
-        `Failed to fetch fitness goals (${response.status} - ${response.statusText})`
-      );
+    console.log("Response kya a ra ?? ",response);
+
+    if (response.status==404) {
+      console.warn('No fitness goals found, returning empty array.');
+      return [];
     }
 
     return await response.json();

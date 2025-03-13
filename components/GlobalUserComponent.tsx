@@ -47,7 +47,7 @@ const UserGoals: React.FC = () => {
               {user.name}
             </h3>
             <p className='text-secondary mb-1'>
-              <strong>Exercise Type:</strong> {user.excercise_type}
+              <strong>Exercise Type:</strong> {user.exercise_type}
             </p>
             <p className='text-secondary mb-1'>
               <strong>Duration:</strong> {user.duration} mins
