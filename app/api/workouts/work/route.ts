@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 import * as workoutRepo from '../../../../lib/repository/WorkoutRepo';
 import * as userRepo from '../../../../lib/repository/UserRepo';
 import { format } from 'date-fns';
-import connectDB from '@/lib/db';
+import connectDB from '@/lib/mongodb/db';
 
 // Fetch all workouts for a specific user.
 export async function GET(req: Request) {

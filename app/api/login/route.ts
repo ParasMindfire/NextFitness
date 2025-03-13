@@ -3,7 +3,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import * as UserRepository from '@/lib/repository/UserRepo'; // Ensure correct import path
 import * as Sentry from '@sentry/nextjs';
-import connectDB from '@/lib/db';
+import connectDB from '@/lib/mongodb/db';
 
 export async function POST(req: NextRequest) {
   try {

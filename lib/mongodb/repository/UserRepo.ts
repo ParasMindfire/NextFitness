@@ -1,4 +1,4 @@
-import User from "../../models/User";
+import User from "../../../models/User";
 
 // abstract class for repo there would be twio call sql and mongodb implementtaion and on ecommon which will take the argumnet as which class to call write if else according to argumnets type or you can implement in constructor
 

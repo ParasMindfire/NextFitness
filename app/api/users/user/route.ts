@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import * as UserRepository from '@/lib/repository/UserRepo'; // Ensure correct import path
+import { userRepo } from '../../RepoInitializer'; // Ensure correct import path
 import bcrypt from 'bcryptjs';
 import * as Sentry from '@sentry/nextjs';
 
@@ -28,7 +28,7 @@ export async function GET(req: NextRequest) {
     /*
       Fetching the user details from the repository using the provided ID.
     */
-    const user: any = await UserRepository.getUserById(id);
+    const user: any = await userRepo.getUserById(id);
 
     // console.log("sigle user ",user);
 
@@ -76,7 +76,7 @@ export async function PATCH(req: NextRequest) {
     /*
       Fetching the user details by email from the repository.
     */
-    const [user]: any = await UserRepository.getUserByEmail(email);
+    const [user]: any = await userRepo.getUserByEmail(email);
 
     if (!user.length) {
       /*
@@ -108,7 +108,7 @@ export async function PATCH(req: NextRequest) {
     /*
       Updating the user's password in the repository.
     */
-    await UserRepository.updateUserPassword(email, hashed_newPassword);
+    await userRepo.updateUserPassword(email, hashed_newPassword);
 
     /*
       Returning a success message with a 200 OK response.

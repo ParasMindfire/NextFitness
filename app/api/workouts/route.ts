@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import * as workoutRepo from '../../../lib/repository/WorkoutRepo';
 import * as Sentry from '@sentry/nextjs';
-import connectDB from '@/lib/db';
+import connectDB from '@/lib/mongodb/db';
 
 // Fetch all workouts from the database.
 export async function GET() {
