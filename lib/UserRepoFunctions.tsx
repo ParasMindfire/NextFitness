@@ -30,7 +30,7 @@ class UserRepository {
     return this.repo.getAllUsers();
   }
 
-  async getUserByEmail(email: string) {
+  async getUserByEmail(email: string|undefined|null) {
     return this.repo.getUserByEmail(email);
   }
 

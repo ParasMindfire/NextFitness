@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import * as UserRepository from '@/lib/repository/UserRepo'; // Ensure correct import path
+import { userRepo } from '../RepoInitializer';
 import * as Sentry from '@sentry/nextjs';
 import connectDB from '@/lib/mongodb/db';
 
@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
     }
 
     // Fetch user by email
-    const user: any = await UserRepository.getUserByEmail(email);
+    const user: any = await userRepo.getUserByEmail(email);
     console.log("User from mongoose:", user);
 
     if (!user) {

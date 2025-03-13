@@ -1,4 +1,4 @@
-import Workout from "../../models/Workout";
+import Workout from "../../../models/Workout";
 // import User from "../../models/User";
 
 // Get all workouts with user details
@@ -28,7 +28,7 @@ export const createWorkout = async (
   exercise_type: string,
   duration: number,
   calories_burned: number,
-  workout_date: Date
+  workout_date: Date | string
 ) => {
   // Log input arguments  
   console.log("Received arguments:", { user_id, exercise_type, duration, calories_burned, workout_date });
@@ -100,18 +100,18 @@ export const findWorkout = async (
 
 
 // Get a workout by its ID
-export const getWorkoutById = async (workoutId: string): Promise<any> => {
+export const getWorkoutById = async (workoutId: string|number): Promise<any> => {
   return await Workout.findById(workoutId);
 };
 
 // Update a workout
 export const updateWorkout = async (
-  userId: string,
-  workoutId: string,
+  userId: string | number,
+  workoutId: string | number,
   exerciseType: string,
   duration: number,
   caloriesBurned: number,
-  workoutDate: Date
+  workoutDate: Date | string
 ): Promise<void> => {
   await Workout.findOneAndUpdate(
     { workout_id: workoutId, user_id:userId },

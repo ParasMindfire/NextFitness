@@ -1,7 +1,7 @@
 // app/api/auth/[...nextauth]/route.ts
 import NextAuth from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
-import { getUserByEmail } from '../../../../lib/repository/UserRepo';
+import { userRepo } from '../../RepoInitializer';
 
 const handler = NextAuth({
   providers: [
@@ -18,7 +18,7 @@ const handler = NextAuth({
   callbacks: {
     async signIn({ user, account }) {
       if (account && account.provider === 'google') {
-        const existingUser = await getUserByEmail(user.email);
+        const existingUser = await userRepo.getUserByEmail(user.email);
         if (existingUser) {
           return true;
         } else {

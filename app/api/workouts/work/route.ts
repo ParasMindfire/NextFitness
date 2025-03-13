@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
-import * as workoutRepo from '../../../../lib/repository/WorkoutRepo';
-import * as userRepo from '../../../../lib/repository/UserRepo';
+import {workoutRepo} from '../../RepoInitializer'
+import { userRepo } from '../../RepoInitializer';
 import { format } from 'date-fns';
 import connectDB from '@/lib/mongodb/db';
 

@@ -1,5 +1,5 @@
 import mongoose from "mongoose";
-import FitnessGoal from "../../models/Fitness";
+import FitnessGoal from "../../../models/Fitness";
 import connectDB from "../db";
 
 export const getAllFitnessGoals = async (userId: string|number) => {

@@ -1,6 +1,5 @@
 import { NextResponse } from 'next/server';
-import * as workoutRepo from '../../../lib/repository/WorkoutRepo';
-import * as userRepo from '../../../lib/repository/UserRepo'
+import {workoutRepo} from "../RepoInitializer"
 import * as Sentry from '@sentry/nextjs';
 
 export async function GET(req: Request) {

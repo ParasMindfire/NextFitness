@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import * as workoutRepo from '../../../lib/repository/WorkoutRepo';
+import {workoutRepo} from '../../api/RepoInitializer'
 import * as Sentry from '@sentry/nextjs';
 import connectDB from '@/lib/mongodb/db';
 

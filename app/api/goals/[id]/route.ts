@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import * as fitnessGoalsRepo from '../../../../lib/repository/FitnessRepo';
+import {fitnessGoalsRepo} from "../../RepoInitializer"
 import * as Sentry from '@sentry/nextjs';
 
 // Get single fitness goal
