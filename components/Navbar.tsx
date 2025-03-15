@@ -289,86 +289,21 @@ const Navbar: React.FC = () => {
                 )}
               </div>
 
-              <div className='relative'>
-                <button
-                  onClick={toggleCalendar}
-                  className='text-white hover:bg-primary px-4 py-2 rounded-lg flex items-center'
-                >
-                  <FaCalendarAlt className='mr-2' /> Workout Calendar
-                </button>
-                {isCalendarOpen && (
-                  <div className='fixed inset-0 bg-tertiary bg-opacity-95 flex items-center justify-center z-50 p-6'>
-                    <div className='relative bg-white rounded-lg shadow-lg p-6 w-full max-w-md'>
-                      <button
-                        onClick={() => setIsCalendarOpen(false)}
-                        className='absolute top-2 right-2 text-gray-600 hover:text-gray-900 text-lg'
-                      >
-                        ✖
-                      </button>
+              <Link
+                href='/workout-calendar'
+                className='text-white hover:bg-primary px-4 py-2 rounded-lg flex items-center'
+                onClick={closeMenu}
+              >
+                <FaCalendarAlt className='mr-2' /> Workout Calendar
+              </Link>
 
-                      <h2 className='text-xl font-bold text-center mb-4'>
-                        Workouts This Month
-                      </h2>
-
-                      <div className='grid grid-cols-7 gap-2 pb-16'>
-                        {getCurrentMonthDays().map((day) => {
-                          const dateStr = day.toLocaleDateString('en-CA');
-                          const isWorkoutDay = workoutDates.some(
-                            (workout) => workout.workout_date === dateStr
-                          );
-                          const isFutureDate = day > new Date();
-                          const workoutCount = workoutDates.filter(
-                            (workout) => workout.workout_date === dateStr
-                          ).length;
-
-                          return (
-                            <div
-                              key={dateStr}
-                              className={`w-10 h-10 flex items-center justify-center rounded-full ${
-                                isFutureDate
-                                  ? 'bg-nAllowed text-white'
-                                  : workoutCount > 1
-                                    ? 'bg-secondary text-white'
-                                    : isWorkoutDay
-                                      ? 'bg-primary text-white'
-                                      : 'bg-error text-white'
-                              }`}
-                            >
-                              {day.getDate()}
-                            </div>
-                          );
-                        })}
-                      </div>
-
-                      <div className='absolute bottom-4 right-4 bg-gray-100 p-3 rounded-lg shadow-md'>
-                        <div className='flex items-center space-x-2 mb-1'>
-                          <div className='w-4 h-4 bg-primary rounded-full'></div>
-                          <span className='text-xs'>Workout Added</span>
-                        </div>
-                        <div className='flex items-center space-x-2 mb-1'>
-                          <div className='w-4 h-4 bg-secondary rounded-full'></div>
-                          <span className='text-xs'>Multiple Workouts</span>
-                        </div>
-                        <div className='flex items-center space-x-2'>
-                          <div className='w-4 h-4 bg-error rounded-full'></div>
-                          <span className='text-xs'>No Workout</span>
-                        </div>
-                      </div>
-
-                      <button
-                        onClick={() => setIsCalendarOpen(false)}
-                        className='mt-6 text-primary hover:underline w-full text-center'
-                      >
-                        Close
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
 
               <div className='text-white px-4 py-2 rounded-lg flex items-center'>
                 <FaFireAlt className='mr-2' />
-                Streak: {streak} days
+                <Link href="/workout-form">
+                    Streak: {streak} days
+                </Link>
+                
               </div>
 
               <div className='relative'>

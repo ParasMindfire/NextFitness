@@ -13,10 +13,10 @@ export function GoogleSignInButton() {
   return (
     <button
       onClick={handleClick}
-      className="w-full flex items-center font-semibold justify-center h-14 px-6 mt-4 text-xl  transition-colors duration-300 bg-white border-2 border-black text-black rounded-lg focus:shadow-outline hover:bg-slate-200"
+      className="w-full flex items-center justify-center h-14 px-6 mt-4 text-lg font-medium transition-all duration-300 bg-white border border-gray-300 text-gray-700 rounded-lg shadow-sm hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-400"
     >
-      <Image src={googleLogo} alt="Google Logo" width={20} height={20} />
-      <span className="ml-4">Continue with Google</span>
+      <Image src={googleLogo} alt="Google Logo" width={24} height={24} />
+      <span className="ml-3">Sign in with Google</span>
     </button>
   );
 }
@@ -29,10 +29,10 @@ export function GoogleSignInButton() {
 //   return (
 //     <button
 //       onClick={handleClick}
-//       className="w-full flex items-center font-semibold justify-center h-14 px-6 mt-4 text-xl transition-colors duration-300 bg-white border-2 border-black text-black rounded-lg focus:shadow-outline hover:bg-slate-200"
+//       className="w-full flex items-center justify-center h-14 px-6 mt-4 text-lg font-medium transition-all duration-300 bg-gray-900 text-white rounded-lg shadow-sm hover:bg-gray-800 focus:outline-none focus:ring-2 focus:ring-gray-600"
 //     >
-//       <Image src={githubLogo} alt="Github Logo" width={20} height={20} />
-//       <span className="ml-4">Continue with Github</span>
+//       <Image src={githubLogo} alt="Github Logo" width={24} height={24} />
+//       <span className="ml-3">Sign in with GitHub</span>
 //     </button>
 //   );
 // }
@@ -45,10 +45,9 @@ export function GoogleSignInButton() {
 //   return (
 //     <button
 //       onClick={handleClick}
-//       className="w-full flex items-center font-semibold justify-center h-14 px-6 mt-4 text-xl transition-colors duration-300 bg-white border-2 border-black text-black rounded-lg focus:shadow-outline hover:bg-slate-200"
+//       className="w-full flex items-center justify-center h-14 px-6 mt-4 text-lg font-medium transition-all duration-300 bg-blue-600 text-white rounded-lg shadow-sm hover:bg-blue-500 focus:outline-none focus:ring-2 focus:ring-blue-400"
 //     >
-//       {/* <Image src={githubLogo} alt="Github Logo" width={20} height={20} /> */}
-//       <span className="ml-4">Continue with Email</span>
+//       <span className="ml-3">Sign in with Email</span>
 //     </button>
 //   );
 // }

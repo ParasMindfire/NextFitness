@@ -133,3 +133,4 @@ export const fetchWorkoutDates = async (
   if (!response.ok) throw new Error('Failed to fetch workout dates');
   return response.json();
 };
+
