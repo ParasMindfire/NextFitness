@@ -61,6 +61,8 @@ export async function middleware(req: NextRequest) {
     requestHeaders.set('id', String(payload.id));
     requestHeaders.set('email', String(payload.email));
 
+    console.log("Payload me kya ara token k ",[payload.id,payload.email])
+
     // 🚀 Add CSP Headers
     const response = NextResponse.next({
       request: { headers: requestHeaders },

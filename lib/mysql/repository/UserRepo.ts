@@ -5,17 +5,24 @@ export const getAllUsers = async () => {
 };
 
 export const getUserByEmail = async (email: string | undefined | null) => {
-  // console.log("yahan aya ? ");
-  return await sequelize.query('SELECT * FROM users WHERE email = ?', {
-    replacements: [email],
-  });
+  try {
+    const [user] = await sequelize.query('SELECT * FROM users WHERE email = ?', {
+      replacements: [email],
+    });
+    console.log("my sql getUserbyemail")
+    return user;
+  } catch (error:any) {
+    throw new Error("Error fetching user by email: " + error.message);
+  }
 };
 
 export const getUserById = async (id: number) => {
   console.log('id ', id);
-  return await sequelize.query('SELECT * FROM users WHERE user_id = ?', {
+   const [user] = await sequelize.query('SELECT * FROM users WHERE user_id = ?', {
     replacements: [id],
   });
+
+  return user[0];
 };
 
 export const insertUser = async (

@@ -7,7 +7,7 @@ import connectDB from '@/lib/mongodb/db';
 // Fetch all workouts for a specific user.
 export async function GET(req: Request) {
   try {
-    connectDB();
+    if(process.env.DB=="mongodb")connectDB();
     const id: any = req.headers.get('id');
     // const userId=await userRepo.getIDByUserId(id);
     console.log('dekho kya ara', id);
@@ -42,22 +42,15 @@ export async function POST(req: Request) {
         { status: 400 }
       );
     }
-    const existingExercise = await workoutRepo.findWorkout(
-      id,
-      workout_date,
-      exercise_type
-    );
 
-    console.log("exisi  ",existingExercise);
+    let existingExercise: any = await workoutRepo.findWorkout(id, workout_date, exercise_type);
+    console.log("Existing exercise:", existingExercise);
 
-    if (existingExercise) {
-      return NextResponse.json(
-        { error: 'You have already added this exercise today' },
-        { status: 409 }
-      );
+    if (existingExercise && (Array.isArray(existingExercise) ? existingExercise.length > 0 : true)) {
+      return NextResponse.json({ error: "You have already added this exercise today" }, { status: 409 });
     }
 
-    console.log("existing");
+    console.log("existing ",existingExercise);
 
     await workoutRepo.createWorkout(
       id,

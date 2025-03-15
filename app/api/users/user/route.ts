@@ -30,7 +30,7 @@ export async function GET(req: NextRequest) {
     */
     const user: any = await userRepo.getUserById(id);
 
-    // console.log("sigle user ",user);
+    console.log("sigle user ",user);
 
     if (!user || user.length === 0) {
       /*

@@ -35,6 +35,7 @@ const LoginForm = () => {
 
       if (result.message === 'Login successful') {
         localStorage.setItem('accessToken', result.accessToken); // Store token
+        console.log("Login user kya ara ?? ",result.user);
         setUser(result.user); // Update user state
         router.push('/'); // Redirect to home page
         showToast('Login Successfully', 'success'); // Show success message

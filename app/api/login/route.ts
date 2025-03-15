@@ -8,7 +8,7 @@ import connectDB from '@/lib/mongodb/db';
 export async function POST(req: NextRequest) {
   try {
     // Connect to database
-    connectDB();
+    if(process.env.DB=="mongo")connectDB();
 
     // Parse the request body
     const body = await req.json();
@@ -23,8 +23,15 @@ export async function POST(req: NextRequest) {
     }
 
     // Fetch user by email
-    const user: any = await userRepo.getUserByEmail(email);
-    console.log("User from mongoose:", user);
+    let existingUser: any = await userRepo.getUserByEmail(email);
+    console.log("User from DB:", existingUser);
+
+    if (!existingUser || (Array.isArray(existingUser) && existingUser.length === 0)) {
+      return NextResponse.json({ error: "User not found" }, { status: 404 });
+    }
+
+    const user = Array.isArray(existingUser) && existingUser.length > 0 ? existingUser[0] : existingUser;
+
 
     if (!user) {
       return NextResponse.json({ error: 'User not found' }, { status: 404 });

@@ -53,6 +53,7 @@ const Navbar: React.FC = () => {
 
   // Fetch token from local storage on component mount
   useEffect(() => {
+    console.log("1");
     const storedToken = localStorage.getItem('accessToken') || '';
     setToken(storedToken);
   }, []);
@@ -60,6 +61,8 @@ const Navbar: React.FC = () => {
   // Fetch streak and workout dates when user or workouts change
   useEffect(() => {
     if (user && token) {
+      console.log("Login k bad user kya hai useeffect in navbar?? ",user);
+      console.log("2");
       const fetchStreak = async () => {
         const currStreak: number | { streak: number } =
           await fetchStreakMonth(token);

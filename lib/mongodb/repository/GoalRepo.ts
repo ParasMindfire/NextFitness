@@ -4,7 +4,7 @@ import connectDB from "../db";
 
 export const getAllFitnessGoals = async (userId: string|number) => {
   userId=Number(userId)
-  connectDB();
+  if(process.env.DB=="mongodb")connectDB();
   const allFitness=await FitnessGoal.find();
   console.log("all goals ",allFitness);
   return await FitnessGoal.find({ user_id:userId });

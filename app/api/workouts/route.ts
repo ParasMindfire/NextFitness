@@ -6,7 +6,7 @@ import connectDB from '@/lib/mongodb/db';
 // Fetch all workouts from the database.
 export async function GET() {
   try {
-    // connectDB();
+    if(process.env.DB=="mongodb")connectDB();
     /* 
       Retrieve all workouts from the repository.
       If no workouts are found, return a 404 response.
