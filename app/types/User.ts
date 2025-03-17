@@ -21,8 +21,11 @@ export interface APIResponse<T> {
 
 export interface UserInterface {
   user: any;
+  accessToken: string | null;
   setUser: (user: any) => void;
+  logout: () => void; // Add logout function
 }
+
 
 export interface SignupFormData {
   name: string;

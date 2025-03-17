@@ -39,7 +39,7 @@ const Navbar: React.FC = () => {
   const [isProfileOpen, setIsProfileOpen] = useState<boolean>(false);
   const [isCalendarOpen, setIsCalendarOpen] = useState<boolean>(false);
 
-  const { user, setUser } = useUserStore();
+  const { user, setUser} = useUserStore();
   const { workouts } = useWorkoutStore();
   const router = useRouter();
 
@@ -51,10 +51,38 @@ const Navbar: React.FC = () => {
 
   const dropdownRef = useRef<HTMLDivElement>(null);
 
+  useEffect(() => {
+    const handleBeforeUnload = () => {
+      useUserStore.getState().logout(); // Ensure user data is cleared on tab close
+    };
+
+    window.addEventListener('beforeunload', handleBeforeUnload);
+
+    return () => {
+      window.removeEventListener('beforeunload', handleBeforeUnload); // Cleanup event listener
+    };
+  }, []);
+
+  useEffect(() => {
+    if (user) {
+      localStorage.setItem('user-storage', JSON.stringify(user));
+    }
+  }, [user]);
+  
+
   // Fetch token from local storage on component mount
   useEffect(() => {
     console.log("1");
     const storedToken = localStorage.getItem('accessToken') || '';
+    const storedUser = localStorage.getItem('user-storage');
+    
+    console.log("stored Token ", storedToken);
+    console.log("stored User ", storedUser);
+    
+    if (storedUser) {
+      setUser(JSON.parse(storedUser));  // Restore user data
+    }
+
     setToken(storedToken);
   }, []);
 
@@ -95,9 +123,9 @@ const Navbar: React.FC = () => {
   const handleLogout = () => {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
+    localStorage.removeItem('user-storage');
     setUser(null);
     router.push('/login');
-    localStorage.removeItem('user-storage');
   };
 
   // Get days of the current month
